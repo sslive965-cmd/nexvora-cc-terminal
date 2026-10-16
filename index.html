@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NEXVORA CC TERMINAL</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --green: #00ff88;
+      --green-dark: #00b85c;
+      --black: #020504;
+      --panel: rgba(4, 15, 10, 0.78);
+      --border: rgba(0, 255, 136, 0.25);
+      --text: #e9fff4;
+      --muted: #7aa58f;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: "Courier New", monospace;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 50% 45%, rgba(0, 255, 136, 0.10), transparent 28%),
+        radial-gradient(circle at 10% 10%, rgba(0, 255, 136, 0.06), transparent 25%),
+        #020504;
+    }
+
+    /* Background grid */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.28;
+      background-image:
+        linear-gradient(rgba(0,255,136,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.045) 1px, transparent 1px);
+      background-size: 38px 38px;
+      transform: perspective(500px) rotateX(60deg) scale(1.5);
+      transform-origin: bottom;
+    }
+
+    /* Scanlines */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0,255,136,0.018) 4px
+      );
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      position: relative;
+    }
+
+    .terminal {
+      width: min(480px, 100%);
+      padding: 34px 28px 30px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      box-shadow:
+        0 0 35px rgba(0,255,136,0.09),
+        inset 0 0 30px rgba(0,255,136,0.025);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .terminal::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 8%;
+      right: 8%;
+      height: 1px;
+      background: var(--green);
+      box-shadow: 0 0 18px var(--green);
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      font-size: 11px;
+      letter-spacing: 2px;
+      margin-bottom: 28px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px var(--green);
+      animation: pulse 1.4s infinite;
+    }
+
+    @keyframes pulse {
+      50% {
+        opacity: 0.35;
+        box-shadow: 0 0 4px var(--green);
+      }
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .logo h1 {
+      font-family: Arial, sans-serif;
+      font-size: clamp(28px, 8vw, 43px);
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: #fff;
+      text-shadow:
+        0 0 8px rgba(0,255,136,0.65),
+        0 0 25px rgba(0,255,136,0.25);
+    }
+
+    .logo h1 span {
+      color: var(--green);
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 3px;
+      margin-bottom: 34px;
+    }
+
+    .terminal-line {
+      color: var(--green);
+      font-size: 12px;
+      margin-bottom: 9px;
+    }
+
+    .terminal-line span {
+      color: #8affc4;
+    }
+
+    .input-wrap {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      height: 55px;
+      border: 1px solid rgba(0,255,136,0.32);
+      border-radius: 10px;
+      outline: none;
+      background: rgba(0,0,0,0.48);
+      color: #fff;
+      padding: 0 16px;
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+      letter-spacing: 1px;
+      transition: 0.25s;
+    }
+
+    .input-wrap input::placeholder {
+      color: #426b57;
+    }
+
+    .input-wrap input:focus {
+      border-color: var(--green);
+      box-shadow:
+        0 0 0 2px rgba(0,255,136,0.07),
+        0 0 20px rgba(0,255,136,0.10);
+    }
+
+    button {
+      width: 100%;
+      height: 53px;
+      border-radius: 10px;
+      font-family: "Courier New", monospace;
+      font-weight: bold;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: 0.22s ease;
+    }
+
+    .verify-btn {
+      border: 1px solid var(--green);
+      background: rgba(0,255,136,0.09);
+      color: var(--green);
+      box-shadow: 0 0 15px rgba(0,255,136,0.06);
+    }
+
+    .verify-btn:hover {
+      background: var(--green);
+      color: #001b0d;
+      box-shadow: 0 0 25px rgba(0,255,136,0.35);
+      transform: translateY(-2px);
+    }
+
+    .get-key {
+      margin-top: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.025);
+      color: #b8cfc4;
+    }
+
+    .get-key:hover {
+      border-color: rgba(0,255,136,0.4);
+      color: var(--green);
+      background: rgba(0,255,136,0.05);
+    }
+
+    .message {
+      min-height: 22px;
+      text-align: center;
+      margin-top: 16px;
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #3d604e;
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+
+    .corner {
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      border-color: rgba(0,255,136,0.7);
+    }
+
+    .tl {
+      top: 14px;
+      left: 14px;
+      border-top: 1px solid;
+      border-left: 1px solid;
+    }
+
+    .tr {
+      top: 14px;
+      right: 14px;
+      border-top: 1px solid;
+      border-right: 1px solid;
+    }
+
+    .bl {
+      bottom: 14px;
+      left: 14px;
+      border-bottom: 1px solid;
+      border-left: 1px solid;
+    }
+
+    .br {
+      bottom: 14px;
+      right: 14px;
+      border-bottom: 1px solid;
+      border-right: 1px solid;
+    }
+
+    @media (max-width: 480px) {
+      .page {
+        padding: 14px;
+      }
+
+      .terminal {
+        padding: 28px 20px 25px;
+        border-radius: 18px;
+      }
+
+      .logo h1 {
+        letter-spacing: 2px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <section class="terminal">
+
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+
+      <div class="status">
+        <div class="status-dot"></div>
+        SYSTEM ONLINE
+      </div>
+
+      <div class="logo">
+        <h1>NEXVORA <span>CC</span></h1>
+      </div>
+
+      <div class="subtitle">
+        TERMINAL ACCESS SYSTEM
+      </div>
+
+      <div class="terminal-line">
+        <span>root@nexvora:~$</span> authenticate
+      </div>
+
+      <div class="input-wrap">
+        <input
+          id="accessKey"
+          type="text"
+          placeholder="ENTER ACCESS KEY"
+          autocomplete="off"
+          spellcheck="false"
+        >
+      </div>
+
+      <button class="verify-btn" onclick="verifyKey()">
+        VERIFY
+      </button>
+
+      <button class="get-key" onclick="getKey()">
+        GET KEY
+      </button>
+
+      <div class="message" id="message">
+        ACCESS CONTROLLED • AUTHORIZATION REQUIRED
+      </div>
+
+      <div class="footer">
+        NEXVORA CC TERMINAL // SECURE NODE
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    function verifyKey() {
+      const input = document.getElementById("accessKey");
+      const message = document.getElementById("message");
+
+      const key = input.value.trim();
+
+      if (!key) {
+        message.textContent = "ERROR: ACCESS KEY REQUIRED";
+        message.style.color = "#ff5f5f";
+        return;
+      }
+
+      message.textContent = "VERIFYING ACCESS KEY...";
+      message.style.color = "#00ff88";
+
+      /*
+        REAL KEY VERIFICATION SUPABASE SE CONNECT HOGA.
+        Abhi sirf frontend screen ready ki ja rahi hai.
+      */
+
+      setTimeout(() => {
+        message.textContent = "ACCESS SYSTEM NOT CONNECTED YET";
+        message.style.color = "#7aa58f";
+      }, 900);
+    }
+
+    function getKey() {
+      /*
+        Yahan baad mein tumhare Telegram Bot ka link connect hoga.
+        Example:
+        window.location.href = "YOUR_TELEGRAM_BOT_LINK";
+      */
+
+      const message = document.getElementById("message");
+
+      message.textContent = "OPENING KEY REQUEST SYSTEM...";
+      message.style.color = "#00ff88";
+
+      setTimeout(() => {
+        message.textContent = "TELEGRAM BOT WILL BE CONNECTED IN THE NEXT STEP";
+      }, 800);
+    }
+  </script>
+
+</body>
+  </html>
