@@ -154,7 +154,9 @@ input:focus,select:focus,textarea:focus{
   font-size:11px
 }
 
-.wrap{padding:18px}
+.wrap{
+  padding:18px
+}
 
 .tabs{
   display:flex;
@@ -164,7 +166,9 @@ input:focus,select:focus,textarea:focus{
   padding-bottom:4px
 }
 
-.tab{white-space:nowrap}
+.tab{
+  white-space:nowrap
+}
 
 .tab.active{
   background:#00ff88;
@@ -196,18 +200,22 @@ input:focus,select:focus,textarea:focus{
   font-weight:900
 }
 
-.list{margin-top:15px}
+.list{
+  margin-top:15px
+}
 
 .item{
   padding:15px;
   margin-bottom:10px
 }
 
-.item-title{margin-bottom:7px}
+.item-title{
+  margin-bottom:7px
+}
 
 .item small{
   display:block;
-  margin-top:4px;
+  margin-top:5px;
   word-break:break-word
 }
 
@@ -218,7 +226,9 @@ input:focus,select:focus,textarea:focus{
   margin-top:12px
 }
 
-.actions button{font-size:11px}
+.actions button{
+  font-size:11px
+}
 
 .msg{
   display:none;
@@ -287,7 +297,72 @@ input:focus,select:focus,textarea:focus{
   margin-top:8px
 }
 
+.badge{
+  display:inline-block;
+  padding:4px 7px;
+  border-radius:6px;
+  font-size:10px;
+  font-weight:900
+}
+
+.badge.green{
+  color:#00ff88;
+  background:#03170d;
+  border:1px solid #17472e
+}
+
+.badge.red{
+  color:#ff7777;
+  background:#180606;
+  border:1px solid #632020
+}
+
+.product-preview{
+  display:grid;
+  grid-template-columns:90px 1fr;
+  gap:12px;
+  align-items:center;
+  margin-bottom:12px
+}
+
+.product-preview img{
+  width:90px;
+  height:60px;
+  object-fit:cover;
+  border-radius:8px;
+  border:1px solid #17472e;
+  background:#010805
+}
+
+.product-meta{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:7px;
+  margin-top:10px
+}
+
+.meta-box{
+  background:#010805;
+  border:1px solid #103622;
+  border-radius:8px;
+  padding:8px
+}
+
+.meta-box b{
+  display:block;
+  color:#00ff88;
+  font-size:10px;
+  margin-bottom:3px
+}
+
+.meta-box span{
+  color:#a5c9b2;
+  font-size:11px;
+  word-break:break-word
+}
+
 @media(max-width:600px){
+
   .top-inner{
     align-items:flex-start
   }
@@ -304,6 +379,11 @@ input:focus,select:focus,textarea:focus{
   .key-value{
     font-size:16px
   }
+
+  .wrap{
+    padding:12px
+  }
+
 }
 </style>
 </head>
@@ -497,32 +577,50 @@ class="section active"
 
 <div>
 <label>CARD DISPLAY NUMBER</label>
-<input id="pnum" placeholder="•••• •••• •••• 1234">
+<input
+id="pnum"
+placeholder="•••• •••• •••• 1234"
+>
 </div>
 
 <div>
 <label>CARD HOLDER DISPLAY</label>
-<input id="pholder" placeholder="NEXVORA USER">
+<input
+id="pholder"
+placeholder="NEXVORA USER"
+>
 </div>
 
 <div>
 <label>CARD BALANCE DISPLAY</label>
-<input id="pbalance" placeholder="₹0">
+<input
+id="pbalance"
+placeholder="₹0"
+>
 </div>
 
 <div>
 <label>LIMIT</label>
-<input id="plimit" placeholder="₹0">
+<input
+id="plimit"
+placeholder="₹0"
+>
 </div>
 
 <div>
 <label>EXPIRY DISPLAY</label>
-<input id="pexpiry" placeholder="••/••">
+<input
+id="pexpiry"
+placeholder="••/••"
+>
 </div>
 
 <div>
 <label>DELIVERY</label>
-<input id="pdelivery" placeholder="10 Mins">
+<input
+id="pdelivery"
+placeholder="10 Mins"
+>
 </div>
 
 <div>
@@ -549,7 +647,10 @@ placeholder="0"
 
 <div>
 <label>IMAGE URL</label>
-<input id="pi" placeholder="https://...">
+<input
+id="pi"
+placeholder="https://..."
+>
 </div>
 
 <div>
@@ -609,7 +710,8 @@ Loading products...
 
 </div>
 
-  </section>
+</section>
+
 
 <section
 id="orders"
@@ -633,10 +735,8 @@ Open this section to load orders.
 
 </div>
 
-</section>
-
-
-<section
+  </section>
+  <section
 id="requests"
 class="section"
 >
@@ -762,36 +862,29 @@ class="section"
 
 <input id="ssn">
 
-
 <label>SUPPORT USERNAME</label>
 
 <input id="sss">
-
 
 <label>SUPPORT URL</label>
 
 <input id="ssu">
 
-
 <label>TELEGRAM BOT URL</label>
 
 <input id="ssb">
-
 
 <label>TELEGRAM CHANNEL URL</label>
 
 <input id="ssc">
 
-
 <label>UPI ID</label>
 
 <input id="ssupi">
 
-
 <label>PAYMENT QR URL</label>
 
 <input id="ssqr">
-
 
 <label>ACCESS PRICE</label>
 
@@ -802,11 +895,9 @@ min="0"
 step=".01"
 >
 
-
 <label>INFORMATION</label>
 
 <textarea id="ssi"></textarea>
-
 
 <button
 id="saveSettingsButton"
@@ -861,6 +952,7 @@ const SUPABASE_KEY =
 
 let db = null;
 let user = null;
+let editingProductId = null;
 
 
 const $ = id =>
@@ -901,7 +993,6 @@ const el = $("bootError");
 if(!el)return;
 
 el.textContent = text;
-
 el.style.display="block";
 
 }
@@ -920,7 +1011,6 @@ showBootError(
 return false;
 
 }
-
 
 db =
 window.supabase.createClient(
@@ -970,17 +1060,14 @@ return;
 
 }
 
-
 const email =
 $("loginEmail")
 .value
 .trim()
 .toLowerCase();
 
-
 const password =
 $("loginPassword").value;
-
 
 if(!email){
 
@@ -994,7 +1081,6 @@ return;
 
 }
 
-
 if(!password){
 
 showMsg(
@@ -1007,14 +1093,11 @@ return;
 
 }
 
-
 const button =
 $("loginButton");
 
 button.disabled=true;
-
 button.textContent="CHECKING...";
-
 
 try{
 
@@ -1024,13 +1107,7 @@ email,
 password
 });
 
-
 if(result.error){
-
-console.error(
-"LOGIN ERROR:",
-result.error
-);
 
 showMsg(
 "loginMsg",
@@ -1043,11 +1120,7 @@ return;
 
 }
 
-
-if(
-!result.data ||
-!result.data.user
-){
+if(!result.data?.user){
 
 showMsg(
 "loginMsg",
@@ -1059,24 +1132,15 @@ return;
 
 }
 
-
 user =
 result.data.user;
-
 
 const adminCheck =
 await db.rpc("is_admin_user");
 
-
 if(adminCheck.error){
 
-console.error(
-"ADMIN CHECK ERROR:",
-adminCheck.error
-);
-
 await db.auth.signOut();
-
 user=null;
 
 showMsg(
@@ -1090,11 +1154,9 @@ return;
 
 }
 
-
 if(adminCheck.data !== true){
 
 await db.auth.signOut();
-
 user=null;
 
 showMsg(
@@ -1107,9 +1169,7 @@ return;
 
 }
 
-
 openAdmin();
-
 
 }catch(error){
 
@@ -1128,7 +1188,6 @@ error?.message ||
 }finally{
 
 button.disabled=false;
-
 button.textContent="LOGIN";
 
 }
@@ -1145,7 +1204,6 @@ try{
 const result =
 await db.auth.getSession();
 
-
 if(result.error){
 
 console.error(
@@ -1157,24 +1215,15 @@ return;
 
 }
 
-
-if(
-!result.data ||
-!result.data.session
-){
-
+if(!result.data?.session){
 return;
-
 }
-
 
 const sessionUser =
 result.data.session.user;
 
-
 const adminCheck =
 await db.rpc("is_admin_user");
-
 
 if(
 adminCheck.error ||
@@ -1182,17 +1231,14 @@ adminCheck.data !== true
 ){
 
 await db.auth.signOut();
-
 return;
 
 }
-
 
 user =
 sessionUser;
 
 openAdmin();
-
 
 }catch(error){
 
@@ -1209,7 +1255,6 @@ error
 function openAdmin(){
 
 $("loginScreen").style.display="none";
-
 $("adminApp").style.display="block";
 
 $("adminEmail").textContent =
@@ -1225,9 +1270,7 @@ async function logout(){
 try{
 
 if(db){
-
 await db.auth.signOut();
-
 }
 
 }catch(error){
@@ -1240,7 +1283,6 @@ error
 }finally{
 
 user=null;
-
 location.reload();
 
 }
@@ -1256,15 +1298,11 @@ document
 section.classList.remove("active");
 });
 
-
 const target = $(id);
 
 if(target){
-
 target.classList.add("active");
-
 }
-
 
 document
 .querySelectorAll(".tab")
@@ -1273,33 +1311,25 @@ document
 button.classList.remove("active");
 
 if(button.dataset.tab === id){
-
 button.classList.add("active");
-
 }
 
 });
 
-
 if(id==="products")
 loadProducts();
-
 
 if(id==="orders")
 loadOrders();
 
-
 if(id==="requests")
 loadRequests();
-
 
 if(id==="keys")
 loadKeys();
 
-
 if(id==="settings")
 loadSettings();
-
 
 if(id==="telegram")
 loadTelegram();
@@ -1360,7 +1390,6 @@ head:true
 
 ]);
 
-
 $("sp").textContent =
 results[0].count || 0;
 
@@ -1372,7 +1401,6 @@ results[2].count || 0;
 
 $("sk").textContent =
 results[3].count || 0;
-
 
 }catch(error){
 
@@ -1386,6 +1414,30 @@ error
 }
 
 
+function resetProductForm(){
+
+editingProductId = null;
+
+$("pn").value="";
+$("pb").value="RuPay";
+$("pnum").value="•••• •••• •••• 0000";
+$("pholder").value="NEXVORA USER";
+$("pbalance").value="₹0";
+$("plimit").value="₹0";
+$("pexpiry").value="••/••";
+$("pdelivery").value="10 Mins";
+$("pp").value="";
+$("pquantity").value="0";
+$("pi").value="";
+$("pd").value="";
+$("pavailable").value="true";
+
+$("addProductButton").textContent="ADD PRODUCT";
+$("cancelEditButton").style.display="none";
+
+}
+
+
 async function loadProducts(){
 
 const box = $("pl");
@@ -1393,20 +1445,12 @@ const box = $("pl");
 box.innerHTML =
 '<div class="loading">Loading products...</div>';
 
-
 const result =
 await db
 .from("products")
 .select("*")
-.order(
-"sort_order",
-{ascending:true}
-)
-.order(
-"created_at",
-{ascending:false}
-);
-
+.order("sort_order",{ascending:true})
+.order("created_at",{ascending:false});
 
 if(result.error){
 
@@ -1417,10 +1461,8 @@ return;
 
 }
 
-
 const data =
 result.data || [];
-
 
 if(!data.length){
 
@@ -1431,42 +1473,97 @@ return;
 
 }
 
-
 box.innerHTML =
 data.map(product=>`
 
 <div class="item">
+
+<div class="product-preview">
+
+${
+product.image_url
+?
+`<img src="${esc(product.image_url)}" alt="">`
+:
+`<div style="width:90px;height:60px;border:1px solid #17472e;border-radius:8px;display:grid;place-items:center;color:#668873;font-size:10px">NO IMAGE</div>`
+}
+
+<div>
 
 <div class="item-title">
 ${esc(product.name || "Unnamed")}
 </div>
 
 <small>
-Brand:
-${esc(product.brand || "—")}
+${esc(product.network || product.brand || "—")}
 </small>
 
-<small>
-Network:
-${esc(product.network || "—")}
-</small>
+</div>
+
+</div>
+
+<div class="product-meta">
+
+<div class="meta-box">
+<b>DISPLAY</b>
+<span>${esc(product.display_number || "•••• •••• •••• 0000")}</span>
+</div>
+
+<div class="meta-box">
+<b>HOLDER</b>
+<span>${esc(product.cardholder_display || "NEXVORA USER")}</span>
+</div>
+
+<div class="meta-box">
+<b>BALANCE</b>
+<span>${esc(product.card_balance_display || "₹0")}</span>
+</div>
+
+<div class="meta-box">
+<b>LIMIT</b>
+<span>${esc(product.limit_display || "₹0")}</span>
+</div>
+
+<div class="meta-box">
+<b>EXPIRY</b>
+<span>${esc(product.expiry_display || "••/••")}</span>
+</div>
+
+<div class="meta-box">
+<b>DELIVERY</b>
+<span>${esc(product.delivery_display || "10 Mins")}</span>
+</div>
+
+<div class="meta-box">
+<b>ENTRY FEE</b>
+<span>₹${esc(product.price ?? "0")}</span>
+</div>
+
+<div class="meta-box">
+<b>QUANTITY</b>
+<span>${esc(product.quantity ?? "0")}</span>
+</div>
+
+<div class="meta-box">
+<b>AVAILABLE</b>
+<span>${product.available ? "YES" : "NO"}</span>
+</div>
+
+</div>
 
 <small>
-Price:
-₹${esc(product.price ?? "0")}
-</small>
-
-<small>
-Display:
-•••• •••• •••• 0000
-</small>
-
-<small>
-Available:
-${product.available ? "YES" : "NO"}
+Description:
+${esc(product.description || "—")}
 </small>
 
 <div class="actions">
+
+<button
+class="dark"
+data-edit-product="${esc(product.id)}"
+>
+EDIT
+</button>
 
 <button
 class="danger"
@@ -1484,11 +1581,10 @@ DELETE
 }
 
 
-async function addProduct(){
+async function saveProduct(){
 
 const name =
 $("pn").value.trim();
-
 
 if(!name){
 
@@ -1502,14 +1598,13 @@ return;
 
 }
 
-
 const price =
-Number(
-$("pp").value || 0
-);
+Number($("pp").value || 0);
 
+const quantity =
+Number($("pquantity").value || 0);
 
-if(price < 0){
+if(!Number.isFinite(price) || price < 0){
 
 showMsg(
 "pm",
@@ -1521,31 +1616,56 @@ return;
 
 }
 
+if(!Number.isInteger(quantity) || quantity < 0){
 
-const button =
-$("addProductButton");
+showMsg(
+"pm",
+"Quantity must be 0 or greater.",
+"error"
+);
 
-button.disabled=true;
+return;
 
-button.textContent="ADDING...";
+}
 
+const network =
+$("pb").value;
 
-try{
-
-const result =
-await db
-.from("products")
-.insert({
+const payload = {
 
 name,
 
-brand:
-$("pb").value,
+brand:network,
 
-network:
-$("pnet").value.trim(),
+network,
+
+display_number:
+$("pnum").value.trim() ||
+"•••• •••• •••• 0000",
+
+cardholder_display:
+$("pholder").value.trim() ||
+"NEXVORA USER",
+
+card_balance_display:
+$("pbalance").value.trim() ||
+"₹0",
+
+limit_display:
+$("plimit").value.trim() ||
+"₹0",
+
+expiry_display:
+$("pexpiry").value.trim() ||
+"••/••",
+
+delivery_display:
+$("pdelivery").value.trim() ||
+"10 Mins",
 
 price,
+
+quantity,
 
 image_url:
 $("pi").value.trim() || null,
@@ -1553,22 +1673,43 @@ $("pi").value.trim() || null,
 description:
 $("pd").value.trim(),
 
-display_number:
-"•••• •••• •••• 0000",
+available:
+$("pavailable").value === "true"
 
-expiry_display:
-"DEMO",
+};
 
-cardholder_display:
-"DEMO USER",
+const button =
+$("addProductButton");
 
-cvv_display:
-"•••",
+button.disabled=true;
 
-available:true
+button.textContent =
+editingProductId
+?
+"UPDATING..."
+:
+"ADDING...";
 
-});
+try{
 
+let result;
+
+if(editingProductId){
+
+result =
+await db
+.from("products")
+.update(payload)
+.eq("id",editingProductId);
+
+}else{
+
+result =
+await db
+.from("products")
+.insert(payload);
+
+}
 
 if(result.error){
 
@@ -1582,36 +1723,32 @@ return;
 
 }
 
-
 showMsg(
 "pm",
+editingProductId
+?
+"Product updated successfully."
+:
 "Product added successfully.",
 "success"
 );
 
-
-[
-"pn",
-"pnet",
-"pp",
-"pi",
-"pd"
-].forEach(id=>{
-$(id).value="";
-});
-
+resetProductForm();
 
 await loadProducts();
-
 await loadStats();
-
 
 }catch(error){
 
+console.error(
+"PRODUCT SAVE ERROR:",
+error
+);
+
 showMsg(
 "pm",
-error.message ||
-"Product add failed.",
+error?.message ||
+"Product save failed.",
 "error"
 );
 
@@ -1619,9 +1756,101 @@ error.message ||
 
 button.disabled=false;
 
+if(!editingProductId){
 button.textContent="ADD PRODUCT";
+}
 
 }
+
+}
+
+
+function editProduct(id){
+
+db
+.from("products")
+.select("*")
+.eq("id",id)
+.single()
+.then(result=>{
+
+if(result.error){
+
+showMsg(
+"pm",
+result.error.message,
+"error"
+);
+
+return;
+
+}
+
+const product =
+result.data;
+
+editingProductId =
+product.id;
+
+$("pn").value =
+product.name || "";
+
+$("pb").value =
+product.network ||
+product.brand ||
+"RuPay";
+
+$("pnum").value =
+product.display_number ||
+"•••• •••• •••• 0000";
+
+$("pholder").value =
+product.cardholder_display ||
+"NEXVORA USER";
+
+$("pbalance").value =
+product.card_balance_display ||
+"₹0";
+
+$("plimit").value =
+product.limit_display ||
+"₹0";
+
+$("pexpiry").value =
+product.expiry_display ||
+"••/••";
+
+$("pdelivery").value =
+product.delivery_display ||
+"10 Mins";
+
+$("pp").value =
+product.price ?? "";
+
+$("pquantity").value =
+product.quantity ?? 0;
+
+$("pi").value =
+product.image_url || "";
+
+$("pd").value =
+product.description || "";
+
+$("pavailable").value =
+product.available ? "true" : "false";
+
+$("addProductButton").textContent =
+"UPDATE PRODUCT";
+
+$("cancelEditButton").style.display =
+"inline-block";
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+});
 
 }
 
@@ -1630,7 +1859,7 @@ async function deleteProduct(id){
 
 if(
 !confirm(
-"Delete this demo product?"
+"Delete this product permanently?"
 )
 ){
 
@@ -1638,37 +1867,33 @@ return;
 
 }
 
-
 const result =
 await db
 .from("products")
 .delete()
 .eq("id",id);
 
-
 if(result.error){
 
-alert(
-result.error.message
-);
-
+alert(result.error.message);
 return;
 
 }
 
+if(editingProductId === id){
+resetProductForm();
+}
 
 await loadProducts();
-
 await loadStats();
 
 }
-async function loadOrders(){
+  async function loadOrders(){
 
 const box = $("ol");
 
 box.innerHTML =
 '<div class="loading">Loading orders...</div>';
-
 
 const result =
 await db
@@ -1680,7 +1905,6 @@ await db
 )
 .limit(100);
 
-
 if(result.error){
 
 box.innerHTML =
@@ -1690,10 +1914,8 @@ return;
 
 }
 
-
 const data =
 result.data || [];
-
 
 if(!data.length){
 
@@ -1703,7 +1925,6 @@ box.innerHTML =
 return;
 
 }
-
 
 box.innerHTML =
 data.map(order=>`
@@ -1730,8 +1951,24 @@ ${esc(order.customer_email || "—")}
 </small>
 
 <small>
+UID:
+${esc(order.player_uid || "—")}
+</small>
+
+<small>
 Status:
+<span class="badge ${
+String(order.status || "").toLowerCase()==="verified"
+? "green"
+: "red"
+}">
 ${esc(order.status || "pending")}
+</span>
+</small>
+
+<small>
+Created:
+${esc(order.created_at || "—")}
 </small>
 
 <div class="actions">
@@ -1767,29 +2004,20 @@ const result =
 await db
 .from("orders")
 .update({
-
 status,
-
 updated_at:
 new Date().toISOString()
-
 })
 .eq("id",id);
 
-
 if(result.error){
 
-alert(
-result.error.message
-);
-
+alert(result.error.message);
 return;
 
 }
 
-
 await loadOrders();
-
 await loadStats();
 
 }
@@ -1802,7 +2030,6 @@ const box = $("rl");
 box.innerHTML =
 '<div class="loading">Loading payment requests...</div>';
 
-
 const result =
 await db
 .from("key_requests")
@@ -1813,7 +2040,6 @@ await db
 )
 .limit(100);
 
-
 if(result.error){
 
 box.innerHTML =
@@ -1823,10 +2049,8 @@ return;
 
 }
 
-
 const data =
 result.data || [];
-
 
 if(!data.length){
 
@@ -1836,7 +2060,6 @@ box.innerHTML =
 return;
 
 }
-
 
 box.innerHTML =
 data.map(request=>`
@@ -1907,29 +2130,20 @@ const result =
 await db
 .from("key_requests")
 .update({
-
 status,
-
 updated_at:
 new Date().toISOString()
-
 })
 .eq("id",id);
 
-
 if(result.error){
 
-alert(
-result.error.message
-);
-
+alert(result.error.message);
 return;
 
 }
 
-
 await loadRequests();
-
 await loadStats();
 
 }
@@ -1945,12 +2159,8 @@ $("keyIssuedTo")
 .value
 .trim();
 
-
 button.disabled=true;
-
-button.textContent =
-"GENERATING...";
-
+button.textContent="GENERATING...";
 
 try{
 
@@ -1963,13 +2173,7 @@ issuedTo || null
 }
 );
 
-
 if(result.error){
-
-console.error(
-"KEY GENERATION ERROR:",
-result.error
-);
 
 showMsg(
 "keyMsg",
@@ -1982,12 +2186,12 @@ return;
 
 }
 
-
 const row =
 Array.isArray(result.data)
-? result.data[0]
-: result.data;
-
+?
+result.data[0]
+:
+result.data;
 
 if(!row || !row.access_key){
 
@@ -2001,13 +2205,11 @@ return;
 
 }
 
-
 $("generatedKey").textContent =
 row.access_key;
 
 $("generatedKeyBox").style.display =
 "block";
-
 
 showMsg(
 "keyMsg",
@@ -2015,22 +2217,12 @@ showMsg(
 "success"
 );
 
-
-$("keyIssuedTo").value =
-"";
-
+$("keyIssuedTo").value="";
 
 await loadKeys();
-
 await loadStats();
 
-
 }catch(error){
-
-console.error(
-"GENERATE KEY ERROR:",
-error
-);
 
 showMsg(
 "keyMsg",
@@ -2042,9 +2234,7 @@ error?.message ||
 }finally{
 
 button.disabled=false;
-
-button.textContent =
-"GENERATE NEW KEY";
+button.textContent="GENERATE NEW KEY";
 
 }
 
@@ -2058,7 +2248,6 @@ $("generatedKey")
 .textContent
 .trim();
 
-
 if(!key){
 
 showMsg(
@@ -2070,7 +2259,6 @@ showMsg(
 return;
 
 }
-
 
 try{
 
@@ -2088,9 +2276,7 @@ const area =
 document.createElement("textarea");
 
 area.value=key;
-
 area.style.position="fixed";
-
 area.style.opacity="0";
 
 document.body.appendChild(area);
@@ -2132,7 +2318,6 @@ $("kl");
 box.innerHTML =
 '<div class="loading">Loading access keys...</div>';
 
-
 const result =
 await db
 .from("access_keys")
@@ -2143,7 +2328,6 @@ await db
 )
 .limit(100);
 
-
 if(result.error){
 
 box.innerHTML =
@@ -2153,10 +2337,8 @@ return;
 
 }
 
-
 const data =
 result.data || [];
-
 
 if(!data.length){
 
@@ -2167,7 +2349,6 @@ return;
 
 }
 
-
 box.innerHTML =
 data.map(key=>{
 
@@ -2175,12 +2356,12 @@ const status =
 String(key.status || "")
 .toLowerCase();
 
-
 const statusClass =
 status === "active"
-? "green"
-: "red";
-
+?
+"green"
+:
+"red";
 
 return `
 
@@ -2230,7 +2411,6 @@ await db
 .limit(1)
 .maybeSingle();
 
-
 if(result.error){
 
 console.error(
@@ -2242,13 +2422,10 @@ return;
 
 }
 
-
 const data =
 result.data;
 
-
 if(!data)return;
-
 
 $("ssn").value =
 data.site_name || "";
@@ -2286,10 +2463,7 @@ const button =
 $("saveSettingsButton");
 
 button.disabled=true;
-
-button.textContent =
-"SAVING...";
-
+button.textContent="SAVING...";
 
 try{
 
@@ -2299,7 +2473,6 @@ await db
 .select("id")
 .limit(1)
 .maybeSingle();
-
 
 if(row.error){
 
@@ -2313,7 +2486,6 @@ return;
 
 }
 
-
 if(!row.data){
 
 showMsg(
@@ -2325,7 +2497,6 @@ showMsg(
 return;
 
 }
-
 
 const payload = {
 
@@ -2363,7 +2534,6 @@ new Date().toISOString()
 
 };
 
-
 const result =
 await db
 .from("site_settings")
@@ -2372,7 +2542,6 @@ await db
 "id",
 row.data.id
 );
-
 
 if(result.error){
 
@@ -2386,13 +2555,11 @@ return;
 
 }
 
-
 showMsg(
 "sm",
 "Settings saved successfully.",
 "success"
 );
-
 
 }catch(error){
 
@@ -2406,9 +2573,7 @@ error.message ||
 }finally{
 
 button.disabled=false;
-
-button.textContent =
-"SAVE SETTINGS";
+button.textContent="SAVE SETTINGS";
 
 }
 
@@ -2423,7 +2588,6 @@ $("tl");
 box.innerHTML =
 '<div class="loading">Loading Telegram channels...</div>';
 
-
 const result =
 await db
 .from("telegram_channels")
@@ -2432,7 +2596,6 @@ await db
 "sort_order",
 {ascending:true}
 );
-
 
 if(result.error){
 
@@ -2443,10 +2606,8 @@ return;
 
 }
 
-
 const data =
 result.data || [];
-
 
 if(!data.length){
 
@@ -2456,7 +2617,6 @@ box.innerHTML =
 return;
 
 }
-
 
 box.innerHTML =
 data.map(channel=>`
@@ -2512,25 +2672,22 @@ $("loginButton")
 login
 );
 
-
 $("logoutButton")
 .addEventListener(
 "click",
 logout
 );
 
-
 $("loginPassword")
 .addEventListener(
 "keydown",
 event=>{
 
-if(event.key === "Enter")
+if(event.key==="Enter")
 login();
 
 }
 );
-
 
 document
 .querySelectorAll(".tab")
@@ -2553,7 +2710,24 @@ button.dataset.tab
 $("addProductButton")
 .addEventListener(
 "click",
-addProduct
+saveProduct
+);
+
+
+$("cancelEditButton")
+.addEventListener(
+"click",
+()=>{
+
+resetProductForm();
+
+showMsg(
+"pm",
+"Edit cancelled.",
+"success"
+);
+
+}
 );
 
 
@@ -2583,18 +2757,33 @@ $("pl")
 "click",
 event=>{
 
-const button =
+const editButton =
+event.target.closest(
+"[data-edit-product]"
+);
+
+if(editButton){
+
+editProduct(
+editButton.dataset.editProduct
+);
+
+return;
+
+}
+
+const deleteButton =
 event.target.closest(
 "[data-delete-product]"
 );
 
-
-if(!button)return;
-
+if(deleteButton){
 
 deleteProduct(
-button.dataset.deleteProduct
+deleteButton.dataset.deleteProduct
 );
+
+}
 
 }
 );
@@ -2610,16 +2799,11 @@ event.target.closest(
 "[data-order-status]"
 );
 
-
 if(!button)return;
 
-
 updateOrderStatus(
-
 button.dataset.orderStatus,
-
 button.dataset.status
-
 );
 
 }
@@ -2636,16 +2820,11 @@ event.target.closest(
 "[data-request-status]"
 );
 
-
 if(!button)return;
 
-
 updateRequestStatus(
-
 button.dataset.requestStatus,
-
 button.dataset.status
-
 );
 
 }
@@ -2659,12 +2838,9 @@ async function start(){
 const initialized =
 initializeSupabase();
 
-
 if(!initialized)return;
 
-
 setupEvents();
-
 
 await restoreSession();
 
