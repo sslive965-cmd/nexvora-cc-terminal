@@ -52,6 +52,10 @@
       margin: auto;
     }
 
+    /* =========================
+       HEADER
+    ========================= */
+
     header {
       padding: 22px 0 12px;
       border-bottom: 1px solid rgba(0, 255, 120, 0.12);
@@ -89,6 +93,70 @@
       box-shadow: 0 0 12px #00ff73;
     }
 
+    /* =========================
+       CORNER BUTTONS
+    ========================= */
+
+    .corner-actions {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 1000;
+
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .corner-btn {
+      height: 34px;
+      padding: 0 11px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+
+      border: 1px solid rgba(0, 255, 115, 0.28);
+      border-radius: 7px;
+
+      background: rgba(2, 4, 3, 0.9);
+      backdrop-filter: blur(10px);
+
+      color: #8dffb7;
+      text-decoration: none;
+
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.7px;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 0 12px rgba(0, 255, 115, 0.05);
+
+      transition: 0.2s ease;
+    }
+
+    .corner-btn:hover {
+      color: #001b0b;
+      background: #00ff73;
+      border-color: #00ff73;
+      box-shadow:
+        0 0 18px rgba(0, 255, 115, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .corner-btn.icon-only {
+      width: 34px;
+      padding: 0;
+      font-size: 15px;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
     .hero {
       padding: 35px 0 22px;
       text-align: center;
@@ -110,6 +178,10 @@
       font-size: 13px;
       letter-spacing: 1px;
     }
+
+    /* =========================
+       FILTERS
+    ========================= */
 
     .filters {
       display: flex;
@@ -145,6 +217,10 @@
       box-shadow: 0 0 20px rgba(0, 255, 115, 0.35);
     }
 
+    /* =========================
+       MESSAGE
+    ========================= */
+
     .message {
       width: min(650px, 100%);
       margin: 0 auto 25px;
@@ -167,6 +243,10 @@
     .message.show {
       display: block;
     }
+
+    /* =========================
+       PRODUCTS
+    ========================= */
 
     .products-grid {
       display: grid;
@@ -346,6 +426,10 @@
       font-size: 13px;
     }
 
+    /* =========================
+       FOOTER
+    ========================= */
+
     .footer {
       border-top: 1px solid rgba(0, 255, 115, 0.1);
       padding: 20px 0 30px;
@@ -355,22 +439,137 @@
       letter-spacing: 1px;
     }
 
-    .footer-links {
-      margin-top: 10px;
-      display: flex;
+    /* =========================
+       INSTRUCTIONS MODAL
+    ========================= */
+
+    .instructions-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+
+      display: none;
+      align-items: center;
       justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
+
+      padding: 18px;
+
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(8px);
     }
 
-    .footer-links a {
-      color: #73a181;
-      text-decoration: none;
+    .instructions-overlay.show {
+      display: flex;
     }
 
-    .footer-links a:hover {
+    .instructions-modal {
+      width: min(620px, 100%);
+      max-height: 88vh;
+      overflow-y: auto;
+
+      border: 1px solid rgba(0, 255, 115, 0.35);
+      border-radius: 15px;
+
+      background:
+        radial-gradient(
+          circle at top,
+          rgba(0, 255, 115, 0.09),
+          transparent 42%
+        ),
+        #030705;
+
+      box-shadow:
+        0 0 45px rgba(0, 255, 115, 0.14),
+        inset 0 0 25px rgba(0, 255, 115, 0.025);
+
+      padding: 20px;
+    }
+
+    .instructions-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(0, 255, 115, 0.12);
+    }
+
+    .instructions-title {
       color: #00ff73;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
     }
+
+    .instructions-subtitle {
+      margin-top: 5px;
+      color: #63806d;
+      font-size: 10px;
+    }
+
+    .close-instructions {
+      width: 32px;
+      height: 32px;
+
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 7px;
+
+      background: rgba(255, 255, 255, 0.035);
+      color: #8dffb7;
+
+      cursor: pointer;
+      font-size: 17px;
+    }
+
+    .close-instructions:hover {
+      color: #001b0b;
+      background: #00ff73;
+    }
+
+    .instruction-section {
+      padding: 17px 0;
+      border-bottom: 1px solid rgba(0, 255, 115, 0.08);
+    }
+
+    .instruction-section:last-child {
+      border-bottom: none;
+    }
+
+    .instruction-section h3 {
+      color: #8dffb7;
+      font-size: 13px;
+      margin-bottom: 9px;
+      letter-spacing: 0.8px;
+    }
+
+    .instruction-section p,
+    .instruction-section li {
+      color: #769280;
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .instruction-section ol,
+    .instruction-section ul {
+      padding-left: 20px;
+    }
+
+    .instruction-highlight {
+      margin-top: 10px;
+      padding: 10px 12px;
+
+      border-left: 3px solid #00ff73;
+      background: rgba(0, 255, 115, 0.035);
+
+      color: #9cffbd;
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
 
     @media (max-width: 900px) {
       .products-grid {
@@ -381,6 +580,10 @@
     @media (max-width: 600px) {
       .container {
         width: 92%;
+      }
+
+      header {
+        padding-top: 65px;
       }
 
       .topbar {
@@ -395,6 +598,23 @@
         font-size: 10px;
       }
 
+      .corner-actions {
+        top: 12px;
+        right: 10px;
+        left: 10px;
+        justify-content: flex-end;
+      }
+
+      .corner-btn {
+        height: 32px;
+        padding: 0 8px;
+        font-size: 8px;
+      }
+
+      .corner-btn.icon-only {
+        width: 32px;
+      }
+
       .products-grid {
         grid-template-columns: 1fr;
       }
@@ -407,14 +627,53 @@
         padding: 10px 13px;
         font-size: 10px;
       }
+
+      .instructions-modal {
+        padding: 16px;
+      }
     }
   </style>
 </head>
 
 <body>
 
+  <!-- =========================
+       CORNER ACTIONS
+  ========================= -->
+
+  <div class="corner-actions">
+
+    <a
+      href="track.html"
+      class="corner-btn">
+      📦 TRACK ORDER
+    </a>
+
+    <a
+      href="support.html"
+      class="corner-btn">
+      💬 SUPPORT
+    </a>
+
+    <button
+      type="button"
+      id="instructionsBtn"
+      class="corner-btn icon-only"
+      aria-label="Instructions"
+      title="Instructions">
+      ℹ
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       HEADER
+  ========================= -->
+
   <header>
     <div class="container">
+
       <div class="topbar">
 
         <div class="brand">
@@ -427,17 +686,32 @@
         </div>
 
       </div>
+
     </div>
   </header>
+
+
+  <!-- =========================
+       MAIN
+  ========================= -->
 
   <main class="container">
 
     <section class="hero">
-      <h1>MARKETPLACE</h1>
-      <p>SELECT YOUR NETWORK AND CONTINUE</p>
+
+      <h1>
+        MARKETPLACE
+      </h1>
+
+      <p>
+        SELECT YOUR NETWORK AND CONTINUE
+      </p>
+
     </section>
 
-    <!-- ONLY THESE 4 CATEGORIES -->
+
+    <!-- ONLY FOUR CATEGORIES -->
+
     <div class="filters">
 
       <button
@@ -466,10 +740,12 @@
 
     </div>
 
+
     <div
       id="message"
       class="message">
     </div>
+
 
     <section
       id="productsGrid"
@@ -483,29 +759,245 @@
 
   </main>
 
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
   <footer class="footer">
 
     <div class="container">
-
       NEXVORA CC TERMINAL
+    </div>
 
-      <div class="footer-links">
+  </footer>
 
-        <a href="track.html">
-          TRACK ORDER
-        </a>
 
-        <a href="support.html">
-          SUPPORT
-        </a>
+  <!-- =========================
+       INSTRUCTIONS MODAL
+  ========================= -->
+
+  <div
+    id="instructionsOverlay"
+    class="instructions-overlay">
+
+    <div
+      class="instructions-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="instructionsTitle">
+
+      <div class="instructions-head">
+
+        <div>
+
+          <div
+            id="instructionsTitle"
+            class="instructions-title">
+            TERMINAL INSTRUCTIONS
+          </div>
+
+          <div class="instructions-subtitle">
+            READ BEFORE USING THE MARKETPLACE
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          id="closeInstructions"
+          class="close-instructions"
+          aria-label="Close">
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="instruction-section">
+
+        <h3>
+          01 — HOW TO BUY
+        </h3>
+
+        <ol>
+
+          <li>
+            Marketplace me RUPAY, VISA, MASTERCARD ya AMEX
+            category select karein.
+          </li>
+
+          <li>
+            Available product ko carefully review karein.
+          </li>
+
+          <li>
+            Product ke <strong>BUY NOW</strong> button par tap karein.
+          </li>
+
+          <li>
+            Order/payment page par jo required information ho,
+            use carefully enter karein.
+          </li>
+
+          <li>
+            Order submit hone ke baad milne wala
+            <strong>Order ID</strong> save karke rakhein.
+          </li>
+
+        </ol>
+
+        <div class="instruction-highlight">
+          ⚠ Product details ko order submit karne se pehle
+          carefully check karein.
+        </div>
+
+      </div>
+
+
+      <div class="instruction-section">
+
+        <h3>
+          02 — HOW TO TRACK ORDER
+        </h3>
+
+        <ol>
+
+          <li>
+            Top-right me <strong>TRACK ORDER</strong> tap karein.
+          </li>
+
+          <li>
+            Track page par apna Order ID enter karein.
+          </li>
+
+          <li>
+            Agar email verification required ho,
+            order wali email enter karein.
+          </li>
+
+          <li>
+            Submit karne ke baad current order status check karein.
+          </li>
+
+        </ol>
+
+        <div class="instruction-highlight">
+          📦 Order ID ko safe rakhein. Ye tracking ke liye important hai.
+        </div>
+
+      </div>
+
+
+      <div class="instruction-section">
+
+        <h3>
+          03 — SUPPORT
+        </h3>
+
+        <p>
+          Website, order ya tracking me technical problem aaye
+          to top-right ka <strong>SUPPORT</strong> button use karein.
+        </p>
+
+        <div class="instruction-highlight">
+          💬 Support ko contact karte waqt Order ID aur problem ka
+          short description dena helpful rahega.
+        </div>
+
+      </div>
+
+
+      <div class="instruction-section">
+
+        <h3>
+          04 — ORDER & VERIFICATION
+        </h3>
+
+        <ul>
+
+          <li>
+            Order submit hone ke baad status verification ke liye
+            pending ho sakta hai.
+          </li>
+
+          <li>
+            Verification complete hone se pehle order ko
+            completed/verified na samjhein.
+          </li>
+
+          <li>
+            Incorrect information se processing delay ho sakta hai.
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <div class="instruction-section">
+
+        <h3>
+          05 — SECURITY RULES
+        </h3>
+
+        <ul>
+
+          <li>
+            Password, OTP ya account login details share na karein.
+          </li>
+
+          <li>
+            Full payment-card number, CVV, PIN ya OTP kisi person
+            ko chat me share na karein.
+          </li>
+
+          <li>
+            Sirf official website ke available buttons/links ka use karein.
+          </li>
+
+          <li>
+            Unknown ya suspicious links par tap na karein.
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <div class="instruction-section">
+
+        <h3>
+          06 — GENERAL RULES
+        </h3>
+
+        <ul>
+
+          <li>
+            Product availability change ho sakti hai.
+          </li>
+
+          <li>
+            Final order status authorized verification process
+            ke according hota hai.
+          </li>
+
+          <li>
+            Ek order ke liye duplicate submissions avoid karein.
+          </li>
+
+          <li>
+            Problem hone par Order ID ke saath Support se contact karein.
+          </li>
+
+        </ul>
 
       </div>
 
     </div>
 
-  </footer>
-
-  <script>
+  </div>
+    <script>
 
     /* =========================
        SUPABASE CONFIG
@@ -536,6 +1028,15 @@
 
     const messageBox =
       document.getElementById("message");
+
+    const instructionsBtn =
+      document.getElementById("instructionsBtn");
+
+    const instructionsOverlay =
+      document.getElementById("instructionsOverlay");
+
+    const closeInstructions =
+      document.getElementById("closeInstructions");
 
 
     /* =========================
@@ -617,63 +1118,8 @@
 
 
     /* =========================
-       PRODUCT IMAGE
+       PLACEHOLDER
     ========================= */
-
-    function createProductVisual(product) {
-
-      const imageUrl =
-        String(product.image_url || "").trim();
-
-      if (imageUrl) {
-
-        return `
-          <div class="product-image">
-
-            <img
-              src="${escapeHtml(imageUrl)}"
-              alt="${escapeHtml(product.name || "Product")}"
-              loading="lazy"
-              onerror="this.parentElement.innerHTML = createPlaceholderHtml()"
-            >
-
-          </div>
-        `;
-
-      }
-
-      return `
-        <div class="product-image">
-
-          <div class="placeholder-card">
-
-            <div class="placeholder-brand">
-              NEXVORA
-            </div>
-
-            <div class="placeholder-number">
-              •••• •••• •••• 0000
-            </div>
-
-            <div class="placeholder-bottom">
-
-              <span>
-                DEMO
-              </span>
-
-              <span>
-                TERMINAL
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-      `;
-
-    }
-
 
     function createPlaceholderHtml() {
 
@@ -707,6 +1153,48 @@
 
 
     /* =========================
+       PRODUCT IMAGE
+    ========================= */
+
+    function createProductVisual(product) {
+
+      const imageUrl =
+        String(product.image_url || "").trim();
+
+      if (imageUrl) {
+
+        return `
+          <div class="product-image">
+
+            <img
+              src="${escapeHtml(imageUrl)}"
+              alt="${escapeHtml(
+                product.name || "Product"
+              )}"
+              loading="lazy"
+              onerror="
+                this.onerror=null;
+                this.parentElement.innerHTML=createPlaceholderHtml();
+              "
+            >
+
+          </div>
+        `;
+
+      }
+
+      return `
+        <div class="product-image">
+
+          ${createPlaceholderHtml()}
+
+        </div>
+      `;
+
+    }
+
+
+    /* =========================
        BUY NOW
     ========================= */
 
@@ -723,18 +1211,22 @@
 
       }
 
+
       const params =
         new URLSearchParams();
+
 
       params.set(
         "product_id",
         product.id
       );
 
+
       params.set(
         "product_name",
         product.name || ""
       );
+
 
       params.set(
         "category",
@@ -745,10 +1237,12 @@
         ""
       );
 
+
       params.set(
         "amount",
         product.price ?? 0
       );
+
 
       window.location.href =
         "payment.html?" +
@@ -765,6 +1259,7 @@
 
       hideMessage();
 
+
       const filtered =
         allProducts.filter(
           product =>
@@ -778,9 +1273,11 @@
         productsGrid.innerHTML = `
           <div class="empty">
 
-            NO ${escapeHtml(
-              activeCategory.toUpperCase()
-            )} PRODUCTS AVAILABLE
+            NO ${
+              escapeHtml(
+                activeCategory.toUpperCase()
+              )
+            } PRODUCTS AVAILABLE
 
           </div>
         `;
@@ -850,10 +1347,13 @@
 
                 </div>
 
+
                 <button
                   class="buy-btn"
                   type="button"
-                  data-product-id="${escapeHtml(product.id)}">
+                  data-product-id="${escapeHtml(
+                    product.id
+                  )}">
 
                   BUY NOW
 
@@ -879,12 +1379,14 @@
               const productId =
                 button.dataset.productId;
 
+
               const product =
                 allProducts.find(
                   item =>
                     String(item.id) ===
                     String(productId)
                 );
+
 
               buyNow(product);
 
@@ -909,6 +1411,9 @@
       `;
 
 
+      hideMessage();
+
+
       try {
 
         const response =
@@ -918,6 +1423,7 @@
               method: "GET",
 
               headers: {
+
                 "Content-Type":
                   "application/json",
 
@@ -926,28 +1432,31 @@
 
                 "Authorization":
                   `Bearer ${SUPABASE_KEY}`
+
               },
 
               cache: "no-store"
+
             }
           );
 
 
         if (!response.ok) {
 
-          let errorText =
-            "";
+          let errorText = "";
 
           try {
             errorText =
               await response.text();
           } catch (_) {}
 
+
           console.error(
             "PRODUCT NODE ERROR:",
             response.status,
             errorText
           );
+
 
           throw new Error(
             `HTTP ${response.status}`
@@ -988,6 +1497,7 @@
           error
         );
 
+
         productsGrid.innerHTML = `
           <div class="empty">
 
@@ -1001,6 +1511,7 @@
 
           </div>
         `;
+
 
         showMessage(
           "Unable to connect to product node.",
@@ -1041,7 +1552,9 @@
                 button.dataset.category ||
                 "rupay"
               )
-              .toLowerCase();
+              .trim()
+              .toLowerCase()
+              .replace(/[\s_-]+/g, "");
 
 
             renderProducts();
@@ -1050,6 +1563,94 @@
         );
 
       });
+
+
+    /* =========================
+       INSTRUCTIONS OPEN
+    ========================= */
+
+    function openInstructions() {
+
+      instructionsOverlay.classList.add(
+        "show"
+      );
+
+      document.body.style.overflow =
+        "hidden";
+
+    }
+
+
+    /* =========================
+       INSTRUCTIONS CLOSE
+    ========================= */
+
+    function closeInstructionsModal() {
+
+      instructionsOverlay.classList.remove(
+        "show"
+      );
+
+      document.body.style.overflow =
+        "";
+
+    }
+
+
+    /* =========================
+       INSTRUCTIONS EVENTS
+    ========================= */
+
+    instructionsBtn.addEventListener(
+      "click",
+      openInstructions
+    );
+
+
+    closeInstructions.addEventListener(
+      "click",
+      closeInstructionsModal
+    );
+
+
+    instructionsOverlay.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          instructionsOverlay
+        ) {
+
+          closeInstructionsModal();
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       ESC KEY
+    ========================= */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape" &&
+          instructionsOverlay.classList.contains(
+            "show"
+          )
+        ) {
+
+          closeInstructionsModal();
+
+        }
+
+      }
+    );
 
 
     /* =========================
