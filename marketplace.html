@@ -1,1665 +1,1406 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>NEXVORA CC TERMINAL — MARKETPLACE</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html,
-    body {
-      width: 100%;
-      min-height: 100%;
-    }
-
-    body {
-      background:
-        radial-gradient(circle at top, rgba(0, 255, 120, 0.08), transparent 35%),
-        #020403;
-      color: #d8ffe8;
-      font-family: Arial, Helvetica, sans-serif;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background:
-        linear-gradient(
-          rgba(0, 255, 120, 0.025) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(0, 255, 120, 0.025) 1px,
-          transparent 1px
-        );
-      background-size: 40px 40px;
-      z-index: -1;
-    }
-
-    .container {
-      width: min(1200px, 94%);
-      margin: auto;
-    }
-
-    /* =========================
-       HEADER
-    ========================= */
-
-    header {
-      padding: 22px 0 12px;
-      border-bottom: 1px solid rgba(0, 255, 120, 0.12);
-    }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-    }
-
-    .brand {
-      color: #00ff73;
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      text-shadow: 0 0 15px rgba(0, 255, 115, 0.65);
-    }
-
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      color: #9cffbd;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #00ff73;
-      box-shadow: 0 0 12px #00ff73;
-    }
-
-    /* =========================
-       CORNER BUTTONS
-    ========================= */
-
-    .corner-actions {
-      position: fixed;
-      top: 14px;
-      right: 14px;
-      z-index: 1000;
-
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .corner-btn {
-      height: 34px;
-      padding: 0 11px;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-
-      border: 1px solid rgba(0, 255, 115, 0.28);
-      border-radius: 7px;
-
-      background: rgba(2, 4, 3, 0.9);
-      backdrop-filter: blur(10px);
-
-      color: #8dffb7;
-      text-decoration: none;
-
-      font-size: 9px;
-      font-weight: 900;
-      letter-spacing: 0.7px;
-
-      cursor: pointer;
-
-      box-shadow:
-        0 0 12px rgba(0, 255, 115, 0.05);
-
-      transition: 0.2s ease;
-    }
-
-    .corner-btn:hover {
-      color: #001b0b;
-      background: #00ff73;
-      border-color: #00ff73;
-      box-shadow:
-        0 0 18px rgba(0, 255, 115, 0.3);
-      transform: translateY(-1px);
-    }
-
-    .corner-btn.icon-only {
-      width: 34px;
-      padding: 0;
-      font-size: 15px;
-    }
-
-    /* =========================
-       HERO
-    ========================= */
-
-    .hero {
-      padding: 35px 0 22px;
-      text-align: center;
-    }
-
-    .hero h1 {
-      font-size: clamp(28px, 6vw, 58px);
-      color: #00ff73;
-      font-weight: 900;
-      letter-spacing: 3px;
-      text-shadow:
-        0 0 10px rgba(0, 255, 115, 0.6),
-        0 0 30px rgba(0, 255, 115, 0.25);
-    }
-
-    .hero p {
-      margin-top: 10px;
-      color: #80a991;
-      font-size: 13px;
-      letter-spacing: 1px;
-    }
-
-    /* =========================
-       FILTERS
-    ========================= */
-
-    .filters {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 20px 0 30px;
-    }
-
-    .filter {
-      border: 1px solid rgba(0, 255, 115, 0.35);
-      background: rgba(0, 255, 115, 0.04);
-      color: #8dffb7;
-      padding: 11px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      transition: 0.2s ease;
-    }
-
-    .filter:hover {
-      border-color: #00ff73;
-      box-shadow: 0 0 15px rgba(0, 255, 115, 0.18);
-      transform: translateY(-1px);
-    }
-
-    .filter.active {
-      background: #00ff73;
-      color: #001b0b;
-      border-color: #00ff73;
-      box-shadow: 0 0 20px rgba(0, 255, 115, 0.35);
-    }
-
-    /* =========================
-       MESSAGE
-    ========================= */
-
-    .message {
-      width: min(650px, 100%);
-      margin: 0 auto 25px;
-      padding: 14px 16px;
-      border: 1px solid rgba(0, 255, 115, 0.18);
-      background: rgba(0, 255, 115, 0.035);
-      border-radius: 10px;
-      color: #8affb3;
-      text-align: center;
-      font-size: 13px;
-      display: none;
-    }
-
-    .message.error {
-      color: #ff8b8b;
-      border-color: rgba(255, 60, 60, 0.25);
-      background: rgba(255, 60, 60, 0.05);
-    }
-
-    .message.show {
-      display: block;
-    }
-
-    /* =========================
-       PRODUCTS
-    ========================= */
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      padding-bottom: 40px;
-    }
-
-    .product-card {
-      border: 1px solid rgba(0, 255, 115, 0.18);
-      background:
-        linear-gradient(
-          145deg,
-          rgba(0, 255, 115, 0.055),
-          rgba(0, 0, 0, 0.55)
-        );
-      border-radius: 14px;
-      padding: 14px;
-      overflow: hidden;
-      transition: 0.25s ease;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.35);
-    }
-
-    .product-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(0, 255, 115, 0.5);
-      box-shadow:
-        0 0 30px rgba(0, 255, 115, 0.1),
-        inset 0 0 20px rgba(0, 255, 115, 0.025);
-    }
-
-    .product-image {
-      height: 205px;
-      width: 100%;
-      border-radius: 10px;
-      overflow: hidden;
-      background:
-        radial-gradient(
-          circle at center,
-          rgba(0, 255, 115, 0.08),
-          rgba(0, 0, 0, 0.7)
-        );
-      border: 1px solid rgba(0, 255, 115, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .product-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-    }
-
-    .placeholder-card {
-      width: 82%;
-      height: 72%;
-      border-radius: 13px;
-      padding: 18px;
-      background:
-        linear-gradient(
-          135deg,
-          #101612,
-          #020403
-        );
-      border: 1px solid rgba(0, 255, 115, 0.25);
-      box-shadow: 0 0 20px rgba(0, 255, 115, 0.08);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .placeholder-brand {
-      color: #00ff73;
-      font-weight: 900;
-      font-size: 16px;
-      letter-spacing: 2px;
-    }
-
-    .placeholder-number {
-      color: #c5ffd9;
-      font-family: monospace;
-      font-size: 15px;
-      letter-spacing: 2px;
-    }
-
-    .placeholder-bottom {
-      display: flex;
-      justify-content: space-between;
-      color: #71917d;
-      font-size: 8px;
-      text-transform: uppercase;
-    }
-
-    .product-info {
-      padding: 15px 2px 3px;
-    }
-
-    .product-brand {
-      color: #00ff73;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    .product-name {
-      color: #eafff1;
-      margin-top: 6px;
-      font-size: 17px;
-      font-weight: 800;
-    }
-
-    .product-description {
-      margin-top: 7px;
-      color: #769280;
-      font-size: 11px;
-      line-height: 1.5;
-      min-height: 32px;
-    }
-
-    .product-meta {
-      margin-top: 13px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .network {
-      color: #83ffa9;
-      border: 1px solid rgba(0, 255, 115, 0.2);
-      border-radius: 6px;
-      padding: 5px 8px;
-      font-size: 9px;
-      font-weight: 900;
-    }
-
-    .price {
-      color: #00ff73;
-      font-size: 20px;
-      font-weight: 900;
-    }
-
-    .buy-btn {
-      width: 100%;
-      margin-top: 14px;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #00ff73;
-      color: #001b0b;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .buy-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 20px rgba(0, 255, 115, 0.35);
-    }
-
-    .buy-btn:active {
-      transform: scale(0.98);
-    }
-
-    .empty {
-      grid-column: 1 / -1;
-      padding: 50px 20px;
-      text-align: center;
-      border: 1px dashed rgba(0, 255, 115, 0.2);
-      border-radius: 12px;
-      color: #63806d;
-      font-size: 13px;
-    }
-
-    /* =========================
-       FOOTER
-    ========================= */
-
-    .footer {
-      border-top: 1px solid rgba(0, 255, 115, 0.1);
-      padding: 20px 0 30px;
-      text-align: center;
-      color: #45614d;
-      font-size: 10px;
-      letter-spacing: 1px;
-    }
-
-    /* =========================
-       INSTRUCTIONS MODAL
-    ========================= */
-
-    .instructions-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-
-      display: none;
-      align-items: center;
-      justify-content: center;
-
-      padding: 18px;
-
-      background: rgba(0, 0, 0, 0.78);
-      backdrop-filter: blur(8px);
-    }
-
-    .instructions-overlay.show {
-      display: flex;
-    }
-
-    .instructions-modal {
-      width: min(620px, 100%);
-      max-height: 88vh;
-      overflow-y: auto;
-
-      border: 1px solid rgba(0, 255, 115, 0.35);
-      border-radius: 15px;
-
-      background:
-        radial-gradient(
-          circle at top,
-          rgba(0, 255, 115, 0.09),
-          transparent 42%
-        ),
-        #030705;
-
-      box-shadow:
-        0 0 45px rgba(0, 255, 115, 0.14),
-        inset 0 0 25px rgba(0, 255, 115, 0.025);
-
-      padding: 20px;
-    }
-
-    .instructions-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-
-      padding-bottom: 15px;
-      border-bottom: 1px solid rgba(0, 255, 115, 0.12);
-    }
-
-    .instructions-title {
-      color: #00ff73;
-      font-size: 20px;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-    }
-
-    .instructions-subtitle {
-      margin-top: 5px;
-      color: #63806d;
-      font-size: 10px;
-    }
-
-    .close-instructions {
-      width: 32px;
-      height: 32px;
-
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 7px;
-
-      background: rgba(255, 255, 255, 0.035);
-      color: #8dffb7;
-
-      cursor: pointer;
-      font-size: 17px;
-    }
-
-    .close-instructions:hover {
-      color: #001b0b;
-      background: #00ff73;
-    }
-
-    .instruction-section {
-      padding: 17px 0;
-      border-bottom: 1px solid rgba(0, 255, 115, 0.08);
-    }
-
-    .instruction-section:last-child {
-      border-bottom: none;
-    }
-
-    .instruction-section h3 {
-      color: #8dffb7;
-      font-size: 13px;
-      margin-bottom: 9px;
-      letter-spacing: 0.8px;
-    }
-
-    .instruction-section p,
-    .instruction-section li {
-      color: #769280;
-      font-size: 11px;
-      line-height: 1.7;
-    }
-
-    .instruction-section ol,
-    .instruction-section ul {
-      padding-left: 20px;
-    }
-
-    .instruction-highlight {
-      margin-top: 10px;
-      padding: 10px 12px;
-
-      border-left: 3px solid #00ff73;
-      background: rgba(0, 255, 115, 0.035);
-
-      color: #9cffbd;
-      font-size: 10px;
-      line-height: 1.6;
-    }
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
-
-    @media (max-width: 900px) {
-      .products-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        width: 92%;
-      }
-
-      header {
-        padding-top: 65px;
-      }
-
-      .topbar {
-        align-items: flex-start;
-      }
-
-      .brand {
-        font-size: 17px;
-      }
-
-      .status {
-        font-size: 10px;
-      }
-
-      .corner-actions {
-        top: 12px;
-        right: 10px;
-        left: 10px;
-        justify-content: flex-end;
-      }
-
-      .corner-btn {
-        height: 32px;
-        padding: 0 8px;
-        font-size: 8px;
-      }
-
-      .corner-btn.icon-only {
-        width: 32px;
-      }
-
-      .products-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .product-image {
-        height: 220px;
-      }
-
-      .filter {
-        padding: 10px 13px;
-        font-size: 10px;
-      }
-
-      .instructions-modal {
-        padding: 16px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEXVORA CC TERMINAL — MARKETPLACE</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(0,255,115,.12),transparent 35%),
+    #020403;
+  color:#e8fff0;
+  font-family:Arial,Helvetica,sans-serif;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(0,255,115,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,115,.018) 1px,transparent 1px);
+  background-size:42px 42px;
+}
+
+.container{
+  width:min(1180px,92%);
+  margin:auto;
+}
+
+/* TOP BUTTONS */
+
+.corner-actions{
+  position:fixed;
+  top:12px;
+  right:12px;
+  z-index:50;
+  display:flex;
+  gap:7px;
+}
+
+.corner-btn{
+  height:34px;
+  padding:0 10px;
+  border:1px solid rgba(0,255,115,.28);
+  border-radius:8px;
+  background:rgba(2,4,3,.92);
+  color:#9dffbd;
+  text-decoration:none;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.6px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  backdrop-filter:blur(10px);
+}
+
+.corner-btn:hover{
+  background:#00ff73;
+  color:#001b0b;
+}
+
+.icon-only{
+  width:34px;
+  padding:0;
+  font-size:15px;
+}
+
+/* HEADER */
+
+header{
+  padding:66px 0 12px;
+  border-bottom:1px solid rgba(0,255,115,.1);
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.brand{
+  font-size:21px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:#00ff73;
+  text-shadow:0 0 18px rgba(0,255,115,.55);
+}
+
+.status{
+  font-size:10px;
+  font-weight:800;
+  color:#91ffb2;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#00ff73;
+  box-shadow:0 0 13px #00ff73;
+}
+
+/* HERO */
+
+.hero{
+  text-align:center;
+  padding:30px 0 18px;
+}
+
+.hero h1{
+  font-size:clamp(30px,6vw,56px);
+  letter-spacing:4px;
+  color:#00ff73;
+  text-shadow:0 0 20px rgba(0,255,115,.35);
+}
+
+.hero p{
+  margin-top:8px;
+  color:#688b76;
+  font-size:11px;
+  letter-spacing:1.2px;
+}
+
+/* CATEGORY */
+
+.filters{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:9px;
+  margin:18px 0 28px;
+}
+
+.filter{
+  padding:10px 17px;
+  border-radius:999px;
+  border:1px solid rgba(0,255,115,.25);
+  background:rgba(0,255,115,.035);
+  color:#86c99e;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px;
+  cursor:pointer;
+}
+
+.filter.active{
+  background:#00ff73;
+  color:#001b0b;
+  border-color:#00ff73;
+  box-shadow:0 0 20px rgba(0,255,115,.25);
+}
+
+/* PRODUCT GRID */
+
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  padding-bottom:45px;
+}
+
+.product-shell{
+  border:1px solid rgba(0,255,115,.25);
+  border-radius:25px;
+  padding:12px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0,255,115,.055),
+      rgba(0,0,0,.68)
+    );
+  box-shadow:0 0 28px rgba(0,0,0,.4);
+  overflow:hidden;
+}
+
+.product-shell:hover{
+  border-color:rgba(0,255,115,.5);
+}
+
+.avail{
+  padding:7px 9px 11px;
+  color:#00ff73;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.2px;
+}
+
+/* CARD */
+
+.card-scene{
+  perspective:1200px;
+  width:100%;
+  aspect-ratio:1.58/1;
+}
+
+.card-flipper{
+  width:100%;
+  height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:
+    transform .72s cubic-bezier(.2,.75,.2,1);
+  cursor:pointer;
+}
+
+.card-flipper.flipped{
+  transform:rotateY(180deg);
+}
+
+.card-face{
+  position:absolute;
+  inset:0;
+  backface-visibility:hidden;
+  border-radius:22px;
+  overflow:hidden;
+
+  border:1px solid rgba(0,255,115,.38);
+
+  background:
+    radial-gradient(
+      circle at 18% 80%,
+      var(--glow),
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      #0a1710,
+      #020605 75%
+    );
+
+  box-shadow:
+    inset 0 0 35px rgba(0,255,115,.04);
+}
+
+.card-face::after{
+  content:"";
+  position:absolute;
+  inset:-35%;
+  background:
+    linear-gradient(
+      135deg,
+      transparent 42%,
+      rgba(0,255,115,.13) 49%,
+      transparent 56%
+    );
+  transform:rotate(-18deg);
+  pointer-events:none;
+}
+
+.card-back{
+  transform:rotateY(180deg);
+}
+
+.front-content,
+.back-content{
+  position:relative;
+  z-index:2;
+  height:100%;
+  padding:15px;
+  display:flex;
+  flex-direction:column;
+}
+
+/* CARD TOP */
+
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+}
+
+.chip{
+  width:42px;
+  height:31px;
+  border-radius:9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f7d77c,
+      #b88925
+    );
+
+  box-shadow:
+    0 2px 9px rgba(255,205,80,.25);
+
+  position:relative;
+}
+
+.chip::before{
+  content:"";
+  position:absolute;
+  inset:7px;
+  border:1px solid rgba(70,45,10,.35);
+  border-radius:5px;
+}
+
+.tap{
+  color:#b5cbbd;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.7px;
+  text-align:right;
+}
+
+.tap b{
+  color:#00ff73;
+  font-size:13px;
+  margin-right:4px;
+}
+
+.network{
+  margin-top:6px;
+  text-align:right;
+  font-size:16px;
+  font-weight:900;
+  font-style:italic;
+  color:#f0fff5;
+}
+
+/* CARD CONTENT */
+
+.card-number{
+  margin-top:27px;
+  font-family:monospace;
+  font-size:clamp(13px,1.7vw,17px);
+  letter-spacing:2px;
+  color:#effff5;
+  white-space:nowrap;
+}
+
+.field-label{
+  margin-top:18px;
+  color:#758c7d;
+  font-size:8px;
+  letter-spacing:1px;
+  font-weight:700;
+}
+
+.field-value{
+  margin-top:5px;
+  color:#f0fff5;
+  font-size:13px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.balance-label{
+  margin-top:14px;
+}
+
+.balance{
+  font-size:15px;
+}
+
+.card-logo{
+  margin-top:auto;
+  text-align:right;
+  font-size:17px;
+  font-weight:900;
+  font-style:italic;
+  color:#effff5;
+}
+
+/* CARD BACK */
+
+.back-strip{
+  height:29px;
+  background:#020202;
+  margin:0 -15px 19px;
+}
+
+.cvv-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.cvv-box{
+  min-width:76px;
+  padding:10px 12px;
+  border-radius:11px;
+  background:#edf2f1;
+  color:#202624;
+  text-align:center;
+  letter-spacing:4px;
+  font-weight:900;
+}
+
+.hidden-text{
+  color:#83988d;
+  font-size:10px;
+  font-weight:700;
+}
+
+.back-bottom{
+  margin-top:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:#9bb4a4;
+  font-size:9px;
+  font-weight:800;
+}
+
+.back-bottom strong{
+  font-size:16px;
+  color:#effff5;
+  font-style:italic;
+}
+
+/* DETAIL BOXES */
+
+.detail-boxes{
+  display:grid;
+  gap:7px;
+  margin-top:10px;
+}
+
+.detail{
+  min-height:39px;
+  padding:9px 12px;
+  border-radius:18px;
+  border:1px solid rgba(0,255,115,.17);
+  background:rgba(0,255,115,.025);
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.detail span:first-child{
+  color:#789083;
+  font-size:11px;
+}
+
+.detail span:last-child{
+  color:#effff5;
+  font-size:12px;
+  font-weight:900;
+  text-align:right;
+}
+
+/* PRICE */
+
+.buy-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-top:17px;
+}
+
+.entry-label{
+  color:#799285;
+  font-size:9px;
+  letter-spacing:.7px;
+  font-weight:800;
+}
+
+.entry-fee{
+  margin-top:3px;
+  color:#f0fff5;
+  font-size:25px;
+  font-weight:900;
+}
+
+.qty{
+  color:#7c9385;
+  font-size:10px;
+}
+
+/* BUY */
+
+.buy-btn{
+  width:100%;
+  margin-top:10px;
+  padding:14px;
+
+  border:0;
+  border-radius:999px;
+
+  background:#00ff73;
+  color:#001b0b;
+
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:2px;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 0 22px rgba(0,255,115,.2);
+}
+
+.buy-btn:hover{
+  box-shadow:
+    0 0 28px rgba(0,255,115,.38);
+
+  transform:translateY(-1px);
+}
+
+/* EMPTY */
+
+.empty{
+  grid-column:1/-1;
+  padding:45px;
+  text-align:center;
+
+  border:1px dashed rgba(0,255,115,.18);
+  border-radius:15px;
+
+  color:#587364;
+  font-size:11px;
+}
+
+/* FOOTER */
+
+.footer{
+  padding:20px;
+  text-align:center;
+  color:#466052;
+  font-size:9px;
+  border-top:1px solid rgba(0,255,115,.08);
+}
+
+/* INSTRUCTIONS */
+
+.instructions-overlay{
+  position:fixed;
+  inset:0;
+  z-index:100;
+
+  display:none;
+  place-items:center;
+
+  padding:18px;
+
+  background:rgba(0,0,0,.8);
+  backdrop-filter:blur(8px);
+}
+
+.instructions-overlay.show{
+  display:grid;
+}
+
+.instructions-modal{
+  width:min(620px,100%);
+  max-height:88vh;
+  overflow:auto;
+
+  padding:20px;
+
+  border:1px solid rgba(0,255,115,.3);
+  border-radius:16px;
+
+  background:#030705;
+}
+
+.instructions-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+
+  border-bottom:1px solid rgba(0,255,115,.1);
+  padding-bottom:14px;
+}
+
+.instructions-title{
+  color:#00ff73;
+  font-size:18px;
+  font-weight:900;
+}
+
+.instructions-subtitle{
+  margin-top:4px;
+  color:#668873;
+  font-size:9px;
+}
+
+.close{
+  width:32px;
+  height:32px;
+
+  border:1px solid #17472e;
+  border-radius:7px;
+
+  background:#07140d;
+  color:#9dffbd;
+
+  font-size:17px;
+  cursor:pointer;
+}
+
+.instruction-section{
+  padding:15px 0;
+  border-bottom:1px solid rgba(0,255,115,.08);
+}
+
+.instruction-section:last-child{
+  border-bottom:0;
+}
+
+.instruction-section h3{
+  color:#9dffbd;
+  font-size:12px;
+  margin-bottom:8px;
+}
+
+.instruction-section p,
+.instruction-section li{
+  color:#718879;
+  font-size:10px;
+  line-height:1.7;
+}
+
+.instruction-section ol,
+.instruction-section ul{
+  padding-left:19px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:950px){
+  .products-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:650px){
+  .products-grid{
+    grid-template-columns:1fr;
+  }
+
+  .topbar{
+    align-items:flex-start;
+  }
+
+  .brand{
+    font-size:17px;
+  }
+
+  .status{
+    font-size:9px;
+  }
+
+  .corner-actions{
+    left:10px;
+    right:10px;
+    justify-content:flex-end;
+  }
+
+  .corner-btn{
+    font-size:8px;
+    padding:0 8px;
+  }
+
+  .product-shell{
+    border-radius:22px;
+  }
+
+  .card-number{
+    font-size:15px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <!-- =========================
-       CORNER ACTIONS
-  ========================= -->
+<div class="corner-actions">
+  <a class="corner-btn" href="track.html">📦 TRACK ORDER</a>
+  <a class="corner-btn" href="support.html">💬 SUPPORT</a>
+  <button
+    class="corner-btn icon-only"
+    id="instructionsBtn"
+    type="button"
+  >ℹ</button>
+</div>
 
-  <div class="corner-actions">
+<header>
+  <div class="container topbar">
+    <div class="brand">NEXVORA CC TERMINAL</div>
 
-    <a
-      href="track.html"
-      class="corner-btn">
-      📦 TRACK ORDER
-    </a>
-
-    <a
-      href="support.html"
-      class="corner-btn">
-      💬 SUPPORT
-    </a>
-
-    <button
-      type="button"
-      id="instructionsBtn"
-      class="corner-btn icon-only"
-      aria-label="Instructions"
-      title="Instructions">
-      ℹ
-    </button>
-
+    <div class="status">
+      <span class="dot"></span>
+      TERMINAL ONLINE
+    </div>
   </div>
+</header>
 
+<main class="container">
 
-  <!-- =========================
-       HEADER
-  ========================= -->
+<section class="hero">
+  <h1>MARKETPLACE</h1>
+  <p>SELECT YOUR NETWORK AND CONTINUE</p>
+</section>
 
-  <header>
-    <div class="container">
+<div class="filters">
+  <button class="filter active" data-category="rupay">
+    RUPAY
+  </button>
 
-      <div class="topbar">
+  <button class="filter" data-category="visa">
+    VISA
+  </button>
 
-        <div class="brand">
-          NEXVORA CC TERMINAL
+  <button class="filter" data-category="mastercard">
+    MASTERCARD
+  </button>
+
+  <button class="filter" data-category="amex">
+    AMEX
+  </button>
+</div>
+
+<div id="message" class="message"></div>
+
+<section
+  id="productsGrid"
+  class="products-grid"
+>
+  <div class="empty">
+    CONNECTING TO PRODUCT NODE...
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  NEXVORA CC TERMINAL
+</footer>
+
+<div
+  id="instructionsOverlay"
+  class="instructions-overlay"
+>
+  <div class="instructions-modal">
+
+    <div class="instructions-head">
+
+      <div>
+        <div class="instructions-title">
+          TERMINAL INSTRUCTIONS
         </div>
 
-        <div class="status">
-          <span class="status-dot"></span>
-          TERMINAL ONLINE
+        <div class="instructions-subtitle">
+          READ BEFORE USING THE MARKETPLACE
         </div>
-
       </div>
 
+      <button
+        class="close"
+        id="closeInstructions"
+        type="button"
+      >×</button>
+
     </div>
-  </header>
 
+    <div class="instruction-section">
+      <h3>01 — HOW TO BUY</h3>
 
-  <!-- =========================
-       MAIN
-  ========================= -->
+      <ol>
+        <li>Select a network.</li>
+        <li>Review the displayed product details.</li>
+        <li>Tap BUY NOW and continue to the order page.</li>
+        <li>Keep the generated Order ID for tracking.</li>
+      </ol>
+    </div>
 
-  <main class="container">
+    <div class="instruction-section">
+      <h3>02 — HOW TO TRACK</h3>
 
-    <section class="hero">
+      <ol>
+        <li>Tap TRACK ORDER.</li>
+        <li>Enter the requested order information.</li>
+        <li>Check the current verification status.</li>
+      </ol>
+    </div>
 
-      <h1>
-        MARKETPLACE
-      </h1>
+    <div class="instruction-section">
+      <h3>03 — SUPPORT</h3>
 
       <p>
-        SELECT YOUR NETWORK AND CONTINUE
+        Use SUPPORT for technical website,
+        order or tracking issues.
       </p>
-
-    </section>
-
-
-    <!-- ONLY FOUR CATEGORIES -->
-
-    <div class="filters">
-
-      <button
-        class="filter active"
-        data-category="rupay">
-        RUPAY
-      </button>
-
-      <button
-        class="filter"
-        data-category="visa">
-        VISA
-      </button>
-
-      <button
-        class="filter"
-        data-category="mastercard">
-        MASTERCARD
-      </button>
-
-      <button
-        class="filter"
-        data-category="amex">
-        AMEX
-      </button>
-
     </div>
 
-
-    <div
-      id="message"
-      class="message">
-    </div>
-
-
-    <section
-      id="productsGrid"
-      class="products-grid">
-
-      <div class="empty">
-        LOADING PRODUCT NODE...
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- =========================
-       FOOTER
-  ========================= -->
-
-  <footer class="footer">
-
-    <div class="container">
-      NEXVORA CC TERMINAL
-    </div>
-
-  </footer>
-
-
-  <!-- =========================
-       INSTRUCTIONS MODAL
-  ========================= -->
-
-  <div
-    id="instructionsOverlay"
-    class="instructions-overlay">
-
-    <div
-      class="instructions-modal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="instructionsTitle">
-
-      <div class="instructions-head">
-
-        <div>
-
-          <div
-            id="instructionsTitle"
-            class="instructions-title">
-            TERMINAL INSTRUCTIONS
-          </div>
-
-          <div class="instructions-subtitle">
-            READ BEFORE USING THE MARKETPLACE
-          </div>
-
-        </div>
-
-        <button
-          type="button"
-          id="closeInstructions"
-          class="close-instructions"
-          aria-label="Close">
-          ×
-        </button>
-
-      </div>
-
-
-      <div class="instruction-section">
-
-        <h3>
-          01 — HOW TO BUY
-        </h3>
-
-        <ol>
-
-          <li>
-            Marketplace me RUPAY, VISA, MASTERCARD ya AMEX
-            category select karein.
-          </li>
-
-          <li>
-            Available product ko carefully review karein.
-          </li>
-
-          <li>
-            Product ke <strong>BUY NOW</strong> button par tap karein.
-          </li>
-
-          <li>
-            Order/payment page par jo required information ho,
-            use carefully enter karein.
-          </li>
-
-          <li>
-            Order submit hone ke baad milne wala
-            <strong>Order ID</strong> save karke rakhein.
-          </li>
-
-        </ol>
-
-        <div class="instruction-highlight">
-          ⚠ Product details ko order submit karne se pehle
-          carefully check karein.
-        </div>
-
-      </div>
-
-
-      <div class="instruction-section">
-
-        <h3>
-          02 — HOW TO TRACK ORDER
-        </h3>
-
-        <ol>
-
-          <li>
-            Top-right me <strong>TRACK ORDER</strong> tap karein.
-          </li>
-
-          <li>
-            Track page par apna Order ID enter karein.
-          </li>
-
-          <li>
-            Agar email verification required ho,
-            order wali email enter karein.
-          </li>
-
-          <li>
-            Submit karne ke baad current order status check karein.
-          </li>
-
-        </ol>
-
-        <div class="instruction-highlight">
-          📦 Order ID ko safe rakhein. Ye tracking ke liye important hai.
-        </div>
-
-      </div>
-
-
-      <div class="instruction-section">
-
-        <h3>
-          03 — SUPPORT
-        </h3>
-
-        <p>
-          Website, order ya tracking me technical problem aaye
-          to top-right ka <strong>SUPPORT</strong> button use karein.
-        </p>
-
-        <div class="instruction-highlight">
-          💬 Support ko contact karte waqt Order ID aur problem ka
-          short description dena helpful rahega.
-        </div>
-
-      </div>
-
-
-      <div class="instruction-section">
-
-        <h3>
-          04 — ORDER & VERIFICATION
-        </h3>
-
-        <ul>
-
-          <li>
-            Order submit hone ke baad status verification ke liye
-            pending ho sakta hai.
-          </li>
-
-          <li>
-            Verification complete hone se pehle order ko
-            completed/verified na samjhein.
-          </li>
-
-          <li>
-            Incorrect information se processing delay ho sakta hai.
-          </li>
-
-        </ul>
-
-      </div>
-
-
-      <div class="instruction-section">
-
-        <h3>
-          05 — SECURITY RULES
-        </h3>
-
-        <ul>
-
-          <li>
-            Password, OTP ya account login details share na karein.
-          </li>
-
-          <li>
-            Full payment-card number, CVV, PIN ya OTP kisi person
-            ko chat me share na karein.
-          </li>
-
-          <li>
-            Sirf official website ke available buttons/links ka use karein.
-          </li>
-
-          <li>
-            Unknown ya suspicious links par tap na karein.
-          </li>
-
-        </ul>
-
-      </div>
-
-
-      <div class="instruction-section">
-
-        <h3>
-          06 — GENERAL RULES
-        </h3>
-
-        <ul>
-
-          <li>
-            Product availability change ho sakti hai.
-          </li>
-
-          <li>
-            Final order status authorized verification process
-            ke according hota hai.
-          </li>
-
-          <li>
-            Ek order ke liye duplicate submissions avoid karein.
-          </li>
-
-          <li>
-            Problem hone par Order ID ke saath Support se contact karein.
-          </li>
-
-        </ul>
-
-      </div>
-
+    <div class="instruction-section">
+      <h3>04 — SECURITY</h3>
+
+      <ul>
+        <li>
+          Never share passwords, OTPs or account
+          login details.
+        </li>
+
+        <li>
+          Never share real payment-card credentials,
+          PINs or OTPs in chat.
+        </li>
+
+        <li>
+          Use only the official buttons and links
+          on this website.
+        </li>
+      </ul>
     </div>
 
   </div>
+    </div>
     <script>
+const SUPABASE_URL =
+  "https://ccxuowtyrscobhzqener.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_h7wZAcc0HsCq8DLUdDa4dw_3hBthOLY";
+
+let allProducts = [];
+let activeCategory = "rupay";
+
+const grid = document.getElementById("productsGrid");
+const message = document.getElementById("message");
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function showMessage(text,error=false){
+  message.textContent = text;
+  message.className =
+    "message show" + (error ? " error" : "");
+}
+
+function getCategory(product){
+  return String(
+    product.network ||
+    product.brand ||
+    ""
+  )
+  .trim()
+  .toLowerCase()
+  .replace(/[\s_-]+/g,"");
+}
+
+function formatMoney(value){
+  const number = Number(value);
+
+  if(!Number.isFinite(number)){
+    return "₹0";
+  }
+
+  return "₹" +
+    number.toLocaleString("en-IN",{
+      maximumFractionDigits:0
+    });
+}
+
+/*
+  Each product receives a different visual glow.
+  This only changes the card appearance.
+*/
+function getCardGlow(id){
+  let hash = 0;
+
+  for(const char of String(id || "")){
+    hash =
+      (hash * 31 + char.charCodeAt(0)) %
+      360;
+  }
+
+  return `hsl(${hash},85%,52%)`;
+}
+
+/*
+  CARD UI
+  Safe masked/demo card presentation.
+*/
+function createCard(product){
+
+  const network = String(
+    product.network ||
+    product.brand ||
+    "RUPAY"
+  ).toUpperCase();
+
+  return `
+    <div class="card-scene">
+
+      <div
+        class="card-flipper"
+        data-flip
+      >
+
+        <!-- FRONT -->
+
+        <div
+          class="card-face"
+          style="--glow:${escapeHtml(
+            getCardGlow(product.id)
+          )}"
+        >
+
+          <div class="front-content">
+
+            <div class="card-top">
+
+              <div class="chip"></div>
 
-    /* =========================
-       SUPABASE CONFIG
-    ========================= */
+              <div>
 
-    const SUPABASE_URL =
-      "https://ccxuowtyrscobhzqener.supabase.co";
-
-    const SUPABASE_KEY =
-      "sb_publishable_h7wZAcc0HsCq8DLUdDa4dw_3hBthOLY";
-
-
-    /* =========================
-       STATE
-    ========================= */
-
-    let allProducts = [];
-
-    let activeCategory = "rupay";
-
-
-    /* =========================
-       ELEMENTS
-    ========================= */
-
-    const productsGrid =
-      document.getElementById("productsGrid");
-
-    const messageBox =
-      document.getElementById("message");
-
-    const instructionsBtn =
-      document.getElementById("instructionsBtn");
-
-    const instructionsOverlay =
-      document.getElementById("instructionsOverlay");
-
-    const closeInstructions =
-      document.getElementById("closeInstructions");
-
-
-    /* =========================
-       MESSAGE
-    ========================= */
-
-    function showMessage(text, isError = false) {
-
-      messageBox.textContent = text;
-
-      messageBox.className =
-        "message show" +
-        (isError ? " error" : "");
-
-    }
-
-
-    function hideMessage() {
-
-      messageBox.className = "message";
-
-      messageBox.textContent = "";
-
-    }
-
-
-    /* =========================
-       SAFE TEXT
-    ========================= */
-
-    function escapeHtml(value) {
-
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-    }
-
-
-    /* =========================
-       CATEGORY
-    ========================= */
-
-    function getProductCategory(product) {
-
-      return String(
-        product.network ||
-        product.category ||
-        product.type ||
-        product.brand ||
-        ""
-      )
-        .trim()
-        .toLowerCase()
-        .replace(/[\s_-]+/g, "");
-
-    }
-
-
-    /* =========================
-       PRICE
-    ========================= */
-
-    function formatPrice(value) {
-
-      const amount =
-        Number(value);
-
-      if (!Number.isFinite(amount)) {
-        return "₹0";
-      }
-
-      return "₹" + amount.toFixed(2);
-
-    }
-
-
-    /* =========================
-       PLACEHOLDER
-    ========================= */
-
-    function createPlaceholderHtml() {
-
-      return `
-        <div class="placeholder-card">
-
-          <div class="placeholder-brand">
-            NEXVORA
-          </div>
-
-          <div class="placeholder-number">
-            •••• •••• •••• 0000
-          </div>
-
-          <div class="placeholder-bottom">
-
-            <span>
-              DEMO
-            </span>
-
-            <span>
-              TERMINAL
-            </span>
-
-          </div>
-
-        </div>
-      `;
-
-    }
-
-
-    /* =========================
-       PRODUCT IMAGE
-    ========================= */
-
-    function createProductVisual(product) {
-
-      const imageUrl =
-        String(product.image_url || "").trim();
-
-      if (imageUrl) {
-
-        return `
-          <div class="product-image">
-
-            <img
-              src="${escapeHtml(imageUrl)}"
-              alt="${escapeHtml(
-                product.name || "Product"
-              )}"
-              loading="lazy"
-              onerror="
-                this.onerror=null;
-                this.parentElement.innerHTML=createPlaceholderHtml();
-              "
-            >
-
-          </div>
-        `;
-
-      }
-
-      return `
-        <div class="product-image">
-
-          ${createPlaceholderHtml()}
-
-        </div>
-      `;
-
-    }
-
-
-    /* =========================
-       BUY NOW
-    ========================= */
-
-    function buyNow(product) {
-
-      if (!product || !product.id) {
-
-        showMessage(
-          "PRODUCT DATA INVALID",
-          true
-        );
-
-        return;
-
-      }
-
-
-      const params =
-        new URLSearchParams();
-
-
-      params.set(
-        "product_id",
-        product.id
-      );
-
-
-      params.set(
-        "product_name",
-        product.name || ""
-      );
-
-
-      params.set(
-        "category",
-        product.network ||
-        product.category ||
-        product.type ||
-        product.brand ||
-        ""
-      );
-
-
-      params.set(
-        "amount",
-        product.price ?? 0
-      );
-
-
-      window.location.href =
-        "payment.html?" +
-        params.toString();
-
-    }
-
-
-    /* =========================
-       RENDER PRODUCTS
-    ========================= */
-
-    function renderProducts() {
-
-      hideMessage();
-
-
-      const filtered =
-        allProducts.filter(
-          product =>
-            getProductCategory(product) ===
-            activeCategory
-        );
-
-
-      if (!filtered.length) {
-
-        productsGrid.innerHTML = `
-          <div class="empty">
-
-            NO ${
-              escapeHtml(
-                activeCategory.toUpperCase()
-              )
-            } PRODUCTS AVAILABLE
-
-          </div>
-        `;
-
-        return;
-
-      }
-
-
-      productsGrid.innerHTML =
-        filtered.map(product => {
-
-          const category =
-            String(
-              product.network ||
-              product.category ||
-              product.type ||
-              product.brand ||
-              activeCategory
-            ).toUpperCase();
-
-
-          const name =
-            product.name ||
-            "NEXVORA PRODUCT";
-
-
-          const brand =
-            product.brand ||
-            category;
-
-
-          const description =
-            product.description ||
-            "Verified marketplace product.";
-
-
-          return `
-
-            <article class="product-card">
-
-              ${createProductVisual(product)}
-
-              <div class="product-info">
-
-                <div class="product-brand">
-                  ${escapeHtml(brand)}
+                <div class="tap">
+                  <b>↻</b>
+                  TAP TO FLIP
                 </div>
 
-                <div class="product-name">
-                  ${escapeHtml(name)}
+                <div class="network">
+                  ${escapeHtml(network)}
                 </div>
-
-                <div class="product-description">
-                  ${escapeHtml(description)}
-                </div>
-
-                <div class="product-meta">
-
-                  <div class="network">
-                    ${escapeHtml(category)}
-                  </div>
-
-                  <div class="price">
-                    ${formatPrice(product.price)}
-                  </div>
-
-                </div>
-
-
-                <button
-                  class="buy-btn"
-                  type="button"
-                  data-product-id="${escapeHtml(
-                    product.id
-                  )}">
-
-                  BUY NOW
-
-                </button>
 
               </div>
 
-            </article>
+            </div>
 
-          `;
+            <div class="card-number">
+              ${escapeHtml(
+                product.display_number || ""
+              )}
+            </div>
 
-        }).join("");
+            <div class="field-label">
+              CARD HOLDER
+            </div>
 
+            <div class="field-value">
+              ${escapeHtml(
+                product.cardholder_display || ""
+              )}
+            </div>
 
-      document
-        .querySelectorAll(".buy-btn")
-        .forEach(button => {
+            <div class="field-label balance-label">
+              CARD BALANCE
+            </div>
 
-          button.addEventListener(
-            "click",
-            () => {
+            <div class="field-value balance">
+              ${escapeHtml(
+                product.card_balance_display || ""
+              )}
+            </div>
 
-              const productId =
-                button.dataset.productId;
+            <div class="card-logo">
+              ${escapeHtml(network)}
+            </div>
 
+          </div>
 
-              const product =
-                allProducts.find(
-                  item =>
-                    String(item.id) ===
-                    String(productId)
-                );
+        </div>
 
+        <!-- BACK -->
 
-              buyNow(product);
+        <div
+          class="card-face card-back"
+          style="--glow:${escapeHtml(
+            getCardGlow(product.id)
+          )}"
+        >
 
-            }
+          <div class="back-content">
+
+            <div class="back-strip"></div>
+
+            <div
+              class="field-label"
+              style="margin-top:0"
+            >
+              CVV
+            </div>
+
+            <div class="cvv-row">
+
+              <div class="cvv-box">
+                •••
+              </div>
+
+              <div class="hidden-text">
+                Hidden until delivery
+              </div>
+
+            </div>
+
+            <div class="back-bottom">
+
+              <span>
+                ↻ TAP TO FLIP BACK
+              </span>
+
+              <strong>
+                ${escapeHtml(network)}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+/*
+  BUY NOW
+*/
+function buyNow(product){
+
+  const params = new URLSearchParams({
+
+    product_id:
+      product.id || "",
+
+    product_name:
+      product.name || "",
+
+    category:
+      product.network ||
+      product.brand ||
+      "",
+
+    amount:
+      product.price ?? 0
+  });
+
+  window.location.href =
+    "payment.html?" +
+    params.toString();
+}
+
+/*
+  RENDER PRODUCTS
+*/
+function renderProducts(){
+
+  const products =
+    allProducts.filter(
+      product =>
+        getCategory(product) ===
+        activeCategory
+    );
+
+  if(!products.length){
+
+    grid.innerHTML = `
+      <div class="empty">
+        NO
+        ${activeCategory.toUpperCase()}
+        PRODUCTS AVAILABLE
+      </div>
+    `;
+
+    return;
+  }
+
+  grid.innerHTML =
+    products.map(product => {
+
+      const limit =
+        product.limit_display || "";
+
+      const expiry =
+        product.expiry_display || "";
+
+      const delivery =
+        product.delivery_display || "";
+
+      const quantity =
+        product.quantity ?? 0;
+
+      return `
+        <article class="product-shell">
+
+          <div class="avail">
+            AVAILABLE
+          </div>
+
+          ${createCard(product)}
+
+          <div class="detail-boxes">
+
+            <div class="detail">
+              <span>Limit</span>
+              <span>
+                ${escapeHtml(limit)}
+              </span>
+            </div>
+
+            <div class="detail">
+              <span>Expiry</span>
+              <span>
+                ${escapeHtml(expiry)}
+              </span>
+            </div>
+
+            <div class="detail">
+              <span>Delivery</span>
+              <span>
+                ${escapeHtml(delivery)}
+              </span>
+            </div>
+
+          </div>
+
+          <div class="buy-row">
+
+            <div>
+
+              <div class="entry-label">
+                ENTRY FEE
+              </div>
+
+              <div class="entry-fee">
+                ${formatMoney(product.price)}
+              </div>
+
+            </div>
+
+            <div class="qty">
+              Qty:
+              ${escapeHtml(quantity)}
+            </div>
+
+          </div>
+
+          <button
+            class="buy-btn"
+            data-buy="${escapeHtml(product.id)}"
+            type="button"
+          >
+            BUY NOW
+          </button>
+
+        </article>
+      `;
+
+    }).join("");
+
+  /*
+    Card flip
+  */
+
+  document
+    .querySelectorAll("[data-flip]")
+    .forEach(card => {
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          card.classList.toggle(
+            "flipped"
           );
 
-        });
+        }
+      );
+
+    });
+
+  /*
+    Buy buttons
+  */
+
+  document
+    .querySelectorAll("[data-buy]")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        event => {
+
+          event.stopPropagation();
+
+          const product =
+            allProducts.find(
+              item =>
+                String(item.id) ===
+                String(button.dataset.buy)
+            );
+
+          if(product){
+            buyNow(product);
+          }
+
+        }
+      );
+
+    });
+}
+
+/*
+  LOAD PRODUCTS FROM SUPABASE
+*/
+async function loadProducts(){
+
+  try{
+
+    const response =
+      await fetch(
+        `${SUPABASE_URL}/rest/v1/products` +
+        `?select=*` +
+        `&available=eq.true` +
+        `&order=sort_order.asc,created_at.desc`,
+        {
+          method:"GET",
+
+          headers:{
+            "Content-Type":
+              "application/json",
+
+            "apikey":
+              SUPABASE_KEY,
+
+            "Authorization":
+              `Bearer ${SUPABASE_KEY}`
+          },
+
+          cache:"no-store"
+        }
+      );
+
+    if(!response.ok){
+
+      throw new Error(
+        `HTTP ${response.status}`
+      );
 
     }
 
+    const data =
+      await response.json();
 
-    /* =========================
-       LOAD PRODUCTS
-    ========================= */
-
-    async function loadProducts() {
-
-      productsGrid.innerHTML = `
-        <div class="empty">
-          CONNECTING TO PRODUCT NODE...
-        </div>
-      `;
-
-
-      hideMessage();
-
-
-      try {
-
-        const response =
-          await fetch(
-            `${SUPABASE_URL}/rest/v1/products?select=*&available=eq.true&order=sort_order.asc,created_at.desc`,
-            {
-              method: "GET",
-
-              headers: {
-
-                "Content-Type":
-                  "application/json",
-
-                "apikey":
-                  SUPABASE_KEY,
-
-                "Authorization":
-                  `Bearer ${SUPABASE_KEY}`
-
-              },
-
-              cache: "no-store"
-
-            }
-          );
-
-
-        if (!response.ok) {
-
-          let errorText = "";
-
-          try {
-            errorText =
-              await response.text();
-          } catch (_) {}
-
-
-          console.error(
-            "PRODUCT NODE ERROR:",
-            response.status,
-            errorText
-          );
-
-
-          throw new Error(
-            `HTTP ${response.status}`
-          );
-
-        }
-
-
-        const data =
-          await response.json();
-
-
-        if (!Array.isArray(data)) {
-
-          throw new Error(
-            "Invalid product response"
-          );
-
-        }
-
-
-        allProducts =
-          data.filter(
+    allProducts =
+      Array.isArray(data)
+        ? data.filter(
             product =>
               product &&
               product.id
+          )
+        : [];
+
+    renderProducts();
+
+  }catch(error){
+
+    console.error(
+      "PRODUCT LOAD ERROR:",
+      error
+    );
+
+    grid.innerHTML = `
+      <div class="empty">
+        PRODUCT NODE CONNECTION FAILED
+      </div>
+    `;
+
+    showMessage(
+      "Unable to connect to product node.",
+      true
+    );
+
+  }
+
+}
+
+/*
+  CATEGORY BUTTONS
+*/
+document
+  .querySelectorAll(".filter")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        document
+          .querySelectorAll(".filter")
+          .forEach(item =>
+            item.classList.remove(
+              "active"
+            )
           );
 
+        button.classList.add(
+          "active"
+        );
+
+        activeCategory =
+          button.dataset.category;
 
         renderProducts();
 
       }
+    );
 
-      catch (error) {
+  });
 
-        console.error(
-          "PRODUCT LOAD FAILED:",
-          error
-        );
+/*
+  INSTRUCTIONS MODAL
+*/
+const overlay =
+  document.getElementById(
+    "instructionsOverlay"
+  );
 
+const instructionsButton =
+  document.getElementById(
+    "instructionsBtn"
+  );
 
-        productsGrid.innerHTML = `
-          <div class="empty">
+const closeInstructions =
+  document.getElementById(
+    "closeInstructions"
+  );
 
-            PRODUCT NODE CONNECTION FAILED
+instructionsButton.onclick =
+  () => {
 
-            <br><br>
+    overlay.classList.add(
+      "show"
+    );
 
-            <span style="font-size:11px;">
-              Please refresh the terminal.
-            </span>
+    document.body.style.overflow =
+      "hidden";
 
-          </div>
-        `;
+  };
 
+closeInstructions.onclick =
+  () => {
 
-        showMessage(
-          "Unable to connect to product node.",
-          true
-        );
+    overlay.classList.remove(
+      "show"
+    );
 
-      }
+    document.body.style.overflow =
+      "";
+
+  };
+
+overlay.onclick =
+  event => {
+
+    if(event.target === overlay){
+
+      closeInstructions.click();
 
     }
 
+  };
 
-    /* =========================
-       CATEGORY EVENTS
-    ========================= */
+document.addEventListener(
+  "keydown",
+  event => {
 
-    document
-      .querySelectorAll(".filter")
-      .forEach(button => {
+    if(
+      event.key === "Escape" &&
+      overlay.classList.contains("show")
+    ){
 
-        button.addEventListener(
-          "click",
-          () => {
-
-            document
-              .querySelectorAll(".filter")
-              .forEach(btn =>
-                btn.classList.remove("active")
-              );
-
-
-            button.classList.add(
-              "active"
-            );
-
-
-            activeCategory =
-              String(
-                button.dataset.category ||
-                "rupay"
-              )
-              .trim()
-              .toLowerCase()
-              .replace(/[\s_-]+/g, "");
-
-
-            renderProducts();
-
-          }
-        );
-
-      });
-
-
-    /* =========================
-       INSTRUCTIONS OPEN
-    ========================= */
-
-    function openInstructions() {
-
-      instructionsOverlay.classList.add(
-        "show"
-      );
-
-      document.body.style.overflow =
-        "hidden";
+      closeInstructions.click();
 
     }
 
+  }
+);
 
-    /* =========================
-       INSTRUCTIONS CLOSE
-    ========================= */
-
-    function closeInstructionsModal() {
-
-      instructionsOverlay.classList.remove(
-        "show"
-      );
-
-      document.body.style.overflow =
-        "";
-
-    }
-
-
-    /* =========================
-       INSTRUCTIONS EVENTS
-    ========================= */
-
-    instructionsBtn.addEventListener(
-      "click",
-      openInstructions
-    );
-
-
-    closeInstructions.addEventListener(
-      "click",
-      closeInstructionsModal
-    );
-
-
-    instructionsOverlay.addEventListener(
-      "click",
-      event => {
-
-        if (
-          event.target ===
-          instructionsOverlay
-        ) {
-
-          closeInstructionsModal();
-
-        }
-
-      }
-    );
-
-
-    /* =========================
-       ESC KEY
-    ========================= */
-
-    document.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key === "Escape" &&
-          instructionsOverlay.classList.contains(
-            "show"
-          )
-        ) {
-
-          closeInstructionsModal();
-
-        }
-
-      }
-    );
-
-
-    /* =========================
-       START
-    ========================= */
-
-    loadProducts();
-
-  </script>
+/*
+  START
+*/
+loadProducts();
+    </script>
 
 </body>
 </html>
