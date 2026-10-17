@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Order — NEXVORA CC TERMINAL</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(0,255,140,.08),transparent 35%),
+    #020504;
+  color:#d9ffe9;
+  font-family:Arial,Helvetica,sans-serif;
+  padding:20px;
+}
+
+.container{
+  width:100%;
+  max-width:560px;
+  margin:auto;
+}
+
+.header{
+  text-align:center;
+  padding:28px 10px;
+}
+
+.logo{
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:3px;
+  color:#00ff88;
+  text-shadow:0 0 18px rgba(0,255,136,.65);
+}
+
+.subtitle{
+  margin-top:8px;
+  color:#6d9b82;
+  font-size:12px;
+  letter-spacing:2px;
+}
+
+.panel{
+  background:rgba(3,14,9,.92);
+  border:1px solid rgba(0,255,136,.2);
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 0 35px rgba(0,255,136,.06);
+}
+
+.panel-title{
+  color:#00ff88;
+  font-size:17px;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.panel-desc{
+  color:#729180;
+  font-size:12px;
+  line-height:1.6;
+  margin-bottom:20px;
+}
+
+label{
+  display:block;
+  color:#91bda2;
+  font-size:11px;
+  margin:15px 0 7px;
+  letter-spacing:1px;
+}
+
+input{
+  width:100%;
+  background:#010805;
+  color:#d9ffe9;
+  border:1px solid #17472e;
+  border-radius:10px;
+  padding:13px;
+  outline:none;
+  font-size:14px;
+}
+
+input:focus{
+  border-color:#00ff88;
+  box-shadow:0 0 12px rgba(0,255,136,.12);
+}
+
+button{
+  width:100%;
+  margin-top:20px;
+  padding:14px;
+  border:1px solid #00ff88;
+  border-radius:10px;
+  background:#00ff88;
+  color:#001b0d;
+  font-weight:900;
+  cursor:pointer;
+  letter-spacing:1px;
+}
+
+button:hover{
+  box-shadow:0 0 20px rgba(0,255,136,.25);
+}
+
+.message{
+  display:none;
+  margin-top:18px;
+  padding:13px;
+  border-radius:10px;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.result{
+  display:none;
+  margin-top:20px;
+  border:1px solid rgba(0,255,136,.2);
+  border-radius:14px;
+  padding:18px;
+  background:#020b06;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:11px 0;
+  border-bottom:1px solid rgba(0,255,136,.08);
+}
+
+.row:last-child{
+  border-bottom:0;
+}
+
+.key{
+  color:#668873;
+  font-size:11px;
+}
+
+.value{
+  color:#d9ffe9;
+  font-size:12px;
+  text-align:right;
+  word-break:break-word;
+}
+
+.status{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.pending{
+  color:#ffd76a;
+  background:rgba(255,215,106,.08);
+  border:1px solid rgba(255,215,106,.25);
+}
+
+.verified{
+  color:#00ff88;
+  background:rgba(0,255,136,.08);
+  border:1px solid rgba(0,255,136,.25);
+}
+
+.rejected{
+  color:#ff6666;
+  background:rgba(255,70,70,.08);
+  border:1px solid rgba(255,70,70,.25);
+}
+
+.nav{
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+}
+
+.nav a{
+  flex:1;
+  text-align:center;
+  text-decoration:none;
+  padding:11px;
+  border:1px solid #17472e;
+  border-radius:9px;
+  color:#82b895;
+  font-size:11px;
+}
+
+.nav a:hover{
+  border-color:#00ff88;
+  color:#00ff88;
+}
+
+.footer{
+  text-align:center;
+  color:#426050;
+  font-size:10px;
+  margin-top:25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo">NEXVORA CC TERMINAL</div>
+    <div class="subtitle">ORDER TRACKING TERMINAL</div>
+  </div>
+
+  <div class="panel">
+
+    <div class="panel-title">TRACK YOUR ORDER</div>
+
+    <div class="panel-desc">
+      Enter your order details below to check the current verification status.
+    </div>
+
+    <label>ORDER ID</label>
+    <input id="orderId" type="text" placeholder="NXU-XXXXXX">
+
+    <label>EMAIL</label>
+    <input id="email" type="email" placeholder="your@email.com">
+
+    <label>UTR / TRANSACTION REFERENCE</label>
+    <input id="utr" type="text" placeholder="Enter UTR">
+
+    <button onclick="trackOrder()">TRACK ORDER</button>
+
+    <div id="message" class="message"></div>
+
+    <div id="result" class="result">
+
+      <div class="row">
+        <span class="key">ORDER ID</span>
+        <span class="value" id="rOrder">—</span>
+      </div>
+
+      <div class="row">
+        <span class="key">EMAIL</span>
+        <span class="value" id="rEmail">—</span>
+      </div>
+
+      <div class="row">
+        <span class="key">UTR</span>
+        <span class="value" id="rUtr">—</span>
+      </div>
+
+      <div class="row">
+        <span class="key">STATUS</span>
+        <span class="value" id="rStatus">—</span>
+      </div>
+
+      <div class="row">
+        <span class="key">DELIVERY</span>
+        <span class="value" id="rDelivery">—</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="nav">
+    <a href="marketplace.html">MARKETPLACE</a>
+    <a href="support.html">SUPPORT</a>
+  </div>
+
+  <div class="footer">
+    NEXVORA CC TERMINAL • SECURE ORDER TRACKING
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL =
+  "https://ccxuowtyrscobhzqener.supabase.co";
+
+async function trackOrder(){
+
+  const orderId =
+    document.getElementById("orderId").value.trim();
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const utr =
+    document.getElementById("utr").value.trim();
+
+  const message =
+    document.getElementById("message");
+
+  const result =
+    document.getElementById("result");
+
+  result.style.display = "none";
+
+  if(!orderId && !email && !utr){
+    showMessage(
+      "Please enter at least one tracking detail.",
+      "error"
+    );
+    return;
+  }
+
+  showMessage("Checking order status...", "info");
+
+  try{
+
+    let url =
+      SUPABASE_URL +
+      "/rest/v1/orders?select=*";
+
+    const filters = [];
+
+    if(orderId){
+      filters.push(
+        "order_id=eq." +
+        encodeURIComponent(orderId)
+      );
+    }
+
+    if(email){
+      filters.push(
+        "customer_email=eq." +
+        encodeURIComponent(email)
+      );
+    }
+
+    if(utr){
+      filters.push(
+        "utr=eq." +
+        encodeURIComponent(utr)
+      );
+    }
+
+    if(filters.length){
+      url += "&" + filters.join("&");
+    }
+
+    const response = await fetch(url);
+
+    if(!response.ok){
+      throw new Error("Unable to check order.");
+    }
+
+    const orders = await response.json();
+
+    if(!orders.length){
+
+      showMessage(
+        "No matching order was found. Please check your Order ID, email or UTR.",
+        "error"
+      );
+
+      return;
+    }
+
+    const order = orders[0];
+
+    document.getElementById("rOrder").textContent =
+      order.order_id || "—";
+
+    document.getElementById("rEmail").textContent =
+      order.customer_email || "—";
+
+    document.getElementById("rUtr").textContent =
+      order.utr || "—";
+
+    document.getElementById("rStatus").innerHTML =
+      makeStatus(order.status);
+
+    document.getElementById("rDelivery").textContent =
+      order.delivery_status || "pending";
+
+    result.style.display = "block";
+
+    showMessage(
+      "Order found successfully.",
+      "success"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    showMessage(
+      "Tracking service is temporarily unavailable.",
+      "error"
+    );
+  }
+}
+
+function makeStatus(status){
+
+  const s =
+    String(status || "pending").toLowerCase();
+
+  let cls = "pending";
+
+  if(
+    s.includes("verified") ||
+    s.includes("approved") ||
+    s.includes("completed")
+  ){
+    cls = "verified";
+  }
+
+  if(
+    s.includes("reject") ||
+    s.includes("failed")
+  ){
+    cls = "rejected";
+  }
+
+  return `
+    <span class="status ${cls}">
+      ${escapeHtml(status || "pending")}
+    </span>
+  `;
+}
+
+function showMessage(text,type){
+
+  const el =
+    document.getElementById("message");
+
+  el.textContent = text;
+  el.style.display = "block";
+
+  if(type === "success"){
+    el.style.color = "#00ff88";
+    el.style.border =
+      "1px solid rgba(0,255,136,.2)";
+    el.style.background =
+      "rgba(0,255,136,.05)";
+  }else if(type === "error"){
+    el.style.color = "#ff7777";
+    el.style.border =
+      "1px solid rgba(255,70,70,.2)";
+    el.style.background =
+      "rgba(255,70,70,.05)";
+  }else{
+    el.style.color = "#9ed8b2";
+    el.style.border =
+      "1px solid rgba(0,255,136,.15)";
+    el.style.background =
+      "rgba(0,255,136,.03)";
+  }
+}
+
+function escapeHtml(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+/* Auto-fill order ID when coming from payment page */
+const params =
+  new URLSearchParams(location.search);
+
+const urlOrder =
+  params.get("order_id");
+
+if(urlOrder){
+  document.getElementById("orderId").value =
+    urlOrder;
+}
+</script>
+
+</body>
+</html>
