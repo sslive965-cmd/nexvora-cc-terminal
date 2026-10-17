@@ -69,8 +69,138 @@ let user=null;
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
 function msg(id,text,type){$(id).textContent=text;$(id).className="msg "+type;setTimeout(()=>$(id).className="msg",5000)}
-async function login(){let email=$("loginEmail").value.trim(),password=$("loginPassword").value;if(!email||!password)return msg("loginMsg","Enter email and password.","error");let {data,error}=await db.auth.signInWithPassword({email,password});if(error)return msg("loginMsg",error.message,"error");let a=await db.rpc("is_admin_user");if(a.error||!a.data){await db.auth.signOut();return msg("loginMsg","This account is not authorized as an administrator.","error")}user=data.user;open()}
-async function session(){let {data}=await db.auth.getSession();if(!data.session)return;let a=await db.rpc("is_admin_user");if(a.data){user=data.session.user;open()}else await db.auth.signOut()}
+async function login() {
+  const email = $("loginEmail").value.trim().toLowerCase();
+  const password = $("loginPassword").value;
+
+  if (!email || !password) {
+    msg("loginMsg", "Enter email and password.", "error");
+    return;
+  }
+
+  const button = document.querySelector(".primary");
+  button.disabled = true;
+  button.textContent = "CHECKING...";
+
+  try {
+    const { data, error } =
+      await db.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    if (error) {
+      console.error("LOGIN ERROR:", error);
+      msg("loginMsg", error.message, "error");
+      return;
+    }
+
+    if (!data || !data.user) {
+      msg("loginMsg", "Login failed: user session was not created.", "error");
+      return;
+    }
+
+    const { data: isAdmin, error: adminError } =
+      await db.rpc("is_admin_user");
+
+    if (adminError) {
+      console.error("ADMIN CHECK ERROR:", adminError);
+
+      await db.auth.signOut();
+
+      msg(
+        "loginMsg",
+        "Admin verification failed: " + adminError.message,
+        "error"
+      );
+
+      return;
+    }
+
+    if (isAdmin !== true) {
+      await db.auth.signOut();
+
+      msg(
+        "loginMsg",
+        "This account is not authorized as an administrator.",
+        "error"
+      );
+
+      return;
+    }
+
+    user = data.user;
+
+    open();
+
+  } catch (err) {
+
+    console.error("UNEXPECTED LOGIN ERROR:", err);
+
+    msg(
+      "loginMsg",
+      err?.message || "Unexpected login error.",
+      "error"
+    );
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "LOGIN";
+  }
+}
+
+
+async function session() {
+
+  try {
+
+    const { data, error } =
+      await db.auth.getSession();
+
+    if (error) {
+      console.error("SESSION ERROR:", error);
+      return;
+    }
+
+    if (!data.session) {
+      return;
+    }
+
+    const { data: isAdmin, error: adminError } =
+      await db.rpc("is_admin_user");
+
+    if (adminError) {
+      console.error(
+        "SESSION ADMIN CHECK ERROR:",
+        adminError
+      );
+
+      await db.auth.signOut();
+      return;
+    }
+
+    if (isAdmin === true) {
+
+      user = data.session.user;
+
+      open();
+
+    } else {
+
+      await db.auth.signOut();
+
+    }
+
+  } catch (err) {
+
+    console.error(
+      "SESSION RESTORE ERROR:",
+      err
+    );
+
+  }
+    }
 function open(){$("loginScreen").style.display="none";$("adminApp").style.display="block";$("adminEmail").textContent=user?.email||"";loadAll()}
 async function logout(){await db.auth.signOut();location.reload()}
 function tab(id,b){document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");if(id=="products")loadProducts();if(id=="orders")loadOrders();if(id=="requests")loadRequests();if(id=="keys")loadKeys();if(id=="settings")loadSettings();if(id=="telegram")loadTelegram()}
