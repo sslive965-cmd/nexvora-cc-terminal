@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEXVORA CC TERMINAL — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#020504;color:#d9ffe9;font:14px Arial,sans-serif}button,input,select,textarea{font:inherit}.login{min-height:100vh;display:grid;place-items:center;padding:20px}.box,.card,.item{background:#030d08;border:1px solid #17472e;border-radius:16px}.box{width:min(430px,100%);padding:25px}.logo,.brand,.card h3,.item-title{color:#00ff88;font-weight:900}.logo{text-align:center;font-size:23px;letter-spacing:2px}.sub{text-align:center;color:#668873;font-size:10px;letter-spacing:2px;margin:8px 0 25px}label{display:block;color:#7da48c;font-size:11px;margin:14px 0 6px}input,select,textarea{width:100%;background:#010805;color:#d9ffe9;border:1px solid #17472e;border-radius:9px;padding:12px;outline:0}textarea{min-height:90px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:#00ff88}button{border:0;border-radius:9px;padding:12px 15px;cursor:pointer;font-weight:800}.primary{width:100%;margin-top:18px;background:#00ff88;color:#001b0d}.danger{background:#260909;color:#ff7777;border:1px solid #632020}.dark,.tab{background:#07140d;color:#8fbaa0;border:1px solid #17472e}#adminApp{display:none}.top{position:sticky;top:0;z-index:5;background:#020504ee;border-bottom:1px solid #103622;padding:15px}.top-inner,.wrap{max-width:1200px;margin:auto}.top-inner{display:flex;justify-content:space-between;gap:10px}.admin-email,.muted,.item small{color:#668873;font-size:11px}.wrap{padding:18px}.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:18px}.tab{white-space:nowrap}.tab.active{background:#00ff88;color:#001b0d}.section{display:none}.section.active{display:block}.grid,.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.card{padding:17px;margin-bottom:15px}.card h3{font-size:15px;margin:0 0 12px}.stat{font-size:27px;font-weight:900}.list{margin-top:15px}.item{padding:15px;margin-bottom:10px}.item-title{margin-bottom:5px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{font-size:11px}.msg{display:none;margin-top:12px;padding:11px;border-radius:8px;font-size:11px}.msg.success{display:block;color:#00ff88;background:#03170d}.msg.error{display:block;color:#ff7777;background:#180606}@media(max-width:600px){.top-inner{align-items:flex-start}.admin-email{max-width:190px;word-break:break-all}}
+</style>
+</head>
+<body>
+<div id="loginScreen" class="login"><div class="box">
+<div class="logo">NEXVORA CC TERMINAL</div><div class="sub">SECURE ADMIN ACCESS</div>
+<label>EMAIL</label><input id="loginEmail" type="email" autocomplete="username">
+<label>PASSWORD</label><input id="loginPassword" type="password" autocomplete="current-password">
+<button class="primary" onclick="login()">LOGIN</button><div id="loginMsg" class="msg"></div>
+</div></div>
+
+<div id="adminApp">
+<div class="top"><div class="top-inner"><div><div class="brand">NEXVORA CC TERMINAL</div><div id="adminEmail" class="admin-email"></div></div><button class="danger" onclick="logout()">LOGOUT</button></div></div>
+<div class="wrap">
+<div class="tabs">
+<button class="tab active" onclick="tab('dashboard',this)">DASHBOARD</button>
+<button class="tab" onclick="tab('products',this)">PRODUCTS</button>
+<button class="tab" onclick="tab('orders',this)">ORDERS</button>
+<button class="tab" onclick="tab('requests',this)">PAYMENT REQUESTS</button>
+<button class="tab" onclick="tab('keys',this)">ACCESS KEYS</button>
+<button class="tab" onclick="tab('settings',this)">SETTINGS</button>
+<button class="tab" onclick="tab('telegram',this)">TELEGRAM</button>
+</div>
+
+<section id="dashboard" class="section active"><div class="grid">
+<div class="card"><h3>PRODUCTS</h3><div id="sp" class="stat">0</div><div class="muted">Available products</div></div>
+<div class="card"><h3>ORDERS</h3><div id="so" class="stat">0</div><div class="muted">Total orders</div></div>
+<div class="card"><h3>PAYMENT REQUESTS</h3><div id="sr" class="stat">0</div><div class="muted">Key requests</div></div>
+<div class="card"><h3>ACCESS KEYS</h3><div id="sk" class="stat">0</div><div class="muted">Issued keys</div></div>
+</div></section>
+
+<section id="products" class="section"><div class="card"><h3>ADD DEMO PRODUCT</h3>
+<div class="form-grid">
+<div><label>PRODUCT NAME</label><input id="pn"></div>
+<div><label>BRAND</label><select id="pb"><option>Mastercard</option><option>Visa</option><option>RuPay</option><option>American Express</option></select></div>
+<div><label>NETWORK</label><input id="pnet" placeholder="Demo Network"></div>
+<div><label>PRICE</label><input id="pp" type="number" min="0" step=".01"></div>
+<div><label>IMAGE URL</label><input id="pi"></div>
+<div><label>DISPLAY NUMBER</label><input value="•••• •••• •••• 0000" disabled></div>
+</div><label>DESCRIPTION</label><textarea id="pd"></textarea>
+<button class="primary" onclick="addProduct()">ADD PRODUCT</button><div id="pm" class="msg"></div></div><div id="pl" class="list"></div></section>
+
+<section id="orders" class="section"><div class="card"><h3>ORDERS</h3><div id="ol" class="list"></div></div></section>
+<section id="requests" class="section"><div class="card"><h3>PAYMENT REQUESTS</h3><div id="rl" class="list"></div></div></section>
+<section id="keys" class="section"><div class="card"><h3>ACCESS KEYS</h3><div id="kl" class="list"></div></div></section>
+
+<section id="settings" class="section"><div class="card"><h3>SITE SETTINGS</h3>
+<label>SITE NAME</label><input id="ssn"><label>SUPPORT USERNAME</label><input id="sss"><label>SUPPORT URL</label><input id="ssu">
+<label>TELEGRAM BOT URL</label><input id="ssb"><label>TELEGRAM CHANNEL URL</label><input id="ssc"><label>UPI ID</label><input id="ssupi">
+<label>PAYMENT QR URL</label><input id="ssqr"><label>ACCESS PRICE</label><input id="ssp" type="number" min="0" step=".01">
+<label>INFORMATION</label><textarea id="ssi"></textarea><button class="primary" onclick="saveSettings()">SAVE SETTINGS</button><div id="sm" class="msg"></div>
+</div></section>
+
+<section id="telegram" class="section"><div class="card"><h3>TELEGRAM CHANNELS</h3><div id="tl" class="list"></div></div></section>
+</div></div>
+
+<script>
+const URL="https://ccxuowtyrscobhzqener.supabase.co";
+const KEY="sb_publishable_ojRLCERTzPJSTbBopO0KGA";
+const db=supabase.createClient(URL,KEY);
+let user=null;
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+function msg(id,text,type){$(id).textContent=text;$(id).className="msg "+type;setTimeout(()=>$(id).className="msg",5000)}
+async function login(){let email=$("loginEmail").value.trim(),password=$("loginPassword").value;if(!email||!password)return msg("loginMsg","Enter email and password.","error");let {data,error}=await db.auth.signInWithPassword({email,password});if(error)return msg("loginMsg",error.message,"error");let a=await db.rpc("is_admin_user");if(a.error||!a.data){await db.auth.signOut();return msg("loginMsg","This account is not authorized as an administrator.","error")}user=data.user;open()}
+async function session(){let {data}=await db.auth.getSession();if(!data.session)return;let a=await db.rpc("is_admin_user");if(a.data){user=data.session.user;open()}else await db.auth.signOut()}
+function open(){$("loginScreen").style.display="none";$("adminApp").style.display="block";$("adminEmail").textContent=user?.email||"";loadAll()}
+async function logout(){await db.auth.signOut();location.reload()}
+function tab(id,b){document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");if(id=="products")loadProducts();if(id=="orders")loadOrders();if(id=="requests")loadRequests();if(id=="keys")loadKeys();if(id=="settings")loadSettings();if(id=="telegram")loadTelegram()}
+async function loadAll(){await Promise.all([stats(),loadProducts(),loadSettings(),loadTelegram()])}
+async function stats(){let [p,o,r,k]=await Promise.all([db.from("products").select("id",{count:"exact",head:true}),db.from("orders").select("id",{count:"exact",head:true}),db.from("key_requests").select("id",{count:"exact",head:true}),db.from("access_keys").select("id",{count:"exact",head:true})]);$("sp").textContent=p.count||0;$("so").textContent=o.count||0;$("sr").textContent=r.count||0;$("sk").textContent=k.count||0}
+async function loadProducts(){let {data,error}=await db.from("products").select("*").order("sort_order",{ascending:true}).order("created_at",{ascending:false});if(error)return $("pl").innerHTML=`<div class="item">${esc(error.message)}</div>`;$("pl").innerHTML=(data||[]).map(p=>`<div class="item"><div class="item-title">${esc(p.name||"Unnamed")}</div><small>${esc(p.brand||"")} • ₹${esc(p.price??"0")}</small><small>Demo display: •••• •••• •••• 0000</small><div class="actions"><button class="danger" onclick="delProduct('${p.id}')">DELETE</button></div></div>`).join("")||'<div class="item">No products yet.</div>'}
+async function addProduct(){let name=$("pn").value.trim();if(!name)return msg("pm","Product name is required.","error");let {error}=await db.from("products").insert({name,brand:$("pb").value,network:$("pnet").value.trim(),price:Number($("pp").value||0),image_url:$("pi").value.trim()||null,description:$("pd").value.trim(),display_number:"•••• •••• •••• 0000",expiry_display:"DEMO",cardholder_display:"DEMO USER",cvv_display:"•••",available:true});if(error)return msg("pm",error.message,"error");msg("pm","Product added successfully.","success");["pn","pnet","pp","pi","pd"].forEach(x=>$(x).value="");await loadProducts();stats()}
+async function delProduct(id){if(!confirm("Delete this product?"))return;let {error}=await db.from("products").delete().eq("id",id);if(error)return alert(error.message);await loadProducts();stats()}
+async function loadOrders(){let {data,error}=await db.from("orders").select("*").order("created_at",{ascending:false}).limit(100);if(error)return $("ol").innerHTML=`<div class="item">${esc(error.message)}</div>`;$("ol").innerHTML=(data||[]).map(o=>`<div class="item"><div class="item-title">${esc(o.order_id||"NO-ID")}</div><small>${esc(o.product_name||"Product")} • ₹${esc(o.amount??"0")}</small><small>Email: ${esc(o.customer_email||"—")}</small><small>UTR: ${esc(o.utr||"—")}</small><small>Status: ${esc(o.status||"pending")}</small><div class="actions"><button class="dark" onclick="orderStatus('${o.id}','verified')">VERIFY</button><button class="danger" onclick="orderStatus('${o.id}','rejected')">REJECT</button></div></div>`).join("")||'<div class="item">No orders found.</div>'}
+async function orderStatus(id,status){let {error}=await db.from("orders").update({status,updated_at:new Date().toISOString()}).eq("id",id);if(error)alert(error.message);else{loadOrders();stats()}}
+async function loadRequests(){let {data,error}=await db.from("key_requests").select("*").order("created_at",{ascending:false}).limit(100);if(error)return $("rl").innerHTML=`<div class="item">${esc(error.message)}</div>`;$("rl").innerHTML=(data||[]).map(r=>`<div class="item"><div class="item-title">${esc(r.telegram_username||"Telegram User")}</div><small>Payment: ${esc(r.payment_status||"pending")}</small><small>UTR: ${esc(r.utr||"—")}</small><small>Request: ${esc(r.status||"processing")}</small><div class="actions"><button class="dark" onclick="requestStatus('${r.id}','verified')">VERIFY</button><button class="danger" onclick="requestStatus('${r.id}','declined')">DECLINE</button></div></div>`).join("")||'<div class="item">No payment requests found.</div>'}
+async function requestStatus(id,status){let {error}=await db.from("key_requests").update({status,updated_at:new Date().toISOString()}).eq("id",id);if(error)alert(error.message);else{loadRequests();stats()}}
+async function loadKeys(){let {data,error}=await db.from("access_keys").select("*").order("created_at",{ascending:false}).limit(100);if(error)return $("kl").innerHTML=`<div class="item">${esc(error.message)}</div>`;$("kl").innerHTML=(data||[]).map(k=>`<div class="item"><div class="item-title">${esc(k.access_key||"—")}</div><small>Status: ${esc(k.status||"—")}</small><small>Issued to: ${esc(k.issued_to||"—")}</small></div>`).join("")||'<div class="item">No access keys found.</div>'}
+async function loadSettings(){let {data}=await db.from("site_settings").select("*").limit(1).maybeSingle();if(!data)return;$("ssn").value=data.site_name||"";$("sss").value=data.support_username||"";$("ssu").value=data.support_url||"";$("ssb").value=data.telegram_bot_url||"";$("ssc").value=data.telegram_channel_url||"";$("ssupi").value=data.upi_id||"";$("ssqr").value=data.payment_qr_url||"";$("ssp").value=data.access_price??"";$("ssi").value=data.information_text||""}
+async function saveSettings(){let {data:e}=await db.from("site_settings").select("id").limit(1).maybeSingle();if(!e)return msg("sm","Settings row not found.","error");let payload={site_name:$("ssn").value.trim(),support_username:$("sss").value.trim(),support_url:$("ssu").value.trim(),telegram_bot_url:$("ssb").value.trim(),telegram_channel_url:$("ssc").value.trim(),upi_id:$("ssupi").value.trim(),payment_qr_url:$("ssqr").value.trim(),access_price:Number($("ssp").value||0),information_text:$("ssi").value.trim(),updated_at:new Date().toISOString()};let {error}=await db.from("site_settings").update(payload).eq("id",e.id);if(error)return msg("sm",error.message,"error");msg("sm","Settings saved successfully.","success")}
+async function loadTelegram(){let {data,error}=await db.from("telegram_channels").select("*").order("sort_order",{ascending:true});if(error)return $("tl").innerHTML=`<div class="item">${esc(error.message)}</div>`;$("tl").innerHTML=(data||[]).map(c=>`<div class="item"><div class="item-title">${esc(c.title||"Telegram")}</div><small>${esc(c.channel_username||"Group")}</small><small>${esc(c.channel_url||"—")}</small><small>Required: ${c.is_required?"YES":"NO"} • Active: ${c.is_active?"YES":"NO"}</small></div>`).join("")||'<div class="item">No Telegram channels configured.</div>'}
+session();
+</script>
+</body></html>
