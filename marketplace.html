@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NEXVORA CC TERMINAL — Marketplace</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+:root{
+  --green:#00ff88;
+  --green2:#00b85c;
+  --bg:#020504;
+  --panel:rgba(4,15,10,.82);
+  --border:rgba(0,255,136,.22);
+  --text:#eafff4;
+  --muted:#719883;
+  --red:#ff5264;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  color:var(--text);
+  font-family:"Courier New",monospace;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(0,255,136,.10),transparent 30%),
+    radial-gradient(circle at 100% 50%,rgba(0,255,136,.05),transparent 30%),
+    #020504;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.22;
+  background-image:
+    linear-gradient(rgba(0,255,136,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,136,.04) 1px,transparent 1px);
+  background-size:36px 36px;
+  transform:perspective(600px) rotateX(55deg) scale(1.5);
+  transform-origin:bottom;
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgba(0,255,136,.014) 4px
+  );
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button{
+  font-family:inherit;
+}
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:20;
+  border-bottom:1px solid var(--border);
+  background:rgba(2,5,4,.88);
+  backdrop-filter:blur(18px);
+}
+
+.nav{
+  width:min(1180px,calc(100% - 28px));
+  min-height:72px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.brand{
+  font-family:Arial,sans-serif;
+  font-weight:900;
+  font-size:20px;
+  letter-spacing:2px;
+  white-space:nowrap;
+  text-shadow:0 0 15px rgba(0,255,136,.25);
+}
+
+.brand span{
+  color:var(--green);
+}
+
+.navlinks{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.navlinks a{
+  padding:10px 13px;
+  border:1px solid transparent;
+  border-radius:8px;
+  color:#91b3a1;
+  font-size:11px;
+  letter-spacing:1px;
+  transition:.2s;
+}
+
+.navlinks a:hover,
+.navlinks a.active{
+  color:var(--green);
+  border-color:var(--border);
+  background:rgba(0,255,136,.05);
+}
+
+main{
+  width:min(1180px,calc(100% - 28px));
+  margin:auto;
+  padding:42px 0 70px;
+  position:relative;
+  z-index:2;
+}
+
+.hero{
+  padding:38px 0 30px;
+}
+
+.eyebrow{
+  color:var(--green);
+  font-size:10px;
+  letter-spacing:3px;
+  margin-bottom:12px;
+}
+
+.hero h1{
+  font-family:Arial,sans-serif;
+  font-size:clamp(34px,7vw,66px);
+  line-height:.98;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  text-shadow:
+    0 0 10px rgba(0,255,136,.35),
+    0 0 35px rgba(0,255,136,.12);
+}
+
+.hero h1 span{
+  color:var(--green);
+}
+
+.hero p{
+  max-width:650px;
+  margin-top:16px;
+  color:var(--muted);
+  line-height:1.7;
+  font-size:12px;
+}
+
+.system{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:20px;
+  color:#75a48a;
+  font-size:10px;
+  letter-spacing:1.5px;
+}
+
+.dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 12px var(--green);
+  animation:pulse 1.4s infinite;
+}
+
+@keyframes pulse{
+  50%{opacity:.35}
+}
+
+.toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin:18px 0 25px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:rgba(4,15,10,.55);
+}
+
+.filters{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.filter{
+  border:1px solid rgba(0,255,136,.16);
+  background:rgba(0,255,136,.025);
+  color:#83a996;
+  border-radius:8px;
+  padding:9px 12px;
+  font-size:10px;
+  letter-spacing:1px;
+  cursor:pointer;
+}
+
+.filter:hover,
+.filter.active{
+  color:#001b0d;
+  background:var(--green);
+  border-color:var(--green);
+}
+
+.count{
+  color:#5e806d;
+  font-size:10px;
+  white-space:nowrap;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+
+.product{
+  position:relative;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0,255,136,.045),
+      rgba(0,0,0,.3)
+    ),
+    var(--panel);
+  box-shadow:
+    0 0 25px rgba(0,255,136,.035),
+    inset 0 0 25px rgba(0,255,136,.018);
+  overflow:hidden;
+  transition:.25s;
+}
+
+.product:hover{
+  transform:translateY(-4px);
+  border-color:rgba(0,255,136,.45);
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.4),
+    0 0 25px rgba(0,255,136,.07);
+}
+
+.product::before{
+  content:"";
+  position:absolute;
+  left:10%;
+  right:10%;
+  top:0;
+  height:1px;
+  background:var(--green);
+  box-shadow:0 0 15px var(--green);
+  opacity:.6;
+}
+
+.visual{
+  height:185px;
+  border:1px solid rgba(0,255,136,.13);
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:
+    radial-gradient(
+      circle,
+      rgba(0,255,136,.10),
+      transparent 60%
+    ),
+    rgba(0,0,0,.3);
+  margin-bottom:16px;
+}
+
+.visual img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+.mock-card{
+  width:88%;
+  max-width:340px;
+  aspect-ratio:1.586;
+  border-radius:15px;
+  padding:17px;
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(
+      135deg,
+      #07130d,
+      #102c1e 45%,
+      #020604
+    );
+  border:1px solid rgba(0,255,136,.35);
+  box-shadow:0 0 24px rgba(0,255,136,.10);
+}
+
+.mock-card::after{
+  content:"";
+  position:absolute;
+  width:160px;
+  height:160px;
+  right:-70px;
+  top:-70px;
+  border-radius:50%;
+  background:rgba(0,255,136,.12);
+  filter:blur(5px);
+}
+
+.mock-brand{
+  position:relative;
+  z-index:1;
+  text-align:right;
+  font:bold 11px Arial,sans-serif;
+  color:var(--green);
+  letter-spacing:1px;
+}
+
+.chip{
+  position:absolute;
+  left:17px;
+  top:53px;
+  width:40px;
+  height:29px;
+  border-radius:7px;
+  border:1px solid rgba(255,255,255,.28);
+  background:
+    linear-gradient(
+      90deg,
+      transparent 46%,
+      rgba(255,255,255,.18) 47%,
+      rgba(255,255,255,.18) 52%,
+      transparent 53%
+    ),
+    linear-gradient(
+      rgba(255,255,255,.18),
+      rgba(255,255,255,.04)
+    );
+}
+
+.masked{
+  position:absolute;
+  left:17px;
+  bottom:38px;
+  font-size:10px;
+  letter-spacing:1.5px;
+  color:#b7dfc9;
+}
+
+.tap{
+  position:absolute;
+  left:17px;
+  bottom:17px;
+  color:#5d9b77;
+  font-size:7px;
+  letter-spacing:1px;
+}
+
+.info{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.name{
+  font-size:14px;
+  font-weight:bold;
+  color:#effff6;
+}
+
+.category{
+  margin-top:5px;
+  color:#628a72;
+  font-size:9px;
+  letter-spacing:1px;
+}
+
+.price{
+  color:var(--green);
+  font-weight:bold;
+  font-size:15px;
+  white-space:nowrap;
+}
+
+.description{
+  min-height:38px;
+  margin-top:13px;
+  color:#72927f;
+  font-size:10px;
+  line-height:1.55;
+}
+
+.buy{
+  width:100%;
+  height:43px;
+  margin-top:12px;
+  border:1px solid var(--green);
+  border-radius:9px;
+  background:rgba(0,255,136,.07);
+  color:var(--green);
+  cursor:pointer;
+  font-weight:bold;
+  font-size:10px;
+  letter-spacing:1.5px;
+  transition:.2s;
+}
+
+.buy:hover{
+  color:#001b0d;
+  background:var(--green);
+  box-shadow:0 0 20px rgba(0,255,136,.22);
+}
+
+.loading,
+.empty,
+.error{
+  grid-column:1/-1;
+  padding:45px 20px;
+  text-align:center;
+  border:1px dashed var(--border);
+  border-radius:15px;
+  color:var(--muted);
+  font-size:11px;
+  letter-spacing:1px;
+}
+
+.error{
+  color:var(--red);
+}
+
+.footer{
+  margin-top:55px;
+  padding-top:20px;
+  border-top:1px solid rgba(0,255,136,.1);
+  text-align:center;
+  color:#426451;
+  font-size:9px;
+  letter-spacing:2px;
+}
+
+@media(max-width:900px){
+  .products{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:650px){
+  .nav{
+    min-height:64px;
+  }
+
+  .brand{
+    font-size:16px;
+  }
+
+  .navlinks{
+    gap:2px;
+  }
+
+  .navlinks a{
+    padding:8px 7px;
+    font-size:8px;
+  }
+
+  .toolbar{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .products{
+    grid-template-columns:1fr;
+  }
+
+  .visual{
+    height:205px;
+  }
+}
+
+@media(max-width:390px){
+  .navlinks a{
+    padding:7px 5px;
+    font-size:7px;
+  }
+
+  .brand{
+    font-size:14px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+
+    <a class="brand" href="marketplace.html">
+      NEXVORA <span>CC</span>
+    </a>
+
+    <div class="navlinks">
+      <a href="marketplace.html" class="active">MARKETPLACE</a>
+      <a href="track.html">TRACK</a>
+      <a href="support.html">SUPPORT</a>
+    </div>
+
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero">
+
+    <div class="eyebrow">
+      NEXVORA CC TERMINAL // MARKETPLACE
+    </div>
+
+    <h1>
+      DIGITAL <span>MARKETPLACE</span>
+    </h1>
+
+    <p>
+      Browse the products currently published by the
+      NEXVORA administration system. Select an item to
+      continue to the order process.
+    </p>
+
+    <div class="system">
+      <span class="dot"></span>
+      MARKETPLACE ONLINE // PRODUCTS SYNC ENABLED
+    </div>
+
+  </section>
+
+  <section class="toolbar">
+
+    <div class="filters">
+      <button
+        class="filter active"
+        data-category="all"
+      >
+        ALL
+      </button>
+
+      <button
+        class="filter"
+        data-category="mastercard"
+      >
+        MASTERCARD
+      </button>
+
+      <button
+        class="filter"
+        data-category="visa"
+      >
+        VISA
+      </button>
+
+      <button
+        class="filter"
+        data-category="rupay"
+      >
+        RUPAY
+      </button>
+
+      <button
+        class="filter"
+        data-category="amex"
+      >
+        AMEX
+      </button>
+    </div>
+
+    <div class="count" id="count">
+      LOADING...
+    </div>
+
+  </section>
+
+  <section
+    class="products"
+    id="products"
+  >
+    <div class="loading">
+      CONNECTING TO PRODUCT NODE...
+    </div>
+  </section>
+
+  <footer class="footer">
+    NEXVORA CC TERMINAL // MARKETPLACE NODE
+  </footer>
+
+</main>
+
+<script>
+const SUPABASE_URL =
+  "https://ccxuowtyrscobhzqener.supabase.co";
+
+let allProducts = [];
+let activeCategory = "all";
+
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+function getProductCategory(product) {
+  const value = (
+    product.category ||
+    product.type ||
+    product.brand ||
+    ""
+  ).toString().trim().toLowerCase();
+
+  if (value.includes("master")) return "mastercard";
+  if (value.includes("visa")) return "visa";
+  if (value.includes("rupay")) return "rupay";
+  if (
+    value.includes("amex") ||
+    value.includes("american")
+  ) return "amex";
+
+  return value || "other";
+}
+
+
+function getProductPrice(product) {
+  const value =
+    product.price ??
+    product.amount ??
+    product.sale_price ??
+    0;
+
+  const number = Number(value);
+
+  return Number.isFinite(number)
+    ? number
+    : 0;
+}
+
+
+function createMockCard(product) {
+  const brand =
+    product.brand ||
+    product.card_brand ||
+    product.category ||
+    "NEXVORA";
+
+  return `
+    <div class="mock-card">
+
+      <div class="mock-brand">
+        ${escapeHTML(brand)}
+      </div>
+
+      <div class="chip"></div>
+
+      <div class="masked">
+        •••• •••• •••• 0000
+      </div>
+
+      <div class="tap">
+        MASKED / DEMO DATA
+      </div>
+
+    </div>
+  `;
+}
+
+
+function createProductCard(product) {
+
+  const id =
+    product.id ??
+    product.product_id ??
+    "";
+
+  const name =
+    product.name ||
+    product.product_name ||
+    "Unnamed Product";
+
+  const category =
+    getProductCategory(product);
+
+  const price =
+    getProductPrice(product);
+
+  const description =
+    product.description ||
+    "Product details available in the marketplace.";
+
+  const image =
+    product.image_url ||
+    product.image ||
+    product.thumbnail ||
+    "";
+
+  const visual = image
+    ? `
+      <img
+        src="${escapeHTML(image)}"
+        alt="${escapeHTML(name)}"
+        loading="lazy"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+      >
+      <div
+        class="mock-card-fallback"
+        style="display:none;width:100%;height:100%;align-items:center;justify-content:center;"
+      >
+        ${createMockCard(product)}
+      </div>
+    `
+    : createMockCard(product);
+
+  return `
+    <article
+      class="product"
+      data-category="${escapeHTML(category)}"
+    >
+
+      <div class="visual">
+        ${visual}
+      </div>
+
+      <div class="info">
+
+        <div>
+          <div class="name">
+            ${escapeHTML(name)}
+          </div>
+
+          <div class="category">
+            ${escapeHTML(category.toUpperCase())}
+          </div>
+        </div>
+
+        <div class="price">
+          ₹${price.toFixed(2)}
+        </div>
+
+      </div>
+
+      <div class="description">
+        ${escapeHTML(description)}
+      </div>
+
+      <button
+        class="buy"
+        type="button"
+        onclick='buyProduct(${JSON.stringify({
+          id,
+          name,
+          category,
+          price
+        })})'
+      >
+        BUY NOW
+      </button>
+
+    </article>
+  `;
+}
+
+
+function renderProducts() {
+
+  const container =
+    document.getElementById("products");
+
+  const count =
+    document.getElementById("count");
+
+  const filtered =
+    activeCategory === "all"
+      ? allProducts
+      : allProducts.filter(
+          product =>
+            getProductCategory(product) ===
+            activeCategory
+        );
+
+  if (count) {
+    count.textContent =
+      `${filtered.length} ITEM${filtered.length === 1 ? "" : "S"} FOUND`;
+  }
+
+  if (!filtered.length) {
+
+    container.innerHTML = `
+      <div class="empty">
+        NO PRODUCTS AVAILABLE IN THIS CATEGORY
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML =
+    filtered.map(createProductCard).join("");
+}
+
+
+async function loadProducts() {
+
+  const container =
+    document.getElementById("products");
+
+  try {
+
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/products?select=*`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Product request failed: ${response.status}`
+      );
+    }
+
+    const data =
+      await response.json();
+
+    if (!Array.isArray(data)) {
+      throw new Error(
+        "Invalid product response"
+      );
+    }
+
+    allProducts = data;
+
+    renderProducts();
+
+  } catch (error) {
+
+    console.error(
+      "Marketplace error:",
+      error
+    );
+
+    container.innerHTML = `
+      <div class="error">
+        PRODUCT NODE CONNECTION FAILED
+        <br><br>
+        PLEASE TRY AGAIN LATER
+      </div>
+    `;
+
+    document.getElementById("count").textContent =
+      "CONNECTION ERROR";
+  }
+}
+
+
+function buyProduct(product) {
+
+  if (!product || !product.id) {
+    alert("PRODUCT ID NOT AVAILABLE");
+    return;
+  }
+
+  /*
+    Only non-sensitive product information is
+    passed to the payment page.
+  */
+
+  const params = new URLSearchParams({
+    product_id: String(product.id),
+    product_name: String(product.name || ""),
+    category: String(product.category || ""),
+    amount: String(product.price || 0)
+  });
+
+  window.location.href =
+    `payment.html?${params.toString()}`;
+}
+
+
+document
+  .querySelectorAll(".filter")
+  .forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      document
+        .querySelectorAll(".filter")
+        .forEach(item =>
+          item.classList.remove("active")
+        );
+
+      button.classList.add("active");
+
+      activeCategory =
+        button.dataset.category || "all";
+
+      renderProducts();
+
+    });
+
+  });
+
+
+loadProducts();
+</script>
+
+</body>
+</html>
