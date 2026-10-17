@@ -358,30 +358,50 @@
   </main>
 
   <script>
-    function verifyKey() {
-      const input = document.getElementById("accessKey");
-      const message = document.getElementById("message");
+    async function verifyKey() {
+  const input = document.getElementById("accessKey");
+  const key = input ? input.value.trim().toUpperCase() : "";
 
-      const key = input.value.trim();
+  if (!key) {
+    alert("ENTER ACCESS KEY");
+    return;
+  }
 
-      if (!key) {
-        message.textContent = "ERROR: ACCESS KEY REQUIRED";
-        message.style.color = "#ff5f5f";
-        return;
+  const SUPABASE_URL = "https://ccxuowtyrscobhzqener.supabase.co";
+  const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/verify_access_key`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+        },
+        body: JSON.stringify({
+          p_key: key
+        })
       }
+    );
 
-      message.textContent = "VERIFYING ACCESS KEY...";
-      message.style.color = "#00ff88";
+    const result = await response.json();
 
-      /*
-        REAL KEY VERIFICATION SUPABASE SE CONNECT HOGA.
-        Abhi sirf frontend screen ready ki ja rahi hai.
-      */
+    if (!response.ok) {
+      throw new Error("Verification failed");
+    }
 
-      setTimeout(() => {
-        message.textContent = "ACCESS SYSTEM NOT CONNECTED YET";
-        message.style.color = "#7aa58f";
-      }, 900);
+    if (result === true || result?.valid === true || result?.success === true) {
+      alert("ACCESS GRANTED");
+      // Marketplace/dashboard connection will be added in the next step.
+    } else {
+      alert("INVALID OR INACTIVE ACCESS KEY");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("ACCESS VERIFICATION ERROR");
+  }
     }
 
     function getKey() {
