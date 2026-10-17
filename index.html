@@ -21,6 +21,7 @@
       --border: rgba(0, 255, 136, 0.25);
       --text: #e9fff4;
       --muted: #7aa58f;
+      --red: #ff4d5f;
     }
 
     body {
@@ -29,12 +30,19 @@
       font-family: "Courier New", monospace;
       color: var(--text);
       background:
-        radial-gradient(circle at 50% 45%, rgba(0, 255, 136, 0.10), transparent 28%),
-        radial-gradient(circle at 10% 10%, rgba(0, 255, 136, 0.06), transparent 25%),
+        radial-gradient(
+          circle at 50% 45%,
+          rgba(0, 255, 136, 0.10),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 10% 10%,
+          rgba(0, 255, 136, 0.06),
+          transparent 25%
+        ),
         #020504;
     }
 
-    /* Background grid */
     body::before {
       content: "";
       position: fixed;
@@ -42,14 +50,23 @@
       pointer-events: none;
       opacity: 0.28;
       background-image:
-        linear-gradient(rgba(0,255,136,0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,255,136,0.045) 1px, transparent 1px);
+        linear-gradient(
+          rgba(0,255,136,0.045) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(0,255,136,0.045) 1px,
+          transparent 1px
+        );
       background-size: 38px 38px;
-      transform: perspective(500px) rotateX(60deg) scale(1.5);
+      transform:
+        perspective(500px)
+        rotateX(60deg)
+        scale(1.5);
       transform-origin: bottom;
     }
 
-    /* Scanlines */
     body::after {
       content: "";
       position: fixed;
@@ -203,6 +220,12 @@
       transition: 0.22s ease;
     }
 
+    button:disabled {
+      opacity: 0.55;
+      cursor: wait;
+      transform: none !important;
+    }
+
     .verify-btn {
       border: 1px solid var(--green);
       background: rgba(0,255,136,0.09);
@@ -210,7 +233,7 @@
       box-shadow: 0 0 15px rgba(0,255,136,0.06);
     }
 
-    .verify-btn:hover {
+    .verify-btn:hover:not(:disabled) {
       background: var(--green);
       color: #001b0d;
       box-shadow: 0 0 25px rgba(0,255,136,0.35);
@@ -334,18 +357,32 @@
           placeholder="ENTER ACCESS KEY"
           autocomplete="off"
           spellcheck="false"
+          maxlength="30"
         >
       </div>
 
-      <button class="verify-btn" onclick="verifyKey()">
+      <button
+        id="verifyButton"
+        class="verify-btn"
+        type="button"
+        onclick="verifyKey()"
+      >
         VERIFY
       </button>
 
-      <button class="get-key" onclick="getKey()">
+      <button
+        class="get-key"
+        type="button"
+        onclick="getKey()"
+      >
         GET KEY
       </button>
 
-      <div class="message" id="message">
+      <div
+        class="message"
+        id="message"
+        aria-live="polite"
+      >
         ACCESS CONTROLLED • AUTHORIZATION REQUIRED
       </div>
 
@@ -358,69 +395,160 @@
   </main>
 
   <script>
-    async function verifyKey() {
-  const input = document.getElementById("accessKey");
-  const key = input ? input.value.trim().toUpperCase() : "";
+    const SUPABASE_URL =
+      "https://ccxuowtyrscobhzqener.supabase.co";
 
-  if (!key) {
-    alert("ENTER ACCESS KEY");
-    return;
-  }
+    const TELEGRAM_BOT_URL =
+      "https://t.me/NexvoraCCTerminalBot";
 
-  const SUPABASE_URL = "https://ccxuowtyrscobhzqener.supabase.co";
-  const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
 
-  try {
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/rpc/verify_access_key`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
-        },
-        body: JSON.stringify({
-          p_key: key
-        })
-      }
-    );
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error("Verification failed");
-    }
-
-    if (result === true || result?.valid === true || result?.success === true) {
-      alert("ACCESS GRANTED");
-      // Marketplace/dashboard connection will be added in the next step.
-    } else {
-      alert("INVALID OR INACTIVE ACCESS KEY");
-    }
-  } catch (error) {
-    console.error(error);
-    alert("ACCESS VERIFICATION ERROR");
-  }
-    }
-
-    function getKey() {
-      /*
-        Yahan baad mein tumhare Telegram Bot ka link connect hoga.
-        Example:
-        window.location.href = "YOUR_TELEGRAM_BOT_LINK";
-      */
-
+    function setMessage(text, type = "normal") {
       const message = document.getElementById("message");
 
-      message.textContent = "OPENING KEY REQUEST SYSTEM...";
-      message.style.color = "#00ff88";
+      if (!message) return;
 
-      setTimeout(() => {
-        message.textContent = "TELEGRAM BOT WILL BE CONNECTED IN THE NEXT STEP";
-      }, 800);
+      message.textContent = text;
+
+      if (type === "success") {
+        message.style.color = "#00ff88";
+      } else if (type === "error") {
+        message.style.color = "#ff4d5f";
+      } else {
+        message.style.color = "#7aa58f";
+      }
     }
+
+
+    async function verifyKey() {
+      const input = document.getElementById("accessKey");
+      const button = document.getElementById("verifyButton");
+
+      const key = input
+        ? input.value.trim().toUpperCase()
+        : "";
+
+      if (!key) {
+        setMessage(
+          "ERROR: ACCESS KEY REQUIRED",
+          "error"
+        );
+        input?.focus();
+        return;
+      }
+
+      setMessage(
+        "VERIFYING ACCESS KEY...",
+        "normal"
+      );
+
+      if (button) {
+        button.disabled = true;
+        button.textContent = "VERIFYING...";
+      }
+
+      try {
+        const response = await fetch(
+          `${SUPABASE_URL}/rest/v1/rpc/verify_access_key_public`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              p_key: key
+            })
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `HTTP ${response.status}`
+          );
+        }
+
+        const valid = await response.json();
+
+        if (valid === true) {
+
+          setMessage(
+            "ACCESS GRANTED • OPENING MARKETPLACE...",
+            "success"
+          );
+
+          /*
+            Small delay so the user can see
+            the successful authorization message.
+          */
+          setTimeout(() => {
+            window.location.href =
+              "marketplace.html";
+          }, 700);
+
+        } else {
+
+          setMessage(
+            "INVALID OR INACTIVE ACCESS KEY",
+            "error"
+          );
+
+          if (input) {
+            input.select();
+          }
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Access verification error:",
+          error
+        );
+
+        setMessage(
+          "ACCESS VERIFICATION ERROR • TRY AGAIN",
+          "error"
+        );
+
+      } finally {
+
+        if (button) {
+          button.disabled = false;
+          button.textContent = "VERIFY";
+        }
+      }
+    }
+
+
+    function getKey() {
+      setMessage(
+        "OPENING KEY REQUEST SYSTEM...",
+        "success"
+      );
+
+      /*
+        Opens the official NEXVORA CC TERMINAL
+        Telegram bot.
+      */
+      setTimeout(() => {
+        window.location.href =
+          TELEGRAM_BOT_URL;
+      }, 350);
+    }
+
+
+    /*
+      ENTER KEY = VERIFY
+    */
+    document
+      .getElementById("accessKey")
+      ?.addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+          event.preventDefault();
+          verifyKey();
+        }
+
+      });
   </script>
 
 </body>
-  </html>
+</html>
