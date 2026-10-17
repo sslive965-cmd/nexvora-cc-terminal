@@ -395,8 +395,18 @@
   </main>
 
   <script>
+    /*
+      NEXVORA CC TERMINAL
+      Supabase public configuration.
+
+      This is a publishable frontend key.
+      Never put a Supabase service-role key here.
+    */
     const SUPABASE_URL =
       "https://ccxuowtyrscobhzqener.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_h7wZAcc0HsCq8DLUdDa4dw_3hBthOLY";
 
     const TELEGRAM_BOT_URL =
       "https://t.me/NexvoraCCTerminalBot";
@@ -432,6 +442,7 @@
           "ERROR: ACCESS KEY REQUIRED",
           "error"
         );
+
         input?.focus();
         return;
       }
@@ -451,9 +462,18 @@
           `${SUPABASE_URL}/rest/v1/rpc/verify_access_key_public`,
           {
             method: "POST",
+
+            /*
+              IMPORTANT:
+              Supabase REST RPC requires the
+              publishable/anon API key in the
+              apikey header.
+            */
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
+              "apikey": SUPABASE_KEY
             },
+
             body: JSON.stringify({
               p_key: key
             })
