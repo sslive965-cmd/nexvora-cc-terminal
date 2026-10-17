@@ -13,7 +13,7 @@
 <div class="logo">NEXVORA CC TERMINAL</div><div class="sub">SECURE ADMIN ACCESS</div>
 <label>EMAIL</label><input id="loginEmail" type="email" autocomplete="username">
 <label>PASSWORD</label><input id="loginPassword" type="password" autocomplete="current-password">
-<button class="primary" onclick="login()">LOGIN</button><div id="loginMsg" class="msg"></div>
+<button id="loginButton" class="primary" type="button">LOGIN</button><div id="loginMsg" class="msg"></div>
 </div></div>
 
 <div id="adminApp">
@@ -217,6 +217,9 @@ async function loadKeys(){let {data,error}=await db.from("access_keys").select("
 async function loadSettings(){let {data}=await db.from("site_settings").select("*").limit(1).maybeSingle();if(!data)return;$("ssn").value=data.site_name||"";$("sss").value=data.support_username||"";$("ssu").value=data.support_url||"";$("ssb").value=data.telegram_bot_url||"";$("ssc").value=data.telegram_channel_url||"";$("ssupi").value=data.upi_id||"";$("ssqr").value=data.payment_qr_url||"";$("ssp").value=data.access_price??"";$("ssi").value=data.information_text||""}
 async function saveSettings(){let {data:e}=await db.from("site_settings").select("id").limit(1).maybeSingle();if(!e)return msg("sm","Settings row not found.","error");let payload={site_name:$("ssn").value.trim(),support_username:$("sss").value.trim(),support_url:$("ssu").value.trim(),telegram_bot_url:$("ssb").value.trim(),telegram_channel_url:$("ssc").value.trim(),upi_id:$("ssupi").value.trim(),payment_qr_url:$("ssqr").value.trim(),access_price:Number($("ssp").value||0),information_text:$("ssi").value.trim(),updated_at:new Date().toISOString()};let {error}=await db.from("site_settings").update(payload).eq("id",e.id);if(error)return msg("sm",error.message,"error");msg("sm","Settings saved successfully.","success")}
 async function loadTelegram(){let {data,error}=await db.from("telegram_channels").select("*").order("sort_order",{ascending:true});if(error)return $("tl").innerHTML=`<div class="item">${esc(error.message)}</div>`;$("tl").innerHTML=(data||[]).map(c=>`<div class="item"><div class="item-title">${esc(c.title||"Telegram")}</div><small>${esc(c.channel_username||"Group")}</small><small>${esc(c.channel_url||"—")}</small><small>Required: ${c.is_required?"YES":"NO"} • Active: ${c.is_active?"YES":"NO"}</small></div>`).join("")||'<div class="item">No Telegram channels configured.</div>'}
+document.getElementById("loginButton").addEventListener("click", function () {
+  login();
+});
 session();
 </script>
 </body></html>
