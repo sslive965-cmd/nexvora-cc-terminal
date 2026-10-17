@@ -1,505 +1,344 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>NEXVORA CC TERMINAL — Order</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top, rgba(0,255,120,.08), transparent 35%),
-        #020504;
-      color: #d8ffe8;
-      padding: 20px;
-    }
-
-    .wrap {
-      width: 100%;
-      max-width: 620px;
-      margin: auto;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 22px;
-    }
-
-    .logo {
-      color: #00ff73;
-      font-size: 26px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      text-shadow: 0 0 15px rgba(0,255,115,.45);
-    }
-
-    .sub {
-      margin-top: 7px;
-      color: #7fa991;
-      font-size: 13px;
-    }
-
-    .card {
-      background: rgba(5,14,10,.94);
-      border: 1px solid rgba(0,255,115,.25);
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: 0 0 30px rgba(0,255,115,.05);
-    }
-
-    .title {
-      color: #00ff73;
-      font-size: 17px;
-      font-weight: 800;
-      margin-bottom: 15px;
-    }
-
-    .product {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 15px;
-      border-radius: 13px;
-      background: rgba(0,255,115,.04);
-      border: 1px solid rgba(0,255,115,.13);
-    }
-
-    .product-name {
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .category {
-      color: #71947f;
-      font-size: 12px;
-      margin-top: 5px;
-    }
-
-    .price {
-      color: #00ff73;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    label {
-      display: block;
-      color: #8eae9b;
-      font-size: 12px;
-      margin-bottom: 7px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 11px;
-      border: 1px solid rgba(0,255,115,.25);
-      background: #020705;
-      color: #fff;
-      outline: none;
-      margin-bottom: 15px;
-    }
-
-    input:focus {
-      border-color: #00ff73;
-      box-shadow: 0 0 12px rgba(0,255,115,.12);
-    }
-
-    .notice {
-      border: 1px solid rgba(255,193,7,.25);
-      background: rgba(255,193,7,.05);
-      color: #d9c989;
-      border-radius: 12px;
-      padding: 13px;
-      font-size: 12px;
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-
-    .safe {
-      border: 1px solid rgba(0,255,115,.2);
-      background: rgba(0,255,115,.035);
-      color: #9bc7aa;
-      border-radius: 12px;
-      padding: 13px;
-      font-size: 12px;
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-
-    button {
-      width: 100%;
-      border: 0;
-      border-radius: 12px;
-      padding: 15px;
-      background: #00ff73;
-      color: #001b0b;
-      font-weight: 900;
-      cursor: pointer;
-      font-size: 14px;
-      box-shadow: 0 0 18px rgba(0,255,115,.15);
-    }
-
-    button:hover {
-      filter: brightness(1.08);
-    }
-
-    button:disabled {
-      opacity: .55;
-      cursor: not-allowed;
-    }
-
-    .secondary {
-      margin-top: 10px;
-      background: transparent;
-      color: #00ff73;
-      border: 1px solid rgba(0,255,115,.3);
-      box-shadow: none;
-    }
-
-    .status {
-      display: none;
-      margin-top: 15px;
-      padding: 13px;
-      border-radius: 11px;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .status.success {
-      display: block;
-      color: #8dffb9;
-      background: rgba(0,255,115,.06);
-      border: 1px solid rgba(0,255,115,.25);
-    }
-
-    .status.error {
-      display: block;
-      color: #ff9999;
-      background: rgba(255,60,60,.06);
-      border: 1px solid rgba(255,60,60,.25);
-    }
-
-    .order-box {
-      display: none;
-      margin-top: 15px;
-      text-align: center;
-      padding: 18px;
-      border-radius: 13px;
-      border: 1px solid rgba(0,255,115,.22);
-      background: rgba(0,255,115,.035);
-    }
-
-    .order-label {
-      color: #779786;
-      font-size: 11px;
-      margin-bottom: 7px;
-    }
-
-    .order-id {
-      color: #00ff73;
-      font-size: 23px;
-      font-weight: 900;
-      letter-spacing: 2px;
-    }
-
-    .small {
-      color: #63806e;
-      font-size: 11px;
-      text-align: center;
-      margin-top: 18px;
-      line-height: 1.5;
-    }
-
-    a {
-      color: #00ff73;
-      text-decoration: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEXVORA CC TERMINAL — Payment</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
+body{min-height:100vh;background:radial-gradient(circle at top,rgba(0,255,120,.08),transparent 35%),#020504;color:#d8ffe8;padding:20px}
+.wrap{max-width:620px;margin:auto}
+.header{text-align:center;margin:12px 0 22px}
+.logo{color:#00ff73;font-size:25px;font-weight:900;letter-spacing:2px;text-shadow:0 0 15px #00ff7340}
+.sub{margin-top:7px;color:#7fa991;font-size:12px}
+.card{background:rgba(5,14,10,.94);border:1px solid #00ff733d;border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 0 30px #00ff730d}
+.title{color:#00ff73;font-size:16px;font-weight:800;margin-bottom:15px}
+.product{display:flex;justify-content:space-between;gap:12px;padding:14px;border-radius:12px;background:#00ff730a;border:1px solid #00ff7320}
+.name{font-weight:800;color:#fff}
+.muted{color:#71947f;font-size:12px;margin-top:6px}
+.price{color:#00ff73;font-weight:900;white-space:nowrap}
+label{display:block;color:#8eae9b;font-size:12px;margin:14px 0 7px}
+input{width:100%;padding:13px;border-radius:10px;border:1px solid #00ff7340;background:#020705;color:#fff;outline:none}
+input:focus{border-color:#00ff73}
+button{width:100%;border:0;border-radius:11px;padding:14px;background:#00ff73;color:#001b0b;font-weight:900;cursor:pointer;font-size:13px;margin-top:12px}
+button:disabled{opacity:.55;cursor:not-allowed}
+.secondary{background:transparent;color:#00ff73;border:1px solid #00ff734d}
+.notice,.message{border-radius:11px;padding:12px;font-size:12px;line-height:1.6;margin-top:13px}
+.notice{border:1px solid #ffc10740;background:#ffc1070b;color:#d9c989}
+.message{display:none;overflow-wrap:anywhere}
+.qr{display:block;width:220px;height:220px;max-width:100%;object-fit:contain;background:#fff;border-radius:12px;padding:8px;margin:14px auto}
+.center{text-align:center}
+.upi{color:#fff;font-weight:800;word-break:break-word;margin:8px 0}
+.hidden{display:none!important}
+.small{color:#63806e;font-size:11px;text-align:center;line-height:1.6;margin-top:16px}
+a{color:#00ff73;text-decoration:none}
+</style>
 </head>
-
 <body>
-
 <div class="wrap">
-
-  <div class="header">
+  <header class="header">
     <div class="logo">NEXVORA CC TERMINAL</div>
-    <div class="sub">Secure Order Request</div>
-  </div>
+    <div class="sub">SECURE PAYMENT TERMINAL</div>
+  </header>
 
-  <div class="card">
-
+  <section class="card">
     <div class="title">ORDER DETAILS</div>
-
     <div class="product">
       <div>
-        <div class="product-name" id="productName">Loading...</div>
-        <div class="category" id="productCategory">—</div>
+        <div class="name" id="productName">Loading product...</div>
+        <div class="muted" id="productCategory">Please wait</div>
       </div>
-
-      <div class="price" id="productPrice">₹0</div>
+      <div class="price" id="productPrice">₹—</div>
     </div>
+  </section>
 
-  </div>
-
-  <div class="card">
-
+  <section class="card" id="emailSection">
     <div class="title">CUSTOMER INFORMATION</div>
+    <label for="email">Email address</label>
+    <input id="email" type="email" autocomplete="email" placeholder="Enter your email" required>
+    <button id="continueBtn" type="button">CONTINUE TO PAYMENT</button>
+    <button class="secondary" type="button" onclick="location.href='marketplace.html'">← BACK TO MARKETPLACE</button>
+  </section>
 
-    <label for="email">Email Address</label>
-    <input
-      id="email"
-      type="email"
-      placeholder="Enter your email"
-      autocomplete="email"
-    >
-
-    <div class="safe">
-      <b>Order verification:</b><br>
-      This step only creates a verification-pending order request.
-      No payment is marked as successful automatically.
+  <section class="card hidden" id="paymentSection">
+    <div class="title">PAYMENT DETAILS</div>
+    <div class="center">
+      <div class="muted">PAY EXACTLY THIS AMOUNT</div>
+      <div class="price" style="font-size:28px;margin:8px 0" id="payAmount">₹—</div>
+      <img class="qr" id="dynamicQr" alt="UPI QR code">
+      <div class="muted">Scan the QR code using your UPI app</div>
+      <div class="upi" id="upiText">jinwoo40054@kphdfc</div>
+      <button type="button" id="upiBtn">PAY VIA UPI APP</button>
+      <button type="button" class="secondary" id="verifyBtn">VERIFY TRANSACTION LEDGER</button>
     </div>
+    <div class="notice">Payment proof submit karne se payment automatically verified nahi hota. Admin transaction check karega. Payment karne se pehle UPI app mein receiver aur amount check karein.</div>
+  </section>
 
-    <div class="notice">
-      For safety, this page does not collect or process card credentials,
-      UTR numbers, payment screenshots, or claim that a payment has been verified.
+  <section class="card hidden" id="proofSection">
+    <div class="title">SUBMIT PAYMENT PROOF</div>
+    <label for="utr">UTR / Transaction Reference</label>
+    <input id="utr" type="text" maxlength="64" placeholder="Enter transaction UTR">
+    <label for="screenshot">Payment screenshot (JPG, PNG or WebP; max 5 MB)</label>
+    <input id="screenshot" type="file" accept="image/jpeg,image/png,image/webp">
+    <button type="button" id="submitBtn">SUBMIT PROOF & GENERATE ORDER ID</button>
+    <div class="notice">Sirf apne actual transaction ka proof upload karein. Order admin verification tak pending rahega.</div>
+  </section>
+
+  <section class="card hidden" id="successSection">
+    <div class="title">ORDER REQUEST RECEIVED</div>
+    <div class="center">
+      <div class="muted">YOUR ORDER ID</div>
+      <div class="price" id="finalOrderId" style="font-size:24px;margin:10px 0">—</div>
+      <div class="muted" id="countdown">Opening tracking in 15 seconds…</div>
+      <button type="button" id="trackNowBtn">TRACK ORDER NOW</button>
     </div>
+    <div class="notice">Status: Verification Pending. Payment verification and delivery require admin review.</div>
+  </section>
 
-    <button id="createBtn" onclick="createOrder()">
-      CREATE ORDER REQUEST
-    </button>
-
-    <button class="secondary" onclick="goBack()">
-      ← BACK TO MARKETPLACE
-    </button>
-
-    <div id="status" class="status"></div>
-
-    <div id="orderBox" class="order-box">
-      <div class="order-label">YOUR ORDER ID</div>
-      <div id="orderId" class="order-id">—</div>
-      <div class="small">
-        Keep this Order ID for tracking your request.
-      </div>
-    </div>
-
-  </div>
-
-  <div class="small">
-    NEXVORA CC TERMINAL<br>
-    Order status is controlled by the verification system.
-  </div>
-
+  <div class="message" id="message" role="status"></div>
+  <div class="small">NEXVORA CC TERMINAL<br>Never share passwords, OTPs or card security details.</div>
 </div>
 
 <script>
-  const SUPABASE_URL =
-    "https://ccxuowtyrscobhzqener.supabase.co";
+"use strict";
 
-  const SUPABASE_ANON_KEY =
-  "sb_publishable_h7wZAcc0HsCq8DLUdDa4dw_3hBthOLY";
+const SUPABASE_URL = "https://ccxuowtyrscobhzqener.supabase.co";
+const SUPABASE_KEY = "sb_publishable_h7wZAcc0HsCq8DLUdDa4dw_3hBthOLY";
+const UPI_ID = "jinwoo40054@kphdfc";
+const UPI_NAME = "NEXVORA";
+const BUCKET = "payment-screenshots";
 
-  const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(location.search);
+const productId = params.get("product_id") || "";
+let product = null;
+let customerEmail = "";
+let finalOrder = null;
+let countdownTimer = null;
 
-  const productId =
-    params.get("product_id") || "";
+const $ = id => document.getElementById(id);
 
-  const productName =
-    params.get("product_name") || "Selected Product";
+function message(text, type="info") {
+  const el = $("message");
+  el.textContent = text;
+  el.style.display = "block";
+  el.style.color = type === "error" ? "#ff9999" : "#8dffb9";
+  el.style.border = type === "error"
+    ? "1px solid #ff555540" : "1px solid #00ff7340";
+  el.style.background = type === "error" ? "#ff33330b" : "#00ff730b";
+}
 
-  const category =
-    params.get("category") || "—";
-
-  const amount =
-    Number(params.get("amount") || 0);
-
-  document.getElementById("productName").textContent =
-    productName;
-
-  document.getElementById("productCategory").textContent =
-    category;
-
-  document.getElementById("productPrice").textContent =
-    "₹" + amount.toFixed(2);
-
-
-  function generateOrderId() {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let code = "";
-
-    for (let i = 0; i < 6; i++) {
-      code += chars[Math.floor(Math.random() * chars.length)];
+async function supabase(path, options={}) {
+  const response = await fetch(SUPABASE_URL + path, {
+    ...options,
+    headers: {
+      "apikey": SUPABASE_KEY,
+      "Authorization": "Bearer " + SUPABASE_KEY,
+      ...(options.headers || {})
     }
+  });
+  const raw = await response.text();
+  let data;
+  try { data = raw ? JSON.parse(raw) : null; }
+  catch { data = raw; }
+  if (!response.ok) {
+    throw new Error(data?.message || data?.error_description ||
+      data?.error || "Supabase request failed (" + response.status + ").");
+  }
+  return data;
+}
 
-    return "NXU-" + code;
+async function loadProduct() {
+  if (!productId) throw new Error("Product ID missing. Please return to marketplace.");
+  const rows = await supabase(
+    "/rest/v1/products?select=id,name,brand,network,price,available&id=eq." +
+    encodeURIComponent(productId) + "&available=eq.true&limit=1"
+  );
+  if (!Array.isArray(rows) || !rows.length) {
+    throw new Error("Product unavailable. Please return to marketplace.");
+  }
+  product = rows[0];
+  const amount = Number(product.price);
+  if (!Number.isFinite(amount) || amount <= 0) {
+    throw new Error("This product has an invalid price. Please contact support.");
+  }
+  $("productName").textContent = product.name || "Selected Product";
+  $("productCategory").textContent = product.brand || product.network || "NEXVORA Product";
+  $("productPrice").textContent = "₹" + amount.toFixed(2);
+  $("payAmount").textContent = "₹" + amount.toFixed(2);
+}
+
+function makeUpiUri() {
+  const amount = Number(product.price).toFixed(2);
+  const note = "NEXVORA " + String(product.name || "Order").slice(0, 60);
+  const query = new URLSearchParams({
+    pa: UPI_ID,
+    pn: UPI_NAME,
+    am: amount,
+    cu: "INR",
+    tn: note
+  });
+  return "upi://pay?" + query.toString();
+}
+
+function setupPayment() {
+  const uri = makeUpiUri();
+  $("upiText").textContent = UPI_ID;
+  // QR image encodes the UPI payment URI including the selected amount.
+  $("dynamicQr").src =
+    "https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=" +
+    encodeURIComponent(uri);
+  $("dynamicQr").onerror = () => {
+    message("Dynamic QR load nahi hua. UPI app button try karein ya support se contact karein.", "error");
+  };
+  $("upiBtn").onclick = () => {
+    location.href = uri;
+  };
+}
+
+$("continueBtn").addEventListener("click", () => {
+  customerEmail = $("email").value.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
+    message("Please enter a valid email address.", "error");
+    $("email").focus();
+    return;
+  }
+  $("emailSection").classList.add("hidden");
+  $("paymentSection").classList.remove("hidden");
+  setupPayment();
+  message("Product and price loaded from the live product record.");
+});
+
+$("verifyBtn").addEventListener("click", () => {
+  $("proofSection").classList.remove("hidden");
+  $("proofSection").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+$("submitBtn").addEventListener("click", async () => {
+  if (!product || !customerEmail) {
+    message("Product or email information missing. Reload and try again.", "error");
+    return;
   }
 
-
-  function showStatus(message, type) {
-    const box = document.getElementById("status");
-
-    box.className = "status " + type;
-    box.textContent = message;
+  const utr = $("utr").value.trim();
+  const file = $("screenshot").files[0];
+  if (utr.length < 6 || utr.length > 64) {
+    message("Enter a valid UTR / transaction reference.", "error");
+    return;
+  }
+  if (!file) {
+    message("Please choose your payment screenshot.", "error");
+    return;
+  }
+  const allowed = ["image/jpeg", "image/png", "image/webp"];
+  if (!allowed.includes(file.type)) {
+    message("Use a JPG, PNG or WebP screenshot.", "error");
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    message("Screenshot must be 5 MB or smaller.", "error");
+    return;
   }
 
+  const btn = $("submitBtn");
+  btn.disabled = true;
+  btn.textContent = "UPLOADING & SUBMITTING…";
 
-  async function createOrder() {
+  try {
+    const folder = crypto.randomUUID();
+    const safeName = file.name.replace(/[^A-Za-z0-9._-]/g, "_").slice(-100) || "proof.png";
+    const path = folder + "/" + Date.now() + "-" + safeName;
 
-    const emailInput =
-      document.getElementById("email");
-
-    const email =
-      emailInput.value.trim().toLowerCase();
-
-    const button =
-      document.getElementById("createBtn");
-
-    if (!email) {
-      showStatus(
-        "Please enter your email address.",
-        "error"
-      );
-      emailInput.focus();
-      return;
-    }
-
-    if (!email.includes("@")) {
-      showStatus(
-        "Please enter a valid email address.",
-        "error"
-      );
-      emailInput.focus();
-      return;
-    }
-
-    if (!productName || productName === "Selected Product") {
-      showStatus(
-        "Product information is missing. Please return to the marketplace.",
-        "error"
-      );
-      return;
-    }
-
-    if (!Number.isFinite(amount) || amount < 0) {
-      showStatus(
-        "Invalid product amount.",
-        "error"
-      );
-      return;
-    }
-
-    button.disabled = true;
-    button.textContent = "CREATING ORDER...";
-
-    const orderId = generateOrderId();
-
-    try {
-
-      const response = await fetch(
-        SUPABASE_URL +
-        "/rest/v1/rpc/create_public_order",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-            "apikey": SUPABASE_ANON_KEY,
-            "Authorization":
-              "Bearer " + SUPABASE_ANON_KEY
-          },
-
-          body: JSON.stringify({
-            p_order_id: orderId,
-            p_product_id:
-              productId || null,
-            p_product_name:
-              productName,
-            p_amount:
-              amount,
-            p_customer_email:
-              email
-          })
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.message ||
-          data.error ||
-          "Unable to create order."
-        );
+    const upload = await fetch(
+      SUPABASE_URL + "/storage/v1/object/" + BUCKET + "/" +
+      path.split("/").map(encodeURIComponent).join("/"),
+      {
+        method: "POST",
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Authorization": "Bearer " + SUPABASE_KEY,
+          "Content-Type": file.type,
+          "x-upsert": "false"
+        },
+        body: file
       }
-
-      document.getElementById("orderId").textContent =
-        orderId;
-
-      document.getElementById("orderBox").style.display =
-        "block";
-
-      showStatus(
-        "Order request created successfully. Status: Verification Pending.",
-        "success"
-      );
-
-      button.textContent =
-        "ORDER CREATED";
-
-      button.disabled = true;
-
-      /*
-       * Save only non-sensitive tracking information
-       * locally for the current browser session.
-       */
-      sessionStorage.setItem(
-        "nexvora_last_order",
-        JSON.stringify({
-          order_id: orderId,
-          email: email
-        })
-      );
-
-      setTimeout(() => {
-
-        window.location.href =
-          "track.html?order_id=" +
-          encodeURIComponent(orderId) +
-          "&email=" +
-          encodeURIComponent(email);
-
-      }, 2500);
-
-    } catch (error) {
-
-      console.error(error);
-
-      showStatus(
-        error.message ||
-        "Something went wrong while creating the order.",
-        "error"
-      );
-
-      button.disabled = false;
-      button.textContent =
-        "CREATE ORDER REQUEST";
+    );
+    if (!upload.ok) {
+      const body = await upload.text();
+      let detail = body;
+      try { detail = JSON.parse(body).message || JSON.parse(body).error || body; } catch {}
+      throw new Error("Screenshot upload failed: " + detail);
     }
-  }
 
+    // This backend function reads the authoritative product name and price
+    // and creates the order only when the proof is submitted.
+    const rows = await supabase("/rest/v1/rpc/submit_public_payment_proof", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        p_product_id: product.id,
+        p_customer_email: customerEmail,
+        p_utr: utr,
+        p_payment_screenshot_path: path
+      })
+    });
 
-  function goBack() {
-    window.location.href = "marketplace.html";
+    const order = Array.isArray(rows) ? rows[0] : rows;
+    if (!order || !order.order_id) {
+      throw new Error("Proof submitted but no Order ID was returned. Contact support before resubmitting.");
+    }
+
+    finalOrder = {
+      order_id: order.order_id,
+      email: customerEmail,
+      product_name: order.product_name || product.name,
+      amount: order.amount ?? product.price
+    };
+    sessionStorage.setItem("nexvora_last_order", JSON.stringify(finalOrder));
+
+    $("finalOrderId").textContent = finalOrder.order_id;
+    $("proofSection").classList.add("hidden");
+    $("paymentSection").classList.add("hidden");
+    $("successSection").classList.remove("hidden");
+    message("Proof received. Payment is still pending admin verification.");
+    startCountdown();
+  } catch (error) {
+    console.error(error);
+    message(error.message || "Unable to submit payment proof.", "error");
+    btn.disabled = false;
+    btn.textContent = "SUBMIT PROOF & GENERATE ORDER ID";
   }
+});
+
+function openTracking() {
+  if (!finalOrder) return;
+  location.href = "track.html?order_id=" +
+    encodeURIComponent(finalOrder.order_id) +
+    "&email=" + encodeURIComponent(finalOrder.email);
+}
+
+function startCountdown() {
+  let seconds = 15;
+  $("countdown").textContent = "Opening tracking in " + seconds + " seconds…";
+  countdownTimer = setInterval(() => {
+    seconds--;
+    if (seconds <= 0) {
+      clearInterval(countdownTimer);
+      openTracking();
+    } else {
+      $("countdown").textContent = "Opening tracking in " + seconds + " seconds…";
+    }
+  }, 1000);
+}
+$("trackNowBtn").addEventListener("click", openTracking);
+
+loadProduct().catch(error => {
+  $("productName").textContent = "Product could not be loaded";
+  $("productCategory").textContent = "Return to marketplace and try again";
+  message(error.message, "error");
+  $("continueBtn").disabled = true;
+});
 </script>
-
 </body>
-</html>
+  </html>
+  
