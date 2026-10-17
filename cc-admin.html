@@ -472,61 +472,61 @@ class="section active"
 </section>
 
 
-<section
-id="products"
-class="section"
->
+<section id="products" class="section">
 
 <div class="card">
 
-<h3>ADD DEMO PRODUCT</h3>
+<h3>PRODUCT MANAGEMENT</h3>
 
 <div class="form-grid">
 
 <div>
-
 <label>PRODUCT NAME</label>
-
-<input
-id="pn"
-placeholder="Example Demo Product"
->
-
+<input id="pn" placeholder="Product name">
 </div>
 
-
 <div>
-
-<label>BRAND</label>
-
-<select id="pb">
-
-<option>Mastercard</option>
-<option>Visa</option>
-<option>RuPay</option>
-<option>American Express</option>
-
-</select>
-
-</div>
-
-
-<div>
-
 <label>NETWORK</label>
-
-<input
-id="pnet"
-placeholder="Demo Network"
->
-
+<select id="pb">
+<option value="RuPay">RuPay</option>
+<option value="Visa">Visa</option>
+<option value="Mastercard">Mastercard</option>
+<option value="American Express">American Express</option>
+</select>
 </div>
 
+<div>
+<label>CARD DISPLAY NUMBER</label>
+<input id="pnum" placeholder="•••• •••• •••• 1234">
+</div>
 
 <div>
+<label>CARD HOLDER DISPLAY</label>
+<input id="pholder" placeholder="NEXVORA USER">
+</div>
 
-<label>PRICE</label>
+<div>
+<label>CARD BALANCE DISPLAY</label>
+<input id="pbalance" placeholder="₹0">
+</div>
 
+<div>
+<label>LIMIT</label>
+<input id="plimit" placeholder="₹0">
+</div>
+
+<div>
+<label>EXPIRY DISPLAY</label>
+<input id="pexpiry" placeholder="••/••">
+</div>
+
+<div>
+<label>DELIVERY</label>
+<input id="pdelivery" placeholder="10 Mins">
+</div>
+
+<div>
+<label>ENTRY FEE / PRICE</label>
 <input
 id="pp"
 type="number"
@@ -534,43 +534,42 @@ min="0"
 step=".01"
 placeholder="0"
 >
-
 </div>
 
+<div>
+<label>QUANTITY</label>
+<input
+id="pquantity"
+type="number"
+min="0"
+step="1"
+placeholder="0"
+>
+</div>
 
 <div>
-
 <label>IMAGE URL</label>
-
-<input
-id="pi"
-placeholder="https://..."
->
-
+<input id="pi" placeholder="https://...">
 </div>
-
 
 <div>
-
-<label>DISPLAY NUMBER</label>
-
-<input
-value="•••• •••• •••• 0000"
-disabled
->
-
+<label>AVAILABLE</label>
+<select id="pavailable">
+<option value="true">YES — AVAILABLE</option>
+<option value="false">NO — HIDDEN</option>
+</select>
 </div>
 
 </div>
-
 
 <label>DESCRIPTION</label>
 
 <textarea
 id="pd"
-placeholder="Demo product description"
+placeholder="Product description"
 ></textarea>
 
+<div class="actions">
 
 <button
 id="addProductButton"
@@ -580,15 +579,37 @@ type="button"
 ADD PRODUCT
 </button>
 
+<button
+id="cancelEditButton"
+class="dark"
+type="button"
+style="display:none"
+>
+CANCEL EDIT
+</button>
+
+</div>
+
 <div id="pm" class="msg"></div>
 
 </div>
 
 
-<div id="pl" class="list"></div>
+<div class="card">
 
-</section>
+<h3>PRODUCT LIST</h3>
 
+<div id="pl" class="list">
+
+<div class="loading">
+Loading products...
+</div>
+
+</div>
+
+</div>
+
+  </section>
 
 <section
 id="orders"
