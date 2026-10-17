@@ -1,1041 +1,504 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>NEXVORA CC TERMINAL — Payment</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
+  <title>NEXVORA CC TERMINAL — Order</title>
 
-:root{
-  --green:#00ff88;
-  --bg:#020504;
-  --panel:rgba(4,15,10,.82);
-  --border:rgba(0,255,136,.22);
-  --text:#eafff4;
-  --muted:#719883;
-  --red:#ff5264;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-body{
-  min-height:100vh;
-  color:var(--text);
-  font-family:"Courier New",monospace;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(0,255,136,.10),transparent 30%),
-    #020504;
-  overflow-x:hidden;
-}
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top, rgba(0,255,120,.08), transparent 35%),
+        #020504;
+      color: #d8ffe8;
+      padding: 20px;
+    }
 
-body:before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  opacity:.2;
-  background-image:
-    linear-gradient(rgba(0,255,136,.04) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,255,136,.04) 1px,transparent 1px);
-  background-size:36px 36px;
-}
+    .wrap {
+      width: 100%;
+      max-width: 620px;
+      margin: auto;
+    }
 
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:10;
-  border-bottom:1px solid var(--border);
-  background:rgba(2,5,4,.9);
-  backdrop-filter:blur(16px);
-}
+    .header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
 
-.nav{
-  width:min(1000px,calc(100% - 28px));
-  min-height:68px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-}
+    .logo {
+      color: #00ff73;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 0 0 15px rgba(0,255,115,.45);
+    }
 
-.brand{
-  font:bold 18px Arial,sans-serif;
-  letter-spacing:2px;
-}
+    .sub {
+      margin-top: 7px;
+      color: #7fa991;
+      font-size: 13px;
+    }
 
-.brand span{color:var(--green)}
+    .card {
+      background: rgba(5,14,10,.94);
+      border: 1px solid rgba(0,255,115,.25);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 0 30px rgba(0,255,115,.05);
+    }
 
-.nav a{
-  color:#82a895;
-  font-size:10px;
-  text-decoration:none;
-  letter-spacing:1px;
-}
+    .title {
+      color: #00ff73;
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
 
-.nav a:hover{color:var(--green)}
+    .product {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 15px;
+      border-radius: 13px;
+      background: rgba(0,255,115,.04);
+      border: 1px solid rgba(0,255,115,.13);
+    }
 
-main{
-  width:min(700px,calc(100% - 28px));
-  margin:auto;
-  padding:35px 0 70px;
-  position:relative;
-  z-index:2;
-}
+    .product-name {
+      font-weight: 800;
+      color: #fff;
+    }
 
-.heading{
-  margin-bottom:22px;
-}
+    .category {
+      color: #71947f;
+      font-size: 12px;
+      margin-top: 5px;
+    }
 
-.eyebrow{
-  color:var(--green);
-  font-size:10px;
-  letter-spacing:2px;
-  margin-bottom:10px;
-}
+    .price {
+      color: #00ff73;
+      font-weight: 900;
+      white-space: nowrap;
+    }
 
-h1{
-  font-family:Arial,sans-serif;
-  font-size:clamp(28px,7vw,48px);
-  letter-spacing:1px;
-}
+    label {
+      display: block;
+      color: #8eae9b;
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
 
-h1 span{color:var(--green)}
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 11px;
+      border: 1px solid rgba(0,255,115,.25);
+      background: #020705;
+      color: #fff;
+      outline: none;
+      margin-bottom: 15px;
+    }
 
-.subtitle{
-  margin-top:10px;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.6;
-}
+    input:focus {
+      border-color: #00ff73;
+      box-shadow: 0 0 12px rgba(0,255,115,.12);
+    }
 
-.card{
-  margin-top:18px;
-  padding:20px;
-  border:1px solid var(--border);
-  border-radius:17px;
-  background:var(--panel);
-  box-shadow:0 0 30px rgba(0,255,136,.04);
-}
+    .notice {
+      border: 1px solid rgba(255,193,7,.25);
+      background: rgba(255,193,7,.05);
+      color: #d9c989;
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
 
-.card h2{
-  font-size:13px;
-  color:var(--green);
-  letter-spacing:1px;
-  margin-bottom:16px;
-}
+    .safe {
+      border: 1px solid rgba(0,255,115,.2);
+      background: rgba(0,255,115,.035);
+      color: #9bc7aa;
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
 
-.product-line{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  padding-bottom:15px;
-  margin-bottom:16px;
-  border-bottom:1px solid rgba(0,255,136,.1);
-}
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      padding: 15px;
+      background: #00ff73;
+      color: #001b0b;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 0 18px rgba(0,255,115,.15);
+    }
 
-.product-name{
-  font-size:13px;
-  font-weight:bold;
-}
+    button:hover {
+      filter: brightness(1.08);
+    }
 
-.product-category{
-  margin-top:5px;
-  color:#628a72;
-  font-size:9px;
-}
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
 
-.amount{
-  color:var(--green);
-  font-weight:bold;
-  white-space:nowrap;
-}
+    .secondary {
+      margin-top: 10px;
+      background: transparent;
+      color: #00ff73;
+      border: 1px solid rgba(0,255,115,.3);
+      box-shadow: none;
+    }
 
-label{
-  display:block;
-  margin:14px 0 7px;
-  color:#82a895;
-  font-size:9px;
-  letter-spacing:1px;
-}
+    .status {
+      display: none;
+      margin-top: 15px;
+      padding: 13px;
+      border-radius: 11px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
 
-input{
-  width:100%;
-  height:48px;
-  padding:0 13px;
-  border-radius:9px;
-  border:1px solid rgba(0,255,136,.2);
-  outline:none;
-  color:white;
-  background:rgba(0,0,0,.42);
-  font-family:inherit;
-}
+    .status.success {
+      display: block;
+      color: #8dffb9;
+      background: rgba(0,255,115,.06);
+      border: 1px solid rgba(0,255,115,.25);
+    }
 
-input:focus{
-  border-color:var(--green);
-  box-shadow:0 0 15px rgba(0,255,136,.08);
-}
+    .status.error {
+      display: block;
+      color: #ff9999;
+      background: rgba(255,60,60,.06);
+      border: 1px solid rgba(255,60,60,.25);
+    }
 
-.primary{
-  width:100%;
-  height:48px;
-  margin-top:16px;
-  border:1px solid var(--green);
-  border-radius:9px;
-  background:rgba(0,255,136,.08);
-  color:var(--green);
-  font-family:inherit;
-  font-weight:bold;
-  letter-spacing:1px;
-  cursor:pointer;
-}
+    .order-box {
+      display: none;
+      margin-top: 15px;
+      text-align: center;
+      padding: 18px;
+      border-radius: 13px;
+      border: 1px solid rgba(0,255,115,.22);
+      background: rgba(0,255,115,.035);
+    }
 
-.primary:hover{
-  background:var(--green);
-  color:#001b0d;
-}
+    .order-label {
+      color: #779786;
+      font-size: 11px;
+      margin-bottom: 7px;
+    }
 
-.secondary{
-  width:100%;
-  height:46px;
-  margin-top:10px;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:9px;
-  background:rgba(255,255,255,.025);
-  color:#9ab8a7;
-  font-family:inherit;
-  cursor:pointer;
-}
+    .order-id {
+      color: #00ff73;
+      font-size: 23px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
 
-.secondary:hover{
-  border-color:var(--green);
-  color:var(--green);
-}
+    .small {
+      color: #63806e;
+      font-size: 11px;
+      text-align: center;
+      margin-top: 18px;
+      line-height: 1.5;
+    }
 
-.hidden{display:none!important}
-
-.qr-wrap{
-  text-align:center;
-  padding:10px 0 5px;
-}
-
-.qr{
-  width:min(270px,80vw);
-  aspect-ratio:1;
-  object-fit:contain;
-  padding:10px;
-  background:white;
-  border-radius:12px;
-}
-
-.upi{
-  margin-top:13px;
-  padding:12px;
-  border:1px solid rgba(0,255,136,.15);
-  border-radius:9px;
-  color:var(--green);
-  font-size:12px;
-  word-break:break-all;
-}
-
-.pay-note{
-  margin-top:12px;
-  color:#698c77;
-  font-size:9px;
-  line-height:1.6;
-  text-align:center;
-}
-
-.status{
-  min-height:22px;
-  margin-top:15px;
-  text-align:center;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.6;
-}
-
-.success{color:var(--green)!important}
-.error{color:var(--red)!important}
-
-.order-id{
-  margin-top:15px;
-  padding:15px;
-  text-align:center;
-  border:1px solid rgba(0,255,136,.25);
-  border-radius:10px;
-  background:rgba(0,255,136,.035);
-}
-
-.order-id small{
-  display:block;
-  color:#668a74;
-  font-size:8px;
-  letter-spacing:2px;
-  margin-bottom:7px;
-}
-
-.order-id strong{
-  color:var(--green);
-  font-size:20px;
-  letter-spacing:2px;
-}
-
-.timer{
-  margin-top:20px;
-  text-align:center;
-  color:#779d87;
-  font-size:10px;
-}
-
-.timer strong{
-  color:var(--green);
-  font-size:17px;
-}
-
-footer{
-  margin-top:40px;
-  text-align:center;
-  color:#41614e;
-  font-size:8px;
-  letter-spacing:2px;
-}
-
-@media(max-width:500px){
-  .card{padding:16px}
-}
-</style>
+    a {
+      color: #00ff73;
+      text-decoration: none;
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="topbar">
-  <nav class="nav">
-    <a class="brand" href="marketplace.html">
-      NEXVORA <span>CC</span>
-    </a>
+<div class="wrap">
 
-    <a href="track.html">TRACK ORDER →</a>
-  </nav>
-</header>
-
-<main>
-
-<section class="heading">
-  <div class="eyebrow">
-    NEXVORA CC TERMINAL // ORDER NODE
+  <div class="header">
+    <div class="logo">NEXVORA CC TERMINAL</div>
+    <div class="sub">Secure Order Request</div>
   </div>
 
-  <h1>
-    ORDER <span>CHECKOUT</span>
-  </h1>
+  <div class="card">
 
-  <div class="subtitle">
-    Generate your order reference first, then continue
-    to the payment-request section.
-  </div>
-</section>
+    <div class="title">ORDER DETAILS</div>
 
-
-<!-- STEP 1 -->
-<section class="card" id="orderCard">
-
-  <h2>01 // GENERATE ORDER ID</h2>
-
-  <div class="product-line">
-    <div>
-      <div class="product-name" id="productName">
-        Loading product...
+    <div class="product">
+      <div>
+        <div class="product-name" id="productName">Loading...</div>
+        <div class="category" id="productCategory">—</div>
       </div>
 
-      <div class="product-category" id="productCategory">
-        --
+      <div class="price" id="productPrice">₹0</div>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="title">CUSTOMER INFORMATION</div>
+
+    <label for="email">Email Address</label>
+    <input
+      id="email"
+      type="email"
+      placeholder="Enter your email"
+      autocomplete="email"
+    >
+
+    <div class="safe">
+      <b>Order verification:</b><br>
+      This step only creates a verification-pending order request.
+      No payment is marked as successful automatically.
+    </div>
+
+    <div class="notice">
+      For safety, this page does not collect or process card credentials,
+      UTR numbers, payment screenshots, or claim that a payment has been verified.
+    </div>
+
+    <button id="createBtn" onclick="createOrder()">
+      CREATE ORDER REQUEST
+    </button>
+
+    <button class="secondary" onclick="goBack()">
+      ← BACK TO MARKETPLACE
+    </button>
+
+    <div id="status" class="status"></div>
+
+    <div id="orderBox" class="order-box">
+      <div class="order-label">YOUR ORDER ID</div>
+      <div id="orderId" class="order-id">—</div>
+      <div class="small">
+        Keep this Order ID for tracking your request.
       </div>
     </div>
 
-    <div class="amount" id="productAmount">
-      ₹0.00
-    </div>
   </div>
 
-  <label for="email">
-    CUSTOMER EMAIL
-  </label>
-
-  <input
-    id="email"
-    type="email"
-    placeholder="ENTER YOUR EMAIL"
-    autocomplete="email"
-  >
-
-  <button
-    class="primary"
-    type="button"
-    id="generateBtn"
-    onclick="generateOrder()"
-  >
-    GENERATE ORDER ID
-  </button>
-
-  <div
-    class="status"
-    id="orderStatus"
-  ></div>
-
-</section>
-
-
-<!-- STEP 2 -->
-<section
-  class="card hidden"
-  id="paymentCard"
->
-
-  <h2>02 // PAYMENT REQUEST</h2>
-
-  <div class="order-id">
-    <small>ORDER ID</small>
-    <strong id="orderIdDisplay">---</strong>
+  <div class="small">
+    NEXVORA CC TERMINAL<br>
+    Order status is controlled by the verification system.
   </div>
 
-  <div class="qr-wrap">
-
-    <img
-      id="qrImage"
-      class="qr"
-      alt="Payment QR"
-    >
-
-    <div
-      class="upi"
-      id="upiDisplay"
-    >
-      UPI ID LOADING...
-    </div>
-
-    <div class="pay-note">
-      Use the displayed payment details only for
-      the order currently shown above.
-    </div>
-
-  </div>
-
-  <button
-    class="primary"
-    type="button"
-    onclick="openUpi()"
-  >
-    PAY VIA UPI APP
-  </button>
-
-  <button
-    class="secondary"
-    type="button"
-    onclick="showLedger()"
-  >
-    VERIFY TRANSACTION LEDGER
-  </button>
-
-  <div
-    class="status"
-    id="paymentStatus"
-  ></div>
-
-</section>
-
-
-<!-- STEP 3 -->
-<section
-  class="card hidden"
-  id="ledgerCard"
->
-
-  <h2>03 // TRANSACTION LEDGER</h2>
-
-  <label for="utr">
-    UTR / TRANSACTION REFERENCE
-  </label>
-
-  <input
-    id="utr"
-    type="text"
-    placeholder="ENTER TRANSACTION REFERENCE"
-    autocomplete="off"
-    maxlength="80"
-  >
-
-  <label for="screenshot">
-    PAYMENT SCREENSHOT
-  </label>
-
-  <input
-    id="screenshot"
-    type="file"
-    accept="image/png,image/jpeg,image/webp"
-  >
-
-  <div
-    class="status"
-    id="ledgerStatus"
-  >
-    Submit only information belonging to this order.
-  </div>
-
-  <button
-    class="primary"
-    type="button"
-    id="submitBtn"
-    onclick="submitPaymentRequest()"
-  >
-    SUBMIT PAYMENT REQUEST
-  </button>
-
-</section>
-
-
-<!-- STEP 4 -->
-<section
-  class="card hidden"
-  id="successCard"
->
-
-  <h2>04 // REQUEST SUBMITTED</h2>
-
-  <div class="order-id">
-    <small>YOUR ORDER ID</small>
-    <strong id="finalOrderId">---</strong>
-  </div>
-
-  <div
-    class="status success"
-    id="successMessage"
-  >
-    PAYMENT REQUEST SUBMITTED
-  </div>
-
-  <div class="timer">
-    REDIRECTING TO TRACK ORDER IN
-    <br>
-    <strong id="timer">10</strong>
-    SEC
-  </div>
-
-</section>
-
-<footer>
-  NEXVORA CC TERMINAL // SECURE ORDER NODE
-</footer>
-
-</main>
-
+</div>
 
 <script>
-const SUPABASE_URL =
-  "https://ccxuowtyrscobhzqener.supabase.co";
+  const SUPABASE_URL =
+    "https://ccxuowtyrscobhzqener.supabase.co";
 
-let orderData = null;
-let siteSettings = null;
+  const SUPABASE_ANON_KEY =
+    "sb_publishable_ojRLCERTzPJSTbBopO0KGA";
 
+  const params = new URLSearchParams(window.location.search);
 
-/* -------------------------
-   URL PRODUCT DATA
-------------------------- */
+  const productId =
+    params.get("product_id") || "";
 
-const params =
-  new URLSearchParams(window.location.search);
+  const productName =
+    params.get("product_name") || "Selected Product";
 
-const productId =
-  params.get("product_id");
+  const category =
+    params.get("category") || "—";
 
-const productName =
-  params.get("product_name") ||
-  "Selected Product";
+  const amount =
+    Number(params.get("amount") || 0);
 
-const productCategory =
-  params.get("category") ||
-  "Marketplace";
+  document.getElementById("productName").textContent =
+    productName;
 
-const amount =
-  Number(params.get("amount") || 0);
+  document.getElementById("productCategory").textContent =
+    category;
 
-
-document.getElementById("productName").textContent =
-  productName;
-
-document.getElementById("productCategory").textContent =
-  productCategory.toUpperCase();
-
-document.getElementById("productAmount").textContent =
-  `₹${amount.toFixed(2)}`;
+  document.getElementById("productPrice").textContent =
+    "₹" + amount.toFixed(2);
 
 
-/* -------------------------
-   HELPERS
-------------------------- */
+  function generateOrderId() {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let code = "";
 
-function randomPart(length) {
-  const chars =
-    "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-
-  let result = "";
-
-  for(let i = 0; i < length; i++){
-    result +=
-      chars[Math.floor(Math.random() * chars.length)];
-  }
-
-  return result;
-}
-
-
-function createOrderId() {
-  return `NXU-${randomPart(6)}`;
-}
-
-
-function setStatus(id, text, type="normal") {
-
-  const el =
-    document.getElementById(id);
-
-  if(!el) return;
-
-  el.textContent = text;
-
-  el.className = "status";
-
-  if(type === "success")
-    el.classList.add("success");
-
-  if(type === "error")
-    el.classList.add("error");
-}
-
-
-/* -------------------------
-   LOAD PAYMENT SETTINGS
-------------------------- */
-
-async function loadSettings(){
-
-  try{
-
-    const response =
-      await fetch(
-        `${SUPABASE_URL}/rest/v1/site_settings?select=site_name,upi_id,payment_qr_url,access_price&limit=1`
-      );
-
-    if(!response.ok)
-      throw new Error("Settings request failed");
-
-    const rows =
-      await response.json();
-
-    if(rows.length){
-      siteSettings = rows[0];
-
-      document.getElementById("upiDisplay")
-        .textContent =
-        siteSettings.upi_id ||
-        "UPI ID NOT CONFIGURED";
-
-      if(siteSettings.payment_qr_url){
-        document.getElementById("qrImage").src =
-          siteSettings.payment_qr_url;
-      }
+    for (let i = 0; i < 6; i++) {
+      code += chars[Math.floor(Math.random() * chars.length)];
     }
 
-  }catch(error){
-
-    console.error(error);
-
-    document.getElementById("upiDisplay")
-      .textContent =
-      "PAYMENT DETAILS UNAVAILABLE";
-
-  }
-}
-
-
-/* -------------------------
-   GENERATE ORDER
-------------------------- */
-
-async function generateOrder(){
-
-  const email =
-    document.getElementById("email")
-      .value
-      .trim()
-      .toLowerCase();
-
-  if(!productId){
-
-    setStatus(
-      "orderStatus",
-      "PRODUCT INFORMATION MISSING",
-      "error"
-    );
-
-    return;
+    return "NXU-" + code;
   }
 
-  if(!email){
 
-    setStatus(
-      "orderStatus",
-      "CUSTOMER EMAIL REQUIRED",
-      "error"
-    );
+  function showStatus(message, type) {
+    const box = document.getElementById("status");
 
-    document.getElementById("email").focus();
-
-    return;
+    box.className = "status " + type;
+    box.textContent = message;
   }
 
-  if(!email.includes("@")){
 
-    setStatus(
-      "orderStatus",
-      "ENTER A VALID EMAIL ADDRESS",
-      "error"
-    );
-
-    return;
-  }
-
-  if(!amount || amount < 0){
-
-    setStatus(
-      "orderStatus",
-      "INVALID ORDER AMOUNT",
-      "error"
-    );
-
-    return;
-  }
-
-  const btn =
-    document.getElementById("generateBtn");
-
-  btn.disabled = true;
-  btn.textContent = "CREATING...";
-
-  setStatus(
-    "orderStatus",
-    "GENERATING ORDER ID..."
-  );
-
-  try{
-
-    const orderId =
-      createOrderId();
-
-    /*
-      Keep the customer/order information
-      in the browser until the payment-request
-      workflow is submitted.
-    */
-
-    orderData = {
-      order_id: orderId,
-      product_id: productId,
-      product_name: productName,
-      category: productCategory,
-      amount: amount,
-      customer_email: email
-    };
-
-    document.getElementById("orderIdDisplay")
-      .textContent = orderId;
-
-    document.getElementById("paymentCard")
-      .classList.remove("hidden");
-
-    setStatus(
-      "orderStatus",
-      "ORDER ID GENERATED",
-      "success"
-    );
-
-    document.getElementById("paymentCard")
-      .scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-      });
-
-  }catch(error){
-
-    console.error(error);
-
-    setStatus(
-      "orderStatus",
-      "ORDER GENERATION FAILED",
-      "error"
-    );
-
-  }finally{
-
-    btn.disabled = false;
-    btn.textContent = "GENERATE ORDER ID";
-
-  }
-}
-
-
-/* -------------------------
-   PAYMENT APP
-------------------------- */
-
-function openUpi(){
-
-  if(!siteSettings?.upi_id){
-
-    setStatus(
-      "paymentStatus",
-      "UPI DETAILS NOT AVAILABLE",
-      "error"
-    );
-
-    return;
-  }
-
-  /*
-    No amount or sensitive payment data is
-    persisted here. This only opens the UPI
-    application URI when supported by device.
-  */
-
-  const upiUrl =
-    `upi://pay?pa=${encodeURIComponent(
-      siteSettings.upi_id
-    )}&pn=${encodeURIComponent(
-      "NEXVORA CC TERMINAL"
-    )}`;
-
-  window.location.href = upiUrl;
-}
-
-
-/* -------------------------
-   LEDGER SECTION
-------------------------- */
-
-function showLedger(){
-
-  if(!orderData){
-
-    setStatus(
-      "paymentStatus",
-      "GENERATE ORDER ID FIRST",
-      "error"
-    );
-
-    return;
-  }
-
-  document.getElementById("ledgerCard")
-    .classList.remove("hidden");
-
-  document.getElementById("ledgerCard")
-    .scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
-
-}
-
-
-/* -------------------------
-   SUBMIT REQUEST
-------------------------- */
-
-async function submitPaymentRequest(){
-
-  if(!orderData){
-
-    setStatus(
-      "ledgerStatus",
-      "ORDER DATA NOT FOUND",
-      "error"
-    );
-
-    return;
-  }
-
-  const utr =
-    document.getElementById("utr")
-      .value
-      .trim();
-
-  const screenshot =
-    document.getElementById("screenshot")
-      .files[0];
-
-  if(!utr){
-
-    setStatus(
-      "ledgerStatus",
-      "TRANSACTION REFERENCE REQUIRED",
-      "error"
-    );
-
-    return;
-  }
-
-  if(!screenshot){
-
-    setStatus(
-      "ledgerStatus",
-      "PAYMENT SCREENSHOT REQUIRED",
-      "error"
-    );
-
-    return;
-  }
-
-  if(!screenshot.type.startsWith("image/")){
-
-    setStatus(
-      "ledgerStatus",
-      "SELECT AN IMAGE FILE",
-      "error"
-    );
-
-    return;
-  }
-
-  if(screenshot.size > 5 * 1024 * 1024){
-
-    setStatus(
-      "ledgerStatus",
-      "IMAGE MUST BE 5MB OR SMALLER",
-      "error"
-    );
-
-    return;
-  }
-
-  const submitBtn =
-    document.getElementById("submitBtn");
-
-  submitBtn.disabled = true;
-  submitBtn.textContent = "SUBMITTING...";
-
-  setStatus(
-    "ledgerStatus",
-    "SUBMITTING PAYMENT REQUEST..."
-  );
-
-  /*
-    IMPORTANT:
-    The final server-side payment verification/
-    storage connection will be connected after
-    the database-side payment request schema is
-    finalized. We do not fake a successful payment.
-  */
-
-  try{
-
-    /*
-      Temporary controlled workflow state.
-      No claim of successful payment is made.
-    */
-
-    sessionStorage.setItem(
-      "nexvora_pending_order",
-      JSON.stringify({
-        ...orderData,
-        utr: utr
-      })
-    );
-
-    setStatus(
-      "ledgerStatus",
-      "REQUEST DATA READY FOR VERIFICATION",
-      "success"
-    );
-
-    document.getElementById("successCard")
-      .classList.remove("hidden");
-
-    document.getElementById("finalOrderId")
-      .textContent =
-      orderData.order_id;
-
-    document.getElementById("successMessage")
-      .textContent =
-      "PAYMENT REQUEST READY FOR VERIFICATION";
-
-    document.getElementById("successCard")
-      .scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-      });
-
-    startCountdown();
-
-  }catch(error){
-
-    console.error(error);
-
-    setStatus(
-      "ledgerStatus",
-      "REQUEST SUBMISSION FAILED",
-      "error"
-    );
-
-    submitBtn.disabled = false;
-    submitBtn.textContent =
-      "SUBMIT PAYMENT REQUEST";
-  }
-}
-
-
-/* -------------------------
-   COUNTDOWN
-------------------------- */
-
-function startCountdown(){
-
-  let seconds = 10;
-
-  const timer =
-    document.getElementById("timer");
-
-  timer.textContent = seconds;
-
-  const interval =
-    setInterval(() => {
-
-      seconds--;
-
-      timer.textContent = seconds;
-
-      if(seconds <= 0){
-
-        clearInterval(interval);
-
-        const query =
-          new URLSearchParams({
-            order_id:
-              orderData.order_id
-          });
-
-        window.location.href =
-          `track.html?${query.toString()}`;
+  async function createOrder() {
+
+    const emailInput =
+      document.getElementById("email");
+
+    const email =
+      emailInput.value.trim().toLowerCase();
+
+    const button =
+      document.getElementById("createBtn");
+
+    if (!email) {
+      showStatus(
+        "Please enter your email address.",
+        "error"
+      );
+      emailInput.focus();
+      return;
+    }
+
+    if (!email.includes("@")) {
+      showStatus(
+        "Please enter a valid email address.",
+        "error"
+      );
+      emailInput.focus();
+      return;
+    }
+
+    if (!productName || productName === "Selected Product") {
+      showStatus(
+        "Product information is missing. Please return to the marketplace.",
+        "error"
+      );
+      return;
+    }
+
+    if (!Number.isFinite(amount) || amount < 0) {
+      showStatus(
+        "Invalid product amount.",
+        "error"
+      );
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "CREATING ORDER...";
+
+    const orderId = generateOrderId();
+
+    try {
+
+      const response = await fetch(
+        SUPABASE_URL +
+        "/rest/v1/rpc/create_public_order",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization":
+              "Bearer " + SUPABASE_ANON_KEY
+          },
+
+          body: JSON.stringify({
+            p_order_id: orderId,
+            p_product_id:
+              productId || null,
+            p_product_name:
+              productName,
+            p_amount:
+              amount,
+            p_customer_email:
+              email
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message ||
+          data.error ||
+          "Unable to create order."
+        );
       }
 
-    },1000);
-}
+      document.getElementById("orderId").textContent =
+        orderId;
+
+      document.getElementById("orderBox").style.display =
+        "block";
+
+      showStatus(
+        "Order request created successfully. Status: Verification Pending.",
+        "success"
+      );
+
+      button.textContent =
+        "ORDER CREATED";
+
+      button.disabled = true;
+
+      /*
+       * Save only non-sensitive tracking information
+       * locally for the current browser session.
+       */
+      sessionStorage.setItem(
+        "nexvora_last_order",
+        JSON.stringify({
+          order_id: orderId,
+          email: email
+        })
+      );
+
+      setTimeout(() => {
+
+        window.location.href =
+          "track.html?order_id=" +
+          encodeURIComponent(orderId) +
+          "&email=" +
+          encodeURIComponent(email);
+
+      }, 2500);
+
+    } catch (error) {
+
+      console.error(error);
+
+      showStatus(
+        error.message ||
+        "Something went wrong while creating the order.",
+        "error"
+      );
+
+      button.disabled = false;
+      button.textContent =
+        "CREATE ORDER REQUEST";
+    }
+  }
 
 
-/* -------------------------
-   INITIAL LOAD
-------------------------- */
-
-loadSettings();
+  function goBack() {
+    window.location.href = "marketplace.html";
+  }
 </script>
 
 </body>
