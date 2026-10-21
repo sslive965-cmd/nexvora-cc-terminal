@@ -13,7 +13,7 @@
 body{
   margin:0;
   background:#03060b;
-  color:#d9ffe9;
+  color:#eaf8ff;
   font:14px Arial,sans-serif
 }
 
@@ -40,8 +40,8 @@ button:disabled{
 }
 
 .box,.card,.item{
-  background:#030d08;
-  border:1px solid #17472e;
+  background:#07131b;
+  border:1px solid #17445b;
   border-radius:16px
 }
 
@@ -63,7 +63,7 @@ button:disabled{
 
 .sub{
   text-align:center;
-  color:#668873;
+  color:#638da5;
   font-size:10px;
   letter-spacing:2px;
   margin:8px 0 25px
@@ -71,16 +71,16 @@ button:disabled{
 
 label{
   display:block;
-  color:#7da48c;
+  color:#7fa9bf;
   font-size:11px;
   margin:14px 0 6px
 }
 
 input,select,textarea{
   width:100%;
-  background:#010805;
-  color:#d9ffe9;
-  border:1px solid #17472e;
+  background:#030a10;
+  color:#eaf8ff;
+  border:1px solid #17445b;
   border-radius:9px;
   padding:12px;
   outline:0
@@ -99,16 +99,16 @@ input:focus,select:focus,textarea:focus{
   width:100%;
   margin-top:18px;
   background:#19bfff;
-  color:#001b0d
+  color:#00121b
 }
 
 .generate{
   background:#19bfff;
-  color:#001b0d
+  color:#00121b
 }
 
 .copy{
-  background:#07140d;
+  background:#07131b;
   color:#19bfff;
   border:1px solid #19bfff
 }
@@ -120,9 +120,9 @@ input:focus,select:focus,textarea:focus{
 }
 
 .dark,.tab{
-  background:#07140d;
-  color:#8fbaa0;
-  border:1px solid #17472e
+  background:#07131b;
+  color:#7fa9bf;
+  border:1px solid #17445b
 }
 
 #adminApp{display:none}
@@ -132,7 +132,7 @@ input:focus,select:focus,textarea:focus{
   top:0;
   z-index:5;
   background:#03060bee;
-  border-bottom:1px solid #103622;
+  border-bottom:1px solid #12364a;
   padding:15px;
   backdrop-filter:blur(8px)
 }
@@ -150,7 +150,7 @@ input:focus,select:focus,textarea:focus{
 }
 
 .admin-email,.muted,.item small{
-  color:#668873;
+  color:#638da5;
   font-size:11px
 }
 
@@ -172,7 +172,7 @@ input:focus,select:focus,textarea:focus{
 
 .tab.active{
   background:#19bfff;
-  color:#001b0d
+  color:#00121b
 }
 
 .section{display:none}
@@ -241,8 +241,8 @@ input:focus,select:focus,textarea:focus{
 .msg.success{
   display:block;
   color:#19bfff;
-  background:#03170d;
-  border:1px solid #17472e
+  background:#071b27;
+  border:1px solid #17445b
 }
 
 .msg.error{
@@ -253,12 +253,12 @@ input:focus,select:focus,textarea:focus{
 }
 
 .loading{
-  color:#668873;
+  color:#638da5;
   padding:10px 0
 }
 
 .empty{
-  color:#668873;
+  color:#638da5;
   padding:10px 0
 }
 
@@ -278,7 +278,7 @@ input:focus,select:focus,textarea:focus{
   padding:14px;
   border:1px solid #19bfff;
   border-radius:12px;
-  background:#02140b
+  background:#07131b
 }
 
 .key-value{
@@ -291,7 +291,7 @@ input:focus,select:focus,textarea:focus{
 }
 
 .note{
-  color:#668873;
+  color:#638da5;
   font-size:10px;
   line-height:1.5;
   margin-top:8px
@@ -307,8 +307,8 @@ input:focus,select:focus,textarea:focus{
 
 .badge.green{
   color:#19bfff;
-  background:#03170d;
-  border:1px solid #17472e
+  background:#071b27;
+  border:1px solid #17445b
 }
 
 .badge.red{
@@ -330,8 +330,8 @@ input:focus,select:focus,textarea:focus{
   height:60px;
   object-fit:cover;
   border-radius:8px;
-  border:1px solid #17472e;
-  background:#010805
+  border:1px solid #17445b;
+  background:#030a10
 }
 
 .product-meta{
@@ -342,8 +342,8 @@ input:focus,select:focus,textarea:focus{
 }
 
 .meta-box{
-  background:#010805;
-  border:1px solid #103622;
+  background:#030a10;
+  border:1px solid #12364a;
   border-radius:8px;
   padding:8px
 }
@@ -356,7 +356,7 @@ input:focus,select:focus,textarea:focus{
 }
 
 .meta-box span{
-  color:#a5c9b2;
+  color:#8fbad0;
   font-size:11px;
   word-break:break-word
 }
@@ -388,7 +388,7 @@ input:focus,select:focus,textarea:focus{
 </style>
 
 <style id="nexvora-electric-blue-theme">
-:root{--green:#19bfff;--green-dark:#087db8;--black:#03060b;--panel:rgba(5,13,24,.92);--border:rgba(25,191,255,.38);--text:#eaf8ff;--muted:#7fa9bf}
+:root{--blue:#19bfff;--blue-dark:#087db8;--black:#03060b;--panel:rgba(5,13,24,.92);--border:rgba(25,191,255,.38);--text:#eaf8ff;--muted:#7fa9bf}
 html,body{background-color:#03060b!important;color:#eaf8ff}
 button,.button,.btn,[role="button"]{accent-color:#19bfff}
 input,select,textarea{border-color:rgba(25,191,255,.4)!important}
@@ -1493,7 +1493,7 @@ product.image_url
 ?
 `<img src="${esc(product.image_url)}" alt="">`
 :
-`<div style="width:90px;height:60px;border:1px solid #17472e;border-radius:8px;display:grid;place-items:center;color:#668873;font-size:10px">NO IMAGE</div>`
+`<div style="width:90px;height:60px;border:1px solid #17445b;border-radius:8px;display:grid;place-items:center;color:#638da5;font-size:10px">NO IMAGE</div>`
 }
 
 <div>
