@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NEXVORA CC TERMINAL — Admin</title>
+<title>NEXVORA X — Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
@@ -12,7 +12,7 @@
 
 body{
   margin:0;
-  background:#020504;
+  background:#03060b;
   color:#d9ffe9;
   font:14px Arial,sans-serif
 }
@@ -51,7 +51,7 @@ button:disabled{
 }
 
 .logo,.brand,.card h3,.item-title{
-  color:#00ff88;
+  color:#19bfff;
   font-weight:900
 }
 
@@ -92,25 +92,25 @@ textarea{
 }
 
 input:focus,select:focus,textarea:focus{
-  border-color:#00ff88
+  border-color:#19bfff
 }
 
 .primary{
   width:100%;
   margin-top:18px;
-  background:#00ff88;
+  background:#19bfff;
   color:#001b0d
 }
 
 .generate{
-  background:#00ff88;
+  background:#19bfff;
   color:#001b0d
 }
 
 .copy{
   background:#07140d;
-  color:#00ff88;
-  border:1px solid #00ff88
+  color:#19bfff;
+  border:1px solid #19bfff
 }
 
 .danger{
@@ -131,7 +131,7 @@ input:focus,select:focus,textarea:focus{
   position:sticky;
   top:0;
   z-index:5;
-  background:#020504ee;
+  background:#03060bee;
   border-bottom:1px solid #103622;
   padding:15px;
   backdrop-filter:blur(8px)
@@ -171,7 +171,7 @@ input:focus,select:focus,textarea:focus{
 }
 
 .tab.active{
-  background:#00ff88;
+  background:#19bfff;
   color:#001b0d
 }
 
@@ -240,7 +240,7 @@ input:focus,select:focus,textarea:focus{
 
 .msg.success{
   display:block;
-  color:#00ff88;
+  color:#19bfff;
   background:#03170d;
   border:1px solid #17472e
 }
@@ -276,13 +276,13 @@ input:focus,select:focus,textarea:focus{
 .key-box{
   margin-top:14px;
   padding:14px;
-  border:1px solid #00ff88;
+  border:1px solid #19bfff;
   border-radius:12px;
   background:#02140b
 }
 
 .key-value{
-  color:#00ff88;
+  color:#19bfff;
   font-size:20px;
   font-weight:900;
   letter-spacing:2px;
@@ -306,7 +306,7 @@ input:focus,select:focus,textarea:focus{
 }
 
 .badge.green{
-  color:#00ff88;
+  color:#19bfff;
   background:#03170d;
   border:1px solid #17472e
 }
@@ -350,7 +350,7 @@ input:focus,select:focus,textarea:focus{
 
 .meta-box b{
   display:block;
-  color:#00ff88;
+  color:#19bfff;
   font-size:10px;
   margin-bottom:3px
 }
@@ -386,6 +386,14 @@ input:focus,select:focus,textarea:focus{
 
 }
 </style>
+
+<style id="nexvora-electric-blue-theme">
+:root{--green:#19bfff;--green-dark:#087db8;--black:#03060b;--panel:rgba(5,13,24,.92);--border:rgba(25,191,255,.38);--text:#eaf8ff;--muted:#7fa9bf}
+html,body{background-color:#03060b!important;color:#eaf8ff}
+button,.button,.btn,[role="button"]{accent-color:#19bfff}
+input,select,textarea{border-color:rgba(25,191,255,.4)!important}
+:focus-visible{outline:2px solid #19bfff;outline-offset:2px}
+</style>
 </head>
 
 <body>
@@ -394,7 +402,7 @@ input:focus,select:focus,textarea:focus{
 
 <div class="box">
 
-<div class="logo">NEXVORA CC TERMINAL</div>
+<div class="logo">NEXVORA X</div>
 
 <div class="sub">SECURE ADMIN ACCESS</div>
 
@@ -441,7 +449,7 @@ LOGIN
 <div>
 
 <div class="brand">
-NEXVORA CC TERMINAL
+NEXVORA X
 </div>
 
 <div id="adminEmail" class="admin-email"></div>
