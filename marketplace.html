@@ -733,11 +733,10 @@ input,select,textarea{border-color:rgba(25,191,255,.4)!important}
     MASTERCARD
   </button>
 
-  <button class="filter" data-category="americanexpressdemo">
-    AMERICAN EXPRESS
+  <button class="filter" data-category="amex">
+    AMEX
   </button>
 </div>
-<p class="muted" style="text-align:center;margin:8px 0 14px;font-size:12px">American Express category is for authorized demo products only.</p>
 
 <div id="message" class="message"></div>
 
@@ -864,19 +863,14 @@ function showMessage(text,error=false){
 }
 
 function getCategory(product){
-  const raw = String(
+  return String(
     product.network ||
     product.brand ||
     ""
-  ).trim().toLowerCase();
-
-  // The American Express category is intentionally limited to clearly
-  // labelled demo catalogue entries; do not map real card-network entries.
-  if(raw === "american express demo" || raw === "americanexpressdemo") {
-    return "americanexpressdemo";
-  }
-
-  return raw.replace(/[\s_-]+/g,"");
+  )
+  .trim()
+  .toLowerCase()
+  .replace(/[\s_-]+/g,"");
 }
 
 function formatMoney(value){
