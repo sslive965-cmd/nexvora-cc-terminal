@@ -733,8 +733,8 @@ input,select,textarea{border-color:rgba(25,191,255,.4)!important}
     MASTERCARD
   </button>
 
-  <button class="filter" data-category="amex">
-    AMEX
+  <button class="filter" data-category="americanexpress">
+    AMERICAN EXPRESS
   </button>
 </div>
 
@@ -863,14 +863,13 @@ function showMessage(text,error=false){
 }
 
 function getCategory(product){
-  return String(
-    product.network ||
-    product.brand ||
-    ""
-  )
-  .trim()
-  .toLowerCase()
-  .replace(/[\s_-]+/g,"");
+  const values = [product.network, product.brand]
+    .filter(value => value != null && String(value).trim() !== "")
+    .map(value => String(value).trim().toLowerCase().replace(/[\s_-]+/g,""));
+  if(values.some(value => ["amex","americanexpress","americanexpressdemo"].includes(value))){
+    return "americanexpress";
+  }
+  return values[0] || "";
 }
 
 function formatMoney(value){
