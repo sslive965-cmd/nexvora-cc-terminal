@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NEXVORA X — Admin</title>
+<title>NEXVORA X — Unified Demo/Prepaid Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
@@ -403,6 +403,7 @@ input,select,textarea{border-color:rgba(25,191,255,.4)!important}
 <div class="box">
 
 <div class="logo">NEXVORA X</div>
+<div class="sub">UNIFIED ADMIN · DEMO / PREPAID CATALOGUE</div>
 
 <div class="sub">SECURE ADMIN ACCESS</div>
 
@@ -523,6 +524,16 @@ TELEGRAM
 
 </div>
 
+<!-- Quick links to the existing supplementary admin pages -->
+<section class="section" id="adminPageLinks" style="display:block;margin:0 0 18px;padding:16px;border:1px solid #24354a;border-radius:14px;background:#0b111b">
+  <h3 style="margin:0 0 8px;color:#eaf4ff">OTHER ADMIN PAGES</h3>
+  <p style="margin:0 0 12px;color:#a9bbcf;font-size:13px">Open an existing admin page in a separate page.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px">
+    <a href="cc-admin-fixed.html" target="_blank" rel="noopener" style="display:inline-block;padding:11px 14px;border-radius:9px;background:#12304a;border:1px solid #238bd1;color:#eaf7ff;text-decoration:none;font-weight:700">ADMIN FIXED</a>
+    <a href="cc-admin-fixed-plus.html" target="_blank" rel="noopener" style="display:inline-block;padding:11px 14px;border-radius:9px;background:#12304a;border:1px solid #238bd1;color:#eaf7ff;text-decoration:none;font-weight:700">ADMIN FIXED PLUS</a>
+    <a href="cc-admin-dashboard.html" target="_blank" rel="noopener" style="display:inline-block;padding:11px 14px;border-radius:9px;background:#12304a;border:1px solid #238bd1;color:#eaf7ff;text-decoration:none;font-weight:700">ADMIN DASHBOARD</a>
+  </div>
+</section>
 
 <section
 id="dashboard"
@@ -565,6 +576,7 @@ class="section active"
 <div class="card">
 
 <h3>PRODUCT MANAGEMENT</h3>
+<p class="muted">Authorized demo/prepaid catalogue only. Do not enter payment-card numbers, cardholder credentials, balances, or expiry data.</p>
 
 <div class="form-grid">
 
@@ -574,54 +586,26 @@ class="section active"
 </div>
 
 <div>
-<label>NETWORK</label>
+<label>PRODUCT CATEGORY</label>
 <select id="pb">
-<option value="RuPay">RuPay</option>
-<option value="Visa">Visa</option>
-<option value="Mastercard">Mastercard</option>
-<option value="American Express">American Express</option>
+<option value="Demo">Demo</option>
+<option value="American Express Demo">American Express (Demo)</option>
+<option value="Prepaid">Prepaid</option>
+<option value="Gift Card">Gift Card</option>
+<option value="Digital Service">Digital Service</option>
+<option value="Other">Other</option>
 </select>
 </div>
 
-<div>
-<label>CARD DISPLAY NUMBER</label>
-<input
-id="pnum"
-placeholder="•••• •••• •••• 1234"
->
-</div>
 
-<div>
-<label>CARD HOLDER DISPLAY</label>
-<input
-id="pholder"
-placeholder="NEXVORA USER"
->
-</div>
 
-<div>
-<label>CARD BALANCE DISPLAY</label>
-<input
-id="pbalance"
-placeholder="₹0"
->
-</div>
 
-<div>
-<label>LIMIT</label>
-<input
-id="plimit"
-placeholder="₹0"
->
-</div>
 
-<div>
-<label>EXPIRY DISPLAY</label>
-<input
-id="pexpiry"
-placeholder="••/••"
->
-</div>
+
+
+
+
+
 
 <div>
 <label>DELIVERY</label>
@@ -1427,12 +1411,7 @@ function resetProductForm(){
 editingProductId = null;
 
 $("pn").value="";
-$("pb").value="RuPay";
-$("pnum").value="•••• •••• •••• 0000";
-$("pholder").value="NEXVORA USER";
-$("pbalance").value="₹0";
-$("plimit").value="₹0";
-$("pexpiry").value="••/••";
+$("pb").value="Demo";
 $("pdelivery").value="10 Mins";
 $("pp").value="";
 $("pquantity").value="0";
@@ -1512,30 +1491,7 @@ ${esc(product.network || product.brand || "—")}
 
 <div class="product-meta">
 
-<div class="meta-box">
-<b>DISPLAY</b>
-<span>${esc(product.display_number || "•••• •••• •••• 0000")}</span>
-</div>
 
-<div class="meta-box">
-<b>HOLDER</b>
-<span>${esc(product.cardholder_display || "NEXVORA USER")}</span>
-</div>
-
-<div class="meta-box">
-<b>BALANCE</b>
-<span>${esc(product.card_balance_display || "₹0")}</span>
-</div>
-
-<div class="meta-box">
-<b>LIMIT</b>
-<span>${esc(product.limit_display || "₹0")}</span>
-</div>
-
-<div class="meta-box">
-<b>EXPIRY</b>
-<span>${esc(product.expiry_display || "••/••")}</span>
-</div>
 
 <div class="meta-box">
 <b>DELIVERY</b>
@@ -1646,26 +1602,6 @@ name,
 brand:network,
 
 network,
-
-display_number:
-$("pnum").value.trim() ||
-"•••• •••• •••• 0000",
-
-cardholder_display:
-$("pholder").value.trim() ||
-"NEXVORA USER",
-
-card_balance_display:
-$("pbalance").value.trim() ||
-"₹0",
-
-limit_display:
-$("plimit").value.trim() ||
-"₹0",
-
-expiry_display:
-$("pexpiry").value.trim() ||
-"••/••",
 
 delivery_display:
 $("pdelivery").value.trim() ||
@@ -1807,26 +1743,6 @@ $("pb").value =
 product.network ||
 product.brand ||
 "RuPay";
-
-$("pnum").value =
-product.display_number ||
-"•••• •••• •••• 0000";
-
-$("pholder").value =
-product.cardholder_display ||
-"NEXVORA USER";
-
-$("pbalance").value =
-product.card_balance_display ||
-"₹0";
-
-$("plimit").value =
-product.limit_display ||
-"₹0";
-
-$("pexpiry").value =
-product.expiry_display ||
-"••/••";
 
 $("pdelivery").value =
 product.delivery_display ||
